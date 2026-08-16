@@ -1,13 +1,13 @@
-    <!DOCTYPE html>
-<html lang="en
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>NEXUS: Warrior Arena</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Poppins:wght@400;600;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#05070b;color:#fff;font-family:Poppins,">
-<head>sans-serif;overflow:hidden}
+body{background:#05070b;color:#fff;font-family:Poppins,sans-serif;overflow:hidden}
 #game{display:block;width:100vw;height:100vh;background:#10151b}
 #hud{position:fixed;top:18px;left:18px;right:18px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none;z-index:5}
 .panel{background:#090d14d9;border:1px solid #283244;border-radius:10px;padding:12px 15px;backdrop-filter:blur(8px)}
@@ -64,6 +64,22 @@ body.ending canvas{filter:brightness(.45) contrast(1.25)}
 @keyframes flash{0%,100%{filter:brightness(1)}50%{filter:brightness(3)}}
 .jumpscare #screen{animation:screenflash .08s 3}
 @keyframes screenflash{50%{background:#fff!important}}
+
+#mobileControls{display:none;position:fixed;inset:auto 0 20px 0;z-index:8;justify-content:space-between;padding:0 24px;pointer-events:none}
+.dpad{pointer-events:auto;text-align:center}.dpad button,.actionBtn,#pauseBtn,#muteBtn{width:52px;height:52px;margin:2px;border:1px solid #334155;background:#0b111acc;color:#fff;border-radius:10px;font-weight:700}
+.actionBtn{pointer-events:auto;width:74px;height:74px;border-radius:50%;font-size:28px;background:#ff334433;border-color:#ff5470;color:#fff}
+#topButtons{position:fixed;right:18px;top:95px;z-index:7;display:flex;gap:5px}
+#pauseBtn,#muteBtn{width:42px;height:42px;font-size:16px}
+#pauseOverlay{position:fixed;inset:0;display:none;place-items:center;background:#0009;z-index:9}
+#pauseOverlay.show{display:grid}
+.pauseBox{background:#0d121b;border:1px solid #334155;padding:30px;border-radius:14px;text-align:center}
+#settingsNote{font-size:11px;color:#8793a8;margin-top:12px}
+@media(max-width:800px),(pointer:coarse){
+  #mobileControls{display:flex}
+  #controls{bottom:5px;font-size:9px;opacity:.45}
+  .bar{width:150px}
+  #topButtons{top:105px}
+}
 </style>
 </head>
 <body>
@@ -82,8 +98,21 @@ body.ending canvas{filter:brightness(.45) contrast(1.25)}
   </div>
 </div>
 
-<div id="controls">WASD / Arrow Keys = Move &nbsp; • &nbsp; SPACE = Attack &nbsp; • &nbsp; R = Restart</div>
+<div id="controls">WASD / Arrow Keys = Move • SPACE = Attack • P = Pause</div>
+<div id="mobileControls">
+  <div class="dpad">
+    <button data-key="arrowup">▲</button>
+    <div><button data-key="arrowleft">◀</button><button data-key="arrowdown">▼</button><button data-key="arrowright">▶</button></div>
+  </div>
+  <button id="attackBtn" class="actionBtn">⚔</button>
+</div>
+<div id="topButtons">
+  <button id="pauseBtn">Ⅱ</button>
+  <button id="muteBtn">🔊</button>
+</div>
 
+
+<div id="pauseOverlay"><div class="pauseBox"><h1>PAUSED</h1><p>Take a breath. The arena is waiting.</p><button id="resumeBtn">RESUME</button></div></div>
 <div id="screen">
   <div class="modal">
     <h1>NEXUS <span>WARRIOR</span></h1>
@@ -107,8 +136,47 @@ addEventListener("keydown",e=>{
 });
 addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
 
+
+let audioCtx=null, muted=false, paused=false, highScore=Number(localStorage.getItem("nexusWarriorHighScore")||0);
+
+function audioInit(){
+  if(audioCtx) return;
+  audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+}
+function tone(freq,duration,type="sine",gain=.04){
+  if(muted) return;
+  audioInit();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type=type;o.frequency.value=freq;g.gain.value=gain;
+  o.connect(g);g.connect(audioCtx.destination);
+  const now=audioCtx.currentTime;
+  g.gain.setValueAtTime(gain,now);g.gain.exponentialRampToValueAtTime(.001,now+duration);
+  o.start(now);o.stop(now+duration);
+}
+function sfx(kind){
+  if(kind==="attack"){tone(180,.08,"sawtooth",.055);tone(420,.07,"square",.035)}
+  if(kind==="hit"){tone(90,.12,"square",.045)}
+  if(kind==="wave"){tone(330,.12,"triangle",.05);setTimeout(()=>tone(495,.18,"triangle",.05),100)}
+  if(kind==="danger"){tone(70,.25,"sawtooth",.07)}
+}
+function toggleMute(){
+  muted=!muted;
+  document.getElementById("muteBtn").textContent=muted?"🔇":"🔊";
+}
+function togglePause(){
+  if(!running)return;
+  paused=!paused;
+  document.getElementById("pauseOverlay").classList.toggle("show",paused);
+  document.getElementById("pauseBtn").textContent=paused?"▶":"Ⅱ";
+}
+function saveScore(){
+  if(score>highScore){highScore=score;localStorage.setItem("nexusWarriorHighScore",String(score));}
+}
 function startGame(){
-  score=0;wave=1;spawnTimer=0;attackTimer=0;attackCooldown=0;
+  score=0;wave=1;spawnTimer=0;attackTimer=0;attackCooldown=0;paused=false;
+  document.getElementById("pauseOverlay").classList.remove("show");
+  document.getElementById("pauseBtn").textContent="Ⅱ";
+  audioInit();
   player={x:W/2,y:H/2,r:23,speed:300,hp:100,maxHp:100,dir:1};
   enemies=[];particles=[];running=true;
   document.getElementById("screen").classList.add("hidden");
@@ -147,7 +215,7 @@ function update(dt){
   attackCooldown-=dt;
   attackTimer=Math.max(0,attackTimer-dt);
   if(keys[" "]&&attackCooldown<=0){
-    attackCooldown=.38;attackTimer=.16;
+    attackCooldown=.38;attackTimer=.16;sfx("attack");
     enemies.forEach(e=>{
       const d=Math.hypot(e.x-player.x,e.y-player.y);
       const inFront=(e.x-player.x)*player.dir>-25;
@@ -165,12 +233,12 @@ function update(dt){
     const dx=player.x-e.x,dy=player.y-e.y,d=Math.hypot(dx,dy)||1;
     e.x+=dx/d*e.speed*dt;e.y+=dy/d*e.speed*dt;
     if(d<player.r+e.r){
-      player.hp-=18*dt;
+      player.hp-=18*dt;sfx("hit");
       e.x-=dx/d*12;e.y-=dy/d*12;
     }
   });
 
-  if(score>=wave*800){wave++;player.maxHp+=5;player.hp=Math.min(player.maxHp,player.hp+25);particle(player.x,player.y,25)}
+  if(score>=wave*800){wave++;sfx("wave");player.maxHp+=5;player.hp=Math.min(player.maxHp,player.hp+25);particle(player.x,player.y,25)}
 
   particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt});
   particles=particles.filter(p=>p.life>0);
@@ -218,11 +286,12 @@ function draw(){
 function loop(t){
   if(!running)return;
   const dt=Math.min(.033,(t-last)/1000);last=t;
-  update(dt);draw();requestAnimationFrame(loop);
+  if(!paused) update(dt);
+  draw();requestAnimationFrame(loop);
 }
 
 function endGame(){
-  running=false;
+  running=false;saveScore();sfx("danger");
   dramaticEnding();
 }
 
@@ -294,7 +363,28 @@ function dramaticEnding(){
     };
   },6500);
 }
+
+document.getElementById("pauseBtn").onclick=togglePause;
+document.getElementById("muteBtn").onclick=toggleMute;
+document.getElementById("resumeBtn").onclick=togglePause;
+
+document.querySelectorAll("[data-key]").forEach(btn=>{
+  const k=btn.dataset.key;
+  const down=e=>{e.preventDefault();keys[k]=true};
+  const up=e=>{e.preventDefault();keys[k]=false};
+  btn.addEventListener("touchstart",down,{passive:false});
+  btn.addEventListener("touchend",up,{passive:false});
+  btn.addEventListener("mousedown",down);
+  btn.addEventListener("mouseup",up);
+  btn.addEventListener("mouseleave",up);
+});
+const ab=document.getElementById("attackBtn");
+ab.addEventListener("touchstart",e=>{e.preventDefault();keys[" "]=true},{passive:false});
+ab.addEventListener("touchend",e=>{e.preventDefault();keys[" "]=false},{passive:false});
+ab.addEventListener("mousedown",()=>keys[" "]=true);
+ab.addEventListener("mouseup",()=>keys[" "]=false);
+
 document.getElementById("start").onclick=startGame;
 </script>
 </body>
-</html>
+</html>  
