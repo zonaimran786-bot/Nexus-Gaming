@@ -1,0 +1,10 @@
+web/
+├── index.html
+├── games.html
+├── login.html
+├── leaderboard.html
+├── tournaments.html
+├── shop.html
+├── community.html
+├── css/
+└── js/
