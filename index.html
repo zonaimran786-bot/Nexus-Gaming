@@ -1,4 +1,300 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NEXUS Gaming</title><link rel="stylesheet" href="css/style.css"></head><body>
-<header><div class="nav"><a class="logo" href="index.html">NEXUS<span>.</span></a><nav><a href="index.html">Home</a><a href="games.html">Games</a><a href="leaderboard.html">Leaderboard</a><a href="tournaments.html">Tournaments</a><a href="shop.html">Shop</a><a href="community.html">Community</a></nav><a class="btn" href="login.html">Login</a></div></header>
-<main><section class="hero"><div class="container"><div class="eyebrow">THE NEXT GENERATION GAMING PLATFORM</div><h1>PLAY. COMPETE.<br><span>DOMINATE.</span></h1><p>Play NEXUS Warrior, compete in tournaments, climb the leaderboard and connect with your squad.</p><div class="actions"><a class="btn" href="games.html">Explore Games</a><a class="btn secondary" href="login.html">Sign in with Google</a></div></div></section>
-<section class="section"><div class="container"><div class="sectionhead"><h2>Featured</h2></div><div class="grid"><article class="card"><img class="gameimg" src="https://images.unsplash.com/photo-1542751110-97427bbecf20?auto=format&fit=crop&w=900&q=80"><div class="cardbody"><span class="badge">ACTION • SURVIVAL</span><h3>NEXUS Warrior</h3><p>Survive waves and face a dramatic monster encounter.</p><a class="btn" href="../game/index.html">Play Now</a></div></article><article class="card"><div class="cardbody"><div class="eyebrow">COMPETITIVE</div><h3>Leaderboards</h3><p>Track scores and compete for the top spot.</p><a class="btn secondary" href="leaderboard.html">View rankings</a></div></article><article class="card"><div class="cardbody"><div class="eyebrow">COMMUNITY</div><h3>Squad Chat</h3><p>Meet players and organize your next match.</p><a class="btn secondary" href="community.html">Open community</a></div></article></div></div></section></main><footer>© 2026 NEXUS Gaming</footer></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NEXUS: Warrior Arena</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Poppins:wght@400;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#05070b;color:#fff;font-family:Poppins,sans-serif;overflow:hidden}
+#game{display:block;width:100vw;height:100vh;background:#10151b}
+#hud{position:fixed;top:18px;left:18px;right:18px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none;z-index:5}
+.panel{background:#090d14d9;border:1px solid #283244;border-radius:10px;padding:12px 15px;backdrop-filter:blur(8px)}
+.title{font:800 17px Orbitron;color:#00eaff;letter-spacing:1px}
+.label{font-size:11px;color:#8995aa;margin-top:5px}
+.bar{width:220px;height:13px;background:#202634;border-radius:20px;overflow:hidden;margin-top:7px}
+#hp{height:100%;width:100%;background:#35e28a;transition:.15s}
+#score{font:700 20px Orbitron;color:#ffd45a}
+#controls{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:5;color:#aab4c6;font-size:12px;text-align:center;background:#090d14cc;padding:9px 14px;border-radius:8px}
+#screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#05070bcc;z-index:10}
+.modal{text-align:center;background:#0d121b;border:1px solid #2b3648;border-radius:15px;padding:38px;max-width:480px;width:90%;box-shadow:0 20px 80px #000}
+h1{font:800 38px Orbitron;margin-bottom:12px}h1 span{color:#00eaff}
+p{color:#9ca8ba;line-height:1.7;margin-bottom:22px}
+button{border:0;background:#00eaff;color:#031016;font-weight:700;padding:13px 25px;border-radius:7px;cursor:pointer}
+button:hover{filter:brightness(1.1)}
+.hidden{display:none!important}
+
+#endTitle{font:800 32px Orbitron;line-height:1.2}
+#endTitle span{color:#ff5470;text-shadow:0 0 25px #ff547066}
+.end-eyebrow{font:700 11px Orbitron;letter-spacing:4px;color:#8b5cf6;margin-bottom:14px}
+#endText{min-height:55px}
+#endHint{color:#ff8b9d;font-size:12px;letter-spacing:1px;margin-top:12px}
+#endBar{height:3px;background:#252b3a;margin:22px 0;overflow:hidden}
+#endBar i{display:block;width:0;height:100%;background:#ff5470;animation:doom 5s linear forwards}
+#restartEnding{margin-top:10px;background:#00eaff;color:#031016;border:0;padding:13px 25px;border-radius:7px;font-weight:700}
+@keyframes doom{to{width:100%}}
+.shake #screen .modal{animation:shake .12s infinite}
+@keyframes shake{0%{transform:translate(0)}25%{transform:translate(2px,-1px)}50%{transform:translate(-2px,1px)}75%{transform:translate(1px,2px)}100%{transform:translate(0)}}
+body.ending canvas{filter:brightness(.45) contrast(1.25)}
+
+#monsterScene{position:relative;width:min(760px,90vw);height:430px;overflow:hidden;background:radial-gradient(circle at 50% 70%,#4b0712 0%,#16050a 35%,#020203 80%);border-radius:14px;border:1px solid #3b1118}
+#monsterBackdrop{position:absolute;inset:0;background:linear-gradient(transparent 55%,#000 100%);opacity:.8}
+#fallenWarrior{position:absolute;left:50%;bottom:32px;width:90px;height:125px;transform:translateX(-50%);background:#081018;border-radius:45px 45px 15px 15px;box-shadow:0 0 20px #00eaff33}
+#monster{position:absolute;left:50%;top:-170px;width:180px;height:190px;transform:translateX(-50%);background:radial-gradient(circle at 50% 42%,#f32d42,#8b0718 60%,#30030a);border-radius:48% 48% 35% 35%;box-shadow:0 0 55px #ff163855;transition:top .9s cubic-bezier(.2,.8,.2,1)}
+#monster.approach{top:95px}
+#monster.attack{top:210px;transform:translateX(-50%) scale(1.7);transition:.45s}
+.horn{position:absolute;top:-35px;width:38px;height:60px;background:#650915;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.h1{left:18px;transform:rotate(-20deg)}.h2{right:18px;transform:rotate(20deg)}
+.monsterEye{position:absolute;top:58px;width:27px;height:17px;background:#ffec9a;border-radius:50%;box-shadow:0 0 18px #ffcf4a}.e1{left:38px}.e2{right:38px}
+.monsterMouth{position:absolute;left:40px;right:40px;bottom:25px;height:65px;background:#150207;border-radius:12px 12px 45% 45%;display:flex;justify-content:space-around;padding:5px}
+.monsterMouth i{display:block;width:7px;height:22px;background:#eee;clip-path:polygon(0 0,100% 0,50% 100%)}
+#monsterEyes{position:absolute;inset:0;opacity:0;transition:opacity .5s}
+#monsterEyes.active{opacity:1}
+#monsterEyes span{position:absolute;width:13px;height:8px;background:#ff334d;border-radius:50%;box-shadow:0 0 14px #ff334d}
+#monsterEyes span:nth-child(1){left:9%;top:27%}#monsterEyes span:nth-child(2){left:20%;top:43%}#monsterEyes span:nth-child(3){right:14%;top:30%}#monsterEyes span:nth-child(4){right:24%;top:51%}#monsterEyes span:nth-child(5){left:30%;top:17%}#monsterEyes span:nth-child(6){right:34%;top:20%}
+#sceneText{position:absolute;left:0;right:0;bottom:14px;text-align:center;font:700 12px Orbitron;letter-spacing:3px;color:#ff7180;text-shadow:0 0 15px #ff2030}
+#jumpScare{position:absolute;inset:0;background:#000;display:grid;place-items:center;opacity:0;pointer-events:none}
+#jumpScare.show{opacity:1;animation:flash .18s 2}
+.scareFace{position:relative;width:280px;height:280px;border-radius:48% 48% 42% 42%;background:radial-gradient(circle,#ff3d4f,#850817 60%,#1b0105);box-shadow:0 0 80px #ff1733}
+.scareEye{position:absolute;top:75px;width:55px;height:38px;background:#fff5b5;border-radius:50%;box-shadow:0 0 30px #fff}
+.scareEye:first-child{left:48px}.scareEye:nth-child(2){right:48px}
+.scareMouth{position:absolute;left:65px;right:65px;bottom:35px;height:95px;background:#080106;border-radius:20px 20px 50% 50%;box-shadow:inset 0 0 0 5px #ff4555}
+.scareText{position:absolute;bottom:16px;left:0;right:0;text-align:center;font:800 20px Orbitron;color:#fff;letter-spacing:7px}
+@keyframes flash{0%,100%{filter:brightness(1)}50%{filter:brightness(3)}}
+.jumpscare #screen{animation:screenflash .08s 3}
+@keyframes screenflash{50%{background:#fff!important}}
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="hud">
+  <div class="panel">
+    <div class="title">NEXUS // WARRIOR ARENA</div>
+    <div class="label">WARRIOR HEALTH</div>
+    <div class="bar"><div id="hp"></div></div>
+  </div>
+  <div class="panel" style="text-align:right">
+    <div class="label">SCORE</div>
+    <div id="score">0000</div>
+    <div class="label">WAVE <span id="wave">1</span></div>
+  </div>
+</div>
+
+<div id="controls">WASD / Arrow Keys = Move &nbsp; • &nbsp; SPACE = Attack &nbsp; • &nbsp; R = Restart</div>
+
+<div id="screen">
+  <div class="modal">
+    <h1>NEXUS <span>WARRIOR</span></h1>
+    <p>Enter the arena, defeat incoming training drones, survive each wave and build the highest score.</p>
+    <button id="start">START GAME</button>
+  </div>
+</div>
+
+<script>
+const canvas=document.getElementById("game"),ctx=canvas.getContext("2d");
+let W,H,keys={},running=false,score=0,wave=1,last=0,spawnTimer=0;
+let player,enemies,particles,attackTimer=0,attackCooldown=0;
+
+function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight}
+addEventListener("resize",resize);resize();
+
+addEventListener("keydown",e=>{
+  keys[e.key.toLowerCase()]=true;
+  if([" ","arrowup","arrowdown","arrowleft","arrowright"].includes(e.key.toLowerCase()))e.preventDefault();
+  if(e.key.toLowerCase()==="r" && !running) startGame();
+});
+addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
+
+function startGame(){
+  score=0;wave=1;spawnTimer=0;attackTimer=0;attackCooldown=0;
+  player={x:W/2,y:H/2,r:23,speed:300,hp:100,maxHp:100,dir:1};
+  enemies=[];particles=[];running=true;
+  document.getElementById("screen").classList.add("hidden");
+  last=performance.now();requestAnimationFrame(loop);
+}
+
+function spawnEnemy(){
+  const side=Math.floor(Math.random()*4),pad=50;
+  let x,y;
+  if(side===0){x=-pad;y=Math.random()*H}
+  if(side===1){x=W+pad;y=Math.random()*H}
+  if(side===2){x=Math.random()*W;y=-pad}
+  if(side===3){x=Math.random()*W;y=H+pad}
+  enemies.push({x,y,r:18+Math.random()*5,speed:65+wave*7+Math.random()*35,hp:2+Math.floor(wave/3),hit:0});
+}
+
+function particle(x,y,n=8){
+  for(let i=0;i<n;i++){
+    const a=Math.random()*Math.PI*2,s=50+Math.random()*180;
+    particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:.35+Math.random()*.35});
+  }
+}
+
+function update(dt){
+  let dx=0,dy=0;
+  if(keys.w||keys.arrowup)dy--;
+  if(keys.s||keys.arrowdown)dy++;
+  if(keys.a||keys.arrowleft){dx--;player.dir=-1}
+  if(keys.d||keys.arrowright){dx++;player.dir=1}
+  const len=Math.hypot(dx,dy)||1;
+  player.x+=dx/len*player.speed*dt;
+  player.y+=dy/len*player.speed*dt;
+  player.x=Math.max(30,Math.min(W-30,player.x));
+  player.y=Math.max(90,Math.min(H-30,player.y));
+
+  attackCooldown-=dt;
+  attackTimer=Math.max(0,attackTimer-dt);
+  if(keys[" "]&&attackCooldown<=0){
+    attackCooldown=.38;attackTimer=.16;
+    enemies.forEach(e=>{
+      const d=Math.hypot(e.x-player.x,e.y-player.y);
+      const inFront=(e.x-player.x)*player.dir>-25;
+      if(d<90 && inFront){e.hp--;e.hit=.12;particle(e.x,e.y,6);if(e.hp<=0){score+=100+wave*10;particle(e.x,e.y,14)}}
+    });
+    enemies=enemies.filter(e=>e.hp>0);
+  }
+
+  spawnTimer-=dt;
+  const target=4+wave*2;
+  if(spawnTimer<=0 && enemies.length<target){spawnEnemy();spawnTimer=Math.max(.28,1.1-wave*.05)}
+
+  enemies.forEach(e=>{
+    e.hit=Math.max(0,e.hit-dt);
+    const dx=player.x-e.x,dy=player.y-e.y,d=Math.hypot(dx,dy)||1;
+    e.x+=dx/d*e.speed*dt;e.y+=dy/d*e.speed*dt;
+    if(d<player.r+e.r){
+      player.hp-=18*dt;
+      e.x-=dx/d*12;e.y-=dy/d*12;
+    }
+  });
+
+  if(score>=wave*800){wave++;player.maxHp+=5;player.hp=Math.min(player.maxHp,player.hp+25);particle(player.x,player.y,25)}
+
+  particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt});
+  particles=particles.filter(p=>p.life>0);
+
+  document.getElementById("hp").style.width=Math.max(0,player.hp/player.maxHp*100)+"%";
+  document.getElementById("score").textContent=String(score).padStart(4,"0");
+  document.getElementById("wave").textContent=wave;
+
+  if(player.hp<=0) endGame();
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#0d1620");g.addColorStop(1,"#070a0f");
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+  ctx.strokeStyle="#16202c";ctx.lineWidth=1;
+  const grid=50;
+  for(let x=0;x<W;x+=grid){ctx.beginPath();ctx.moveTo(x,75);ctx.lineTo(x,H);ctx.stroke()}
+  for(let y=75;y<H;y+=grid){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+
+  particles.forEach(p=>{ctx.globalAlpha=Math.max(0,p.life*2);ctx.fillStyle="#00eaff";ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1});
+
+  enemies.forEach(e=>{
+    ctx.save();ctx.translate(e.x,e.y);
+    ctx.fillStyle=e.hit?"#fff":"#ff5470";
+    ctx.beginPath();ctx.arc(0,0,e.r,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#1a0c12";ctx.beginPath();ctx.arc(-5,-3,3,0,Math.PI*2);ctx.arc(5,-3,3,0,Math.PI*2);ctx.fill();
+    ctx.restore();
+  });
+
+  ctx.save();ctx.translate(player.x,player.y);
+  ctx.scale(player.dir,1);
+  ctx.fillStyle="#00eaff";ctx.beginPath();ctx.arc(0,0,player.r,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle="#091018";ctx.beginPath();ctx.arc(-7,-5,3,0,Math.PI*2);ctx.arc(7,-5,3,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle="#d8faff";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(10,-5);ctx.lineTo(48,-18);ctx.stroke();
+  if(attackTimer>0){ctx.strokeStyle="#fff";ctx.lineWidth=7;ctx.beginPath();ctx.arc(0,0,70,-.8,.8);ctx.stroke()}
+  ctx.restore();
+
+  if(running){
+    ctx.fillStyle="#ffffff22";ctx.font="12px Poppins";ctx.fillText("SURVIVE THE WAVE",20,H-45);
+  }
+}
+
+function loop(t){
+  if(!running)return;
+  const dt=Math.min(.033,(t-last)/1000);last=t;
+  update(dt);draw();requestAnimationFrame(loop);
+}
+
+function endGame(){
+  running=false;
+  dramaticEnding();
+}
+
+function dramaticEnding(){
+  const screen=document.getElementById("screen");
+  const modal=document.querySelector("#screen .modal");
+
+  modal.innerHTML=`
+    <div id="monsterScene">
+      <div id="monsterBackdrop"></div>
+      <div id="monsterEyes">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span>
+      </div>
+      <div id="fallenWarrior"></div>
+      <div id="monster">
+        <div class="horn h1"></div><div class="horn h2"></div>
+        <div class="monsterEye e1"></div><div class="monsterEye e2"></div>
+        <div class="monsterMouth"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div id="sceneText">THE WARRIOR HAS FALLEN...</div>
+      <div id="jumpScare">
+        <div class="scareFace">
+          <div class="scareEye"></div><div class="scareEye"></div>
+          <div class="scareMouth"></div>
+        </div>
+        <div class="scareText">RUN.</div>
+      </div>
+    </div>`;
+
+  screen.classList.remove("hidden");
+  screen.style.background="#000";
+  document.body.classList.add("ending");
+
+  const text=document.getElementById("sceneText");
+
+  setTimeout(()=>{
+    text.textContent="THE RED MONSTERS ARE COMING...";
+    document.getElementById("monster").classList.add("approach");
+  },1000);
+
+  setTimeout(()=>{
+    text.textContent="THEY SURROUND THE WARRIOR.";
+    document.getElementById("monsterEyes").classList.add("active");
+  },2300);
+
+  setTimeout(()=>{
+    text.textContent="THEY LUNGE...";
+    document.getElementById("monster").classList.add("attack");
+    document.body.classList.add("shake");
+  },3500);
+
+  setTimeout(()=>{
+    text.textContent="";
+    document.getElementById("jumpScare").classList.add("show");
+    document.body.classList.add("jumpscare");
+  },4400);
+
+  setTimeout(()=>{
+    document.getElementById("jumpScare").classList.remove("show");
+    document.body.classList.remove("jumpscare","shake");
+    modal.innerHTML=`
+      <h1>GAME <span>OVER</span></h1>
+      <p>The monsters got you. Final score: ${score} • Wave ${wave}</p>
+      <button id="restartEnding">ENTER THE ARENA AGAIN</button>`;
+    document.getElementById("restartEnding").onclick=()=>{
+      screen.style.background="";
+      startGame();
+    };
+  },6500);
+}
+document.getElementById("start").onclick=startGame;
+</script>
+</body>
+</html>
