@@ -1,429 +1,574 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXUS Gaming</title>
+
+<title>NEXUS Gaming — Warrior Arena</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-html {
-    scroll-behavior: smooth;
+html{
+    scroll-behavior:smooth;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background: #07080d;
-    color: white;
+body{
+    background:#05070b;
+    color:white;
+    font-family:Poppins,sans-serif;
+    overflow-x:hidden;
 }
 
-/* NAVBAR */
+/* ================= BACKGROUND ================= */
 
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    background: rgba(7, 8, 13, 0.85);
-    backdrop-filter: blur(15px);
-    border-bottom: 1px solid rgba(255,255,255,.08);
-}
-
-.navbar {
-    max-width: 1250px;
-    margin: auto;
-    height: 75px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 25px;
-}
-
-.logo {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 25px;
-    font-weight: 800;
-    color: #fff;
-}
-
-.logo span {
-    color: #00eaff;
-}
-
-nav {
-    display: flex;
-    gap: 32px;
-}
-
-nav a {
-    color: #aaa;
-    text-decoration: none;
-    font-size: 14px;
-    transition: .3s;
-}
-
-nav a:hover {
-    color: #00eaff;
-}
-
-.login-btn {
-    padding: 10px 22px;
-    border: 1px solid #00eaff;
-    border-radius: 6px;
-    color: #00eaff;
-    text-decoration: none;
-    font-size: 14px;
-    transition: .3s;
-}
-
-.login-btn:hover {
-    background: #00eaff;
-    color: #05070b;
-    box-shadow: 0 0 25px rgba(0,234,255,.4);
-}
-
-/* HERO */
-
-.hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
     background:
-        linear-gradient(90deg, #07080d 10%, rgba(7,8,13,.75) 45%, rgba(7,8,13,.25)),
-        url("https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=2000&q=85")
-        center/cover;
+        radial-gradient(circle at 20% 20%,#00eaff12,transparent 30%),
+        radial-gradient(circle at 80% 70%,#8b5cf612,transparent 30%),
+        linear-gradient(135deg,#05070b,#090d14,#05070b);
+    z-index:-2;
 }
 
-.hero-content {
-    max-width: 1250px;
-    width: 100%;
-    margin: auto;
-    padding: 100px 25px 40px;
+.grid{
+    position:fixed;
+    inset:0;
+    background-image:
+        linear-gradient(#00eaff08 1px,transparent 1px),
+        linear-gradient(90deg,#00eaff08 1px,transparent 1px);
+    background-size:50px 50px;
+    mask-image:linear-gradient(to bottom,black,transparent);
+    pointer-events:none;
+    z-index:-1;
 }
 
-.tag {
-    color: #00eaff;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 4px;
-    margin-bottom: 18px;
+/* ================= NAVBAR ================= */
+
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:76px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6%;
+    background:#05070bd9;
+    border-bottom:1px solid #ffffff12;
+    backdrop-filter:blur(15px);
+    z-index:100;
 }
 
-.hero h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(45px, 7vw, 90px);
-    line-height: 1;
-    max-width: 800px;
+.logo{
+    font-family:Orbitron;
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:2px;
 }
 
-.hero h1 span {
-    color: #00eaff;
-    text-shadow: 0 0 30px rgba(0,234,255,.5);
+.logo span{
+    color:#00eaff;
+    text-shadow:0 0 20px #00eaff88;
 }
 
-.hero p {
-    color: #b4b6c0;
-    max-width: 600px;
-    margin: 25px 0;
-    line-height: 1.8;
+nav{
+    display:flex;
+    gap:30px;
 }
 
-.hero-buttons {
-    display: flex;
-    gap: 15px;
+nav a{
+    color:#aab4c6;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    transition:.25s;
 }
 
-.primary-btn,
-.secondary-btn {
-    padding: 14px 28px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: .3s;
+nav a:hover{
+    color:#00eaff;
 }
 
-.primary-btn {
-    background: #00eaff;
-    color: #05070b;
+.nav-play{
+    background:#00eaff;
+    color:#031016!important;
+    padding:10px 18px;
+    border-radius:6px;
 }
 
-.primary-btn:hover {
-    box-shadow: 0 0 30px rgba(0,234,255,.5);
-    transform: translateY(-3px);
+/* ================= HERO ================= */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:120px 20px 80px;
+    position:relative;
 }
 
-.secondary-btn {
-    border: 1px solid #555;
-    color: white;
+.hero-content{
+    max-width:1000px;
 }
 
-.secondary-btn:hover {
-    border-color: #00eaff;
-    color: #00eaff;
+.eyebrow{
+    display:inline-block;
+    color:#00eaff;
+    font-family:Orbitron;
+    font-size:11px;
+    letter-spacing:5px;
+    margin-bottom:22px;
+    border:1px solid #00eaff33;
+    background:#00eaff08;
+    padding:10px 16px;
+    border-radius:30px;
 }
 
-/* SECTION */
-
-section {
-    padding: 100px 25px;
+.hero h1{
+    font-family:Orbitron;
+    font-size:clamp(48px,9vw,105px);
+    line-height:.95;
+    font-weight:900;
+    letter-spacing:-3px;
 }
 
-.container {
-    max-width: 1250px;
-    margin: auto;
+.hero h1 span{
+    color:#00eaff;
+    text-shadow:
+        0 0 15px #00eaff,
+        0 0 60px #00eaff55;
 }
 
-.section-title {
-    margin-bottom: 45px;
+.hero p{
+    max-width:650px;
+    margin:28px auto;
+    color:#8f9bad;
+    line-height:1.8;
+    font-size:15px;
 }
 
-.section-title small {
-    color: #00eaff;
-    letter-spacing: 3px;
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    margin-top:30px;
+    flex-wrap:wrap;
 }
 
-.section-title h2 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 35px;
-    margin-top: 10px;
+.btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    font-weight:700;
+    padding:15px 28px;
+    border-radius:7px;
+    transition:.25s;
+    font-size:13px;
 }
 
-/* GAMES */
-
-.games {
-    background: #090a10;
+.primary{
+    background:#00eaff;
+    color:#031016;
+    box-shadow:0 0 30px #00eaff25;
 }
 
-.game-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+.primary:hover{
+    transform:translateY(-3px);
+    box-shadow:0 0 40px #00eaff55;
 }
 
-.game-card {
-    position: relative;
-    height: 350px;
-    overflow: hidden;
-    border-radius: 10px;
-    background: #11131b;
-    cursor: pointer;
+.secondary{
+    border:1px solid #334155;
+    color:white;
+    background:#ffffff05;
 }
 
-.game-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: .5s;
+.secondary:hover{
+    border-color:#00eaff;
+    color:#00eaff;
 }
 
-.game-card:hover img {
-    transform: scale(1.08);
+/* ================= FLOATING ORB ================= */
+
+.orb{
+    position:absolute;
+    width:420px;
+    height:420px;
+    border-radius:50%;
+    border:1px solid #00eaff22;
+    box-shadow:
+        0 0 80px #00eaff10,
+        inset 0 0 80px #00eaff08;
+    animation:float 6s ease-in-out infinite;
+    pointer-events:none;
 }
 
-.game-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(transparent 40%, #05060a);
+.orb::before,
+.orb::after{
+    content:"";
+    position:absolute;
+    inset:35px;
+    border-radius:50%;
+    border:1px solid #8b5cf633;
 }
 
-.game-info {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    z-index: 2;
+.orb::after{
+    inset:80px;
+    border-color:#00eaff33;
 }
 
-.game-info h3 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 20px;
+@keyframes float{
+    0%,100%{transform:translateY(0) rotate(0deg)}
+    50%{transform:translateY(-20px) rotate(5deg)}
 }
 
-.game-info p {
-    color: #aaa;
-    font-size: 13px;
-    margin-top: 5px;
+/* ================= STATS ================= */
+
+.stats{
+    max-width:1000px;
+    margin:-30px auto 100px;
+    padding:0 20px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
 }
 
-/* FEATURES */
-
-.features {
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 25px;
+.stat{
+    text-align:center;
+    padding:25px;
+    background:#090d14cc;
+    border:1px solid #1e293b;
+    border-radius:12px;
+    backdrop-filter:blur(10px);
 }
 
-.feature {
-    background: #101119;
-    border: 1px solid #20232e;
-    padding: 35px;
-    border-radius: 10px;
-    transition: .3s;
+.stat strong{
+    display:block;
+    font-family:Orbitron;
+    font-size:25px;
+    color:#00eaff;
 }
 
-.feature:hover {
-    transform: translateY(-7px);
-    border-color: #00eaff;
+.stat span{
+    color:#6f7b8e;
+    font-size:11px;
 }
 
-.icon {
-    font-size: 35px;
-    margin-bottom: 20px;
+/* ================= SECTION ================= */
+
+section{
+    padding:100px 7%;
 }
 
-.feature h3 {
-    font-family: 'Orbitron', sans-serif;
-    margin-bottom: 12px;
+.section-title{
+    text-align:center;
+    margin-bottom:55px;
 }
 
-.feature p {
-    color: #999;
-    font-size: 14px;
-    line-height: 1.7;
+.section-title small{
+    color:#8b5cf6;
+    font-family:Orbitron;
+    letter-spacing:4px;
+    font-size:10px;
 }
 
-/* NEWS */
-
-.news {
-    background: #090a10;
+.section-title h2{
+    font-family:Orbitron;
+    font-size:36px;
+    margin-top:10px;
 }
 
-.news-grid {
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 25px;
+.section-title p{
+    color:#7f8a9d;
+    max-width:600px;
+    margin:15px auto;
+    font-size:13px;
 }
 
-.news-card {
-    background: #11131b;
-    border-radius: 10px;
-    overflow: hidden;
-}
+/* ================= GAME CARD ================= */
 
-.news-card img {
-    width: 100%;
-    height: 210px;
-    object-fit: cover;
-}
-
-.news-content {
-    padding: 22px;
-}
-
-.news-content small {
-    color: #00eaff;
-}
-
-.news-content h3 {
-    margin: 10px 0;
-}
-
-.news-content p {
-    color: #999;
-    font-size: 14px;
-}
-
-/* CTA */
-
-.cta {
-    text-align: center;
+.game-card{
+    max-width:1100px;
+    margin:auto;
+    min-height:420px;
+    border-radius:18px;
+    border:1px solid #263244;
     background:
-        linear-gradient(rgba(7,8,13,.8), rgba(7,8,13,.95)),
-        url("https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1800&q=80")
-        center/cover;
+        radial-gradient(circle at 70% 30%,#00eaff12,transparent 35%),
+        linear-gradient(135deg,#0b1119,#070a0f);
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    overflow:hidden;
+    box-shadow:0 30px 100px #000;
 }
 
-.cta h2 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 42px;
+.game-info{
+    padding:55px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
 }
 
-.cta p {
-    color: #aaa;
-    margin: 15px auto 30px;
+.game-info .tag{
+    color:#00eaff;
+    font-family:Orbitron;
+    font-size:10px;
+    letter-spacing:3px;
+    margin-bottom:18px;
 }
 
-/* FOOTER */
-
-footer {
-    background: #05060a;
-    padding: 35px 25px;
-    border-top: 1px solid #181a22;
+.game-info h3{
+    font-family:Orbitron;
+    font-size:34px;
+    margin-bottom:15px;
 }
 
-.footer-content {
-    max-width: 1250px;
-    margin: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.game-info p{
+    color:#8793a8;
+    line-height:1.8;
+    font-size:13px;
 }
 
-.footer-content p {
-    color: #777;
-    font-size: 13px;
+.game-info a{
+    margin-top:25px;
+    align-self:flex-start;
 }
 
-.socials {
-    display: flex;
-    gap: 15px;
+.game-visual{
+    position:relative;
+    min-height:420px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(circle,#00eaff18,transparent 35%),
+        #05080d;
+    overflow:hidden;
 }
 
-.socials a {
-    color: #888;
-    text-decoration: none;
+.energy{
+    width:190px;
+    height:190px;
+    border-radius:50%;
+    border:2px solid #00eaff;
+    box-shadow:
+        0 0 30px #00eaff,
+        0 0 100px #00eaff44,
+        inset 0 0 50px #00eaff22;
+    animation:pulse 2s infinite;
 }
 
-.socials a:hover {
-    color: #00eaff;
+.energy::before{
+    content:"N";
+    display:grid;
+    place-items:center;
+    height:100%;
+    font-family:Orbitron;
+    font-size:100px;
+    font-weight:900;
+    color:#00eaff;
+    text-shadow:0 0 30px #00eaff;
 }
 
-/* MOBILE */
+@keyframes pulse{
+    0%,100%{transform:scale(1);opacity:.8}
+    50%{transform:scale(1.08);opacity:1}
+}
 
-@media(max-width: 900px) {
+/* ================= FEATURES ================= */
 
-    nav {
-        display: none;
+.features{
+    max-width:1100px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.feature{
+    padding:30px;
+    background:#090d14;
+    border:1px solid #1e293b;
+    border-radius:12px;
+    transition:.3s;
+}
+
+.feature:hover{
+    transform:translateY(-7px);
+    border-color:#00eaff66;
+    box-shadow:0 15px 50px #00eaff08;
+}
+
+.icon{
+    width:45px;
+    height:45px;
+    border-radius:10px;
+    display:grid;
+    place-items:center;
+    background:#00eaff12;
+    border:1px solid #00eaff33;
+    color:#00eaff;
+    font-size:20px;
+    margin-bottom:20px;
+}
+
+.feature h3{
+    font-family:Orbitron;
+    font-size:15px;
+    margin-bottom:10px;
+}
+
+.feature p{
+    color:#788598;
+    font-size:12px;
+    line-height:1.7;
+}
+
+/* ================= HOW TO PLAY ================= */
+
+.how{
+    max-width:900px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.step{
+    text-align:center;
+}
+
+.number{
+    width:55px;
+    height:55px;
+    margin:auto auto 20px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:#0b1119;
+    border:1px solid #334155;
+    color:#00eaff;
+    font-family:Orbitron;
+    font-weight:800;
+}
+
+.step h3{
+    font-family:Orbitron;
+    font-size:14px;
+}
+
+.step p{
+    color:#718096;
+    font-size:12px;
+    margin-top:8px;
+}
+
+/* ================= CTA ================= */
+
+.cta{
+    max-width:1000px;
+    margin:40px auto 100px;
+    text-align:center;
+    padding:80px 30px;
+    border-radius:18px;
+    border:1px solid #00eaff22;
+    background:
+        radial-gradient(circle at center,#00eaff0c,transparent 60%),
+        #090d14;
+}
+
+.cta h2{
+    font-family:Orbitron;
+    font-size:38px;
+}
+
+.cta p{
+    color:#7f8a9d;
+    margin:15px auto 25px;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    border-top:1px solid #ffffff0d;
+    padding:35px 7%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    color:#566174;
+    font-size:11px;
+}
+
+footer strong{
+    font-family:Orbitron;
+    color:#00eaff;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:800px){
+
+    nav{
+        display:none;
     }
 
-    .game-grid {
-        grid-template-columns: repeat(2,1fr);
+    header{
+        padding:0 20px;
     }
 
-    .features,
-    .news-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media(max-width: 550px) {
-
-    .game-grid {
-        grid-template-columns: 1fr;
+    .hero h1{
+        letter-spacing:-1px;
     }
 
-    .hero h1 {
-        font-size: 45px;
+    .stats{
+        grid-template-columns:1fr;
+        max-width:400px;
     }
 
-    .hero-buttons {
-        flex-direction: column;
-        width: 200px;
+    .game-card{
+        grid-template-columns:1fr;
     }
 
-    .footer-content {
-        flex-direction: column;
-        gap: 20px;
+    .game-visual{
+        min-height:300px;
+        order:-1;
+    }
+
+    .game-info{
+        padding:35px;
+    }
+
+    .features{
+        grid-template-columns:1fr;
+    }
+
+    .how{
+        grid-template-columns:1fr;
+        gap:40px;
+    }
+
+    .cta h2{
+        font-size:27px;
+    }
+
+    footer{
+        flex-direction:column;
+        gap:12px;
+        text-align:center;
     }
 }
 </style>
@@ -431,49 +576,62 @@ footer {
 
 <body>
 
+<div class="grid"></div>
+
+<!-- NAVBAR -->
+
 <header>
-    <div class="navbar">
 
-        <div class="logo">
-            NEXUS<span>.</span>
-        </div>
-
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#games">Games</a>
-            <a href="#features">Features</a>
-            <a href="#news">News</a>
-            <a href="#community">Community</a>
-        </nav>
-
-        <a href="#" class="login-btn">LOGIN</a>
-
+    <div class="logo">
+        NEXUS<span>//</span>
     </div>
+
+    <nav>
+        <a href="#home">HOME</a>
+        <a href="#game">GAME</a>
+        <a href="#features">FEATURES</a>
+        <a href="#how">HOW TO PLAY</a>
+        <a class="nav-play" href="game/index.html">PLAY NOW</a>
+    </nav>
+
 </header>
 
 
 <!-- HERO -->
 
-<section class="hero" id="home">
+<main id="home">
+
+<section class="hero">
+
+    <div class="orb"></div>
 
     <div class="hero-content">
 
-        <div class="tag">WELCOME TO THE NEXT LEVEL</div>
+        <div class="eyebrow">
+            NEXT GENERATION WEB GAMING
+        </div>
 
         <h1>
-            ENTER THE<br>
-            <span>BATTLEZONE</span>
+            NEXUS<br>
+            <span>WARRIOR</span>
         </h1>
 
         <p>
-            Discover the ultimate gaming experience. Play legendary titles,
-            compete with players around the world and become part of the
-            NEXUS gaming community.
+            Enter the arena. Survive relentless waves.
+            Defeat the incoming enemies and push your score
+            beyond every previous record.
         </p>
 
-        <div class="hero-buttons">
-            <a href="#games" class="primary-btn">EXPLORE GAMES</a>
-            <a href="#community" class="secondary-btn">JOIN COMMUNITY</a>
+        <div class="buttons">
+
+            <a class="btn primary" href="game/index.html">
+                ⚡ PLAY NEXUS
+            </a>
+
+            <a class="btn secondary" href="#features">
+                EXPLORE GAME
+            </a>
+
         </div>
 
     </div>
@@ -481,54 +639,78 @@ footer {
 </section>
 
 
-<!-- GAMES -->
+<!-- STATS -->
 
-<section class="games" id="games">
+<div class="stats">
 
-<div class="container">
-
-    <div class="section-title">
-        <small>EXPLORE</small>
-        <h2>FEATURED GAMES</h2>
+    <div class="stat">
+        <strong>∞</strong>
+        <span>ENDLESS WAVES</span>
     </div>
 
-    <div class="game-grid">
+    <div class="stat">
+        <strong>100%</strong>
+        <span>BROWSER BASED</span>
+    </div>
 
-        <div class="game-card">
-            <img src="https://images.unsplash.com/photo-1542751110-97427bbecf20?auto=format&fit=crop&w=900&q=80">
-            <div class="game-info">
-                <h3>CYBER STRIKE</h3>
-                <p>FPS • Multiplayer</p>
-            </div>
-        </div>
-
-        <div class="game-card">
-            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80">
-            <div class="game-info">
-                <h3>NEON RUSH</h3>
-                <p>Racing • Online</p>
-            </div>
-        </div>
-
-        <div class="game-card">
-            <img src="https://images.unsplash.com/photo-1511882150382-421056c89033?auto=format&fit=crop&w=900&q=80">
-            <div class="game-info">
-                <h3>SHADOW REALM</h3>
-                <p>RPG • Adventure</p>
-            </div>
-        </div>
-
-        <div class="game-card">
-            <img src="https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=900&q=80">
-            <div class="game-info">
-                <h3>VOID WARRIORS</h3>
-                <p>Action • PvP</p>
-            </div>
-        </div>
-
+    <div class="stat">
+        <strong>⚡</strong>
+        <span>FAST COMBAT</span>
     </div>
 
 </div>
+
+
+<!-- GAME -->
+
+<section id="game">
+
+    <div class="section-title">
+
+        <small>THE MAIN EXPERIENCE</small>
+
+        <h2>ENTER THE ARENA</h2>
+
+        <p>
+            NEXUS is built directly for the browser.
+            Click play and jump straight into the arena.
+        </p>
+
+    </div>
+
+
+    <div class="game-card">
+
+        <div class="game-info">
+
+            <div class="tag">
+                NEXUS // WARRIOR ARENA
+            </div>
+
+            <h3>THE ARENA<br>AWAITS.</h3>
+
+            <p>
+                Control your warrior, survive incoming waves,
+                build your score and keep pushing further.
+                The game includes keyboard controls,
+                mobile controls, sound effects, pause mode
+                and a dramatic ending sequence.
+            </p>
+
+            <a class="btn primary" href="game/index.html">
+                PLAY GAME →
+            </a>
+
+        </div>
+
+
+        <div class="game-visual">
+
+            <div class="energy"></div>
+
+        </div>
+
+    </div>
 
 </section>
 
@@ -537,142 +719,202 @@ footer {
 
 <section id="features">
 
-<div class="container">
-
     <div class="section-title">
+
         <small>WHY NEXUS</small>
-        <h2>BUILT FOR GAMERS</h2>
+
+        <h2>GAME FEATURES</h2>
+
+        <p>
+            Everything you need for a fast browser gaming experience.
+        </p>
+
     </div>
+
 
     <div class="features">
 
         <div class="feature">
-            <div class="icon">⚡</div>
-            <h3>FAST MATCHMAKING</h3>
+
+            <div class="icon">⚔</div>
+
+            <h3>FAST COMBAT</h3>
+
             <p>
-                Find opponents quickly and jump straight into competitive
-                multiplayer battles.
+                Move around the arena and attack enemies
+                with responsive controls.
             </p>
+
         </div>
 
-        <div class="feature">
-            <div class="icon">🏆</div>
-            <h3>GLOBAL RANKINGS</h3>
-            <p>
-                Compete against players worldwide and climb the leaderboard
-                to become a champion.
-            </p>
-        </div>
 
         <div class="feature">
-            <div class="icon">🎮</div>
-            <h3>GAMING COMMUNITY</h3>
+
+            <div class="icon">◈</div>
+
+            <h3>WAVE SYSTEM</h3>
+
             <p>
-                Meet gamers, create squads and share your best gaming moments
-                with the community.
+                Each wave becomes more challenging as
+                enemies become faster and stronger.
             </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">♫</div>
+
+            <h3>SOUND FX</h3>
+
+            <p>
+                Built-in audio effects create a more
+                immersive gaming experience.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">▣</div>
+
+            <h3>MOBILE READY</h3>
+
+            <p>
+                Touch controls allow the game to work
+                on phones and tablets.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">★</div>
+
+            <h3>HIGH SCORE</h3>
+
+            <p>
+                Your best score is stored locally so
+                you can keep challenging yourself.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">Ⅱ</div>
+
+            <h3>PAUSE MODE</h3>
+
+            <p>
+                Pause the action whenever you need and
+                return to the arena later.
+            </p>
+
         </div>
 
     </div>
-
-</div>
 
 </section>
 
 
-<!-- NEWS -->
+<!-- HOW TO PLAY -->
 
-<section class="news" id="news">
-
-<div class="container">
+<section id="how">
 
     <div class="section-title">
-        <small>LATEST</small>
-        <h2>GAMING NEWS</h2>
-    </div>
 
-    <div class="news-grid">
+        <small>GET STARTED</small>
 
-        <article class="news-card">
-            <img src="https://images.unsplash.com/photo-1547394765-185e1e68f34e?auto=format&fit=crop&w=900&q=80">
-
-            <div class="news-content">
-                <small>UPDATE</small>
-                <h3>THE NEXT GENERATION OF GAMING</h3>
-                <p>
-                    Discover what's coming next in the world of competitive gaming.
-                </p>
-            </div>
-        </article>
-
-        <article class="news-card">
-            <img src="https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=900&q=80">
-
-            <div class="news-content">
-                <small>ESPORTS</small>
-                <h3>GLOBAL CHAMPIONSHIP</h3>
-                <p>
-                    The world's best teams prepare for the ultimate showdown.
-                </p>
-            </div>
-        </article>
-
-        <article class="news-card">
-            <img src="https://images.unsplash.com/photo-1560419015-7c427e8ae5ba?auto=format&fit=crop&w=900&q=80">
-
-            <div class="news-content">
-                <small>COMMUNITY</small>
-                <h3>BUILD YOUR GAMING SQUAD</h3>
-                <p>
-                    Find teammates, make friends and dominate the battlefield.
-                </p>
-            </div>
-        </article>
+        <h2>HOW TO PLAY</h2>
 
     </div>
 
-</div>
+
+    <div class="how">
+
+        <div class="step">
+
+            <div class="number">01</div>
+
+            <h3>ENTER</h3>
+
+            <p>
+                Click PLAY NOW to launch the game.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="number">02</div>
+
+            <h3>SURVIVE</h3>
+
+            <p>
+                Move around and survive incoming waves.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="number">03</div>
+
+            <h3>DOMINATE</h3>
+
+            <p>
+                Defeat enemies and chase your highest score.
+            </p>
+
+        </div>
+
+    </div>
 
 </section>
 
 
 <!-- CTA -->
 
-<section class="cta" id="community">
+<div class="cta">
 
-    <div class="container">
+    <h2>READY FOR THE ARENA?</h2>
 
-        <h2>READY TO PLAY?</h2>
+    <p>
+        Your warrior is waiting.
+    </p>
 
-        <p>
-            Your next victory is waiting. Join the NEXUS community today.
-        </p>
+    <a class="btn primary" href="game/index.html">
+        ENTER NEXUS →
+    </a>
 
-        <a href="#" class="primary-btn">JOIN NEXUS</a>
+</div>
 
-    </div>
-
-</section>
+</main>
 
 
 <!-- FOOTER -->
 
 <footer>
 
-<div class="footer-content">
-
-    <p>© 2026 NEXUS Gaming. All rights reserved.</p>
-
-    <div class="socials">
-        <a href="#">Discord</a>
-        <a href="#">YouTube</a>
-        <a href="#">Twitch</a>
-        <a href="#">Instagram</a>
+    <div>
+        © 2026 <strong>NEXUS</strong> Gaming
     </div>
 
-</div>
+    <div>
+        WARRIOR ARENA • BROWSER GAME
+    </div>
 
 </footer>
 
 </body>
 </html>
+```
+
+ 
