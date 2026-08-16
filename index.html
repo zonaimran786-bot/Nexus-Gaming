@@ -4,1606 +4,1385 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>NEXUS // Warrior Arena</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Poppins:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap');
 
 *{
-    box-sizing:border-box;
     margin:0;
     padding:0;
+    box-sizing:border-box;
 }
 
-html,body{
-    width:100%;
-    height:100%;
-    overflow:hidden;
+html{
+    scroll-behavior:smooth;
+}
+
+body{
     background:#03050a;
-    font-family:Poppins,sans-serif;
     color:white;
+    font-family:Poppins,sans-serif;
+    overflow-x:hidden;
 }
 
-canvas{
+/* BACKGROUND */
+
+body::before{
+    content:"";
     position:fixed;
     inset:0;
-    width:100%;
-    height:100%;
+    z-index:-3;
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            #00eaff12,
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            #8b5cf612,
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #03050a,
+            #07101a,
+            #03050a
+        );
 }
 
-/* HUD */
-
-#hud{
+.grid{
     position:fixed;
-    top:18px;
-    left:18px;
-    right:18px;
-    display:flex;
-    justify-content:space-between;
-    z-index:5;
+    inset:0;
+    z-index:-2;
+    background-image:
+        linear-gradient(
+            #00eaff08 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            #00eaff08 1px,
+            transparent 1px
+        );
+    background-size:50px 50px;
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 85%
+        );
     pointer-events:none;
 }
 
-.panel{
-    background:#080d15dd;
-    border:1px solid #263449;
-    border-radius:12px;
-    padding:12px 16px;
-    backdrop-filter:blur(10px);
-    box-shadow:0 10px 40px #0008;
-}
+/* NAVBAR */
 
-.title{
-    font:800 16px Orbitron;
-    color:#00eaff;
-    letter-spacing:1px;
-}
-
-.label{
-    color:#7e8ba0;
-    font-size:10px;
-    margin-top:5px;
-    letter-spacing:1px;
-}
-
-.bar{
-    width:230px;
-    height:12px;
-    background:#202936;
-    border-radius:20px;
-    overflow:hidden;
-    margin-top:7px;
-}
-
-#hp{
-    width:100%;
-    height:100%;
-    background:#32e58a;
-    transition:.15s;
-}
-
-#score{
-    font:800 21px Orbitron;
-    color:#ffd45a;
-}
-
-#wave{
-    color:#00eaff;
-}
-
-/* Buttons */
-
-#buttons{
+header{
     position:fixed;
-    right:18px;
-    top:100px;
-    z-index:10;
+    top:0;
+    left:0;
+    right:0;
+    height:74px;
+
     display:flex;
-    gap:6px;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 6%;
+
+    background:#03050add;
+    border-bottom:1px solid #ffffff12;
+
+    backdrop-filter:blur(15px);
+
+    z-index:100;
 }
 
-.smallBtn{
-    width:43px;
-    height:43px;
-    border-radius:9px;
-    border:1px solid #334155;
-    background:#080d15dd;
+.logo{
+    font-family:Orbitron;
+    font-weight:900;
+    font-size:22px;
+    letter-spacing:2px;
+}
+
+.logo span{
+    color:#00eaff;
+    text-shadow:
+        0 0 15px #00eaff,
+        0 0 40px #00eaff55;
+}
+
+nav{
+    display:flex;
+    align-items:center;
+    gap:28px;
+}
+
+nav a{
+    color:#8793a6;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:600;
+    transition:.25s;
+}
+
+nav a:hover{
+    color:#00eaff;
+}
+
+.nav-play{
+    color:#031016!important;
+    background:#00eaff;
+    padding:10px 18px;
+    border-radius:6px;
+}
+
+/* HERO */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:120px 20px 80px;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero-content{
+    max-width:950px;
+    position:relative;
+    z-index:2;
+}
+
+.badge{
+    display:inline-block;
+
+    padding:9px 17px;
+    border-radius:30px;
+
+    border:1px solid #00eaff33;
+    background:#00eaff08;
+
+    color:#00eaff;
+
+    font-family:Orbitron;
+    font-size:10px;
+    letter-spacing:4px;
+
+    margin-bottom:24px;
+}
+
+.hero h1{
+    font-family:Orbitron;
+    font-size:clamp(
+        55px,
+        10vw,
+        115px
+    );
+
+    line-height:.9;
+
+    font-weight:900;
+
+    letter-spacing:-4px;
+}
+
+.hero h1 span{
+    color:#00eaff;
+
+    text-shadow:
+        0 0 15px #00eaff,
+        0 0 50px #00eaff55,
+        0 0 100px #00eaff22;
+}
+
+.hero p{
+    max-width:650px;
+    margin:30px auto;
+
+    color:#8d99ac;
+
+    line-height:1.8;
+    font-size:14px;
+}
+
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:15px 27px;
+
+    border-radius:7px;
+
+    text-decoration:none;
+
+    font-size:12px;
+    font-weight:800;
+
+    transition:.25s;
+}
+
+.primary{
+    color:#031016;
+    background:#00eaff;
+
+    box-shadow:
+        0 0 25px #00eaff22;
+}
+
+.primary:hover{
+    transform:translateY(-4px);
+
+    box-shadow:
+        0 0 40px #00eaff55;
+}
+
+.secondary{
     color:white;
-    cursor:pointer;
-    font-weight:bold;
+    background:#ffffff05;
+
+    border:1px solid #334155;
 }
 
-.smallBtn:hover{
+.secondary:hover{
     border-color:#00eaff;
     color:#00eaff;
 }
 
-/* Controls */
+/* FLOATING CORE */
 
-#controls{
-    position:fixed;
-    bottom:15px;
+.core{
+    position:absolute;
+
+    width:480px;
+    height:480px;
+
+    border-radius:50%;
+
+    border:1px solid #00eaff20;
+
+    box-shadow:
+        0 0 100px #00eaff0c,
+        inset 0 0 100px #00eaff08;
+
+    animation:
+        float 6s ease-in-out infinite;
+}
+
+.core::before{
+    content:"";
+
+    position:absolute;
+
+    inset:45px;
+
+    border-radius:50%;
+
+    border:1px solid #8b5cf633;
+}
+
+.core::after{
+    content:"N";
+
+    position:absolute;
+
+    inset:120px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:50%;
+
+    border:1px solid #00eaff44;
+
+    color:#00eaff;
+
+    font-family:Orbitron;
+
+    font-size:90px;
+    font-weight:900;
+
+    text-shadow:
+        0 0 25px #00eaff;
+
+    box-shadow:
+        inset 0 0 50px #00eaff0c,
+        0 0 50px #00eaff0c;
+}
+
+@keyframes float{
+
+    0%,100%{
+        transform:
+            translateY(0)
+            rotate(0);
+    }
+
+    50%{
+        transform:
+            translateY(-20px)
+            rotate(6deg);
+    }
+
+}
+
+/* SCROLL INDICATOR */
+
+.scroll{
+    position:absolute;
+    bottom:28px;
     left:50%;
+
     transform:translateX(-50%);
-    z-index:5;
-    background:#080d15dd;
-    border:1px solid #263449;
-    border-radius:8px;
-    padding:9px 15px;
-    color:#8996aa;
+
+    color:#556174;
+
+    font-size:9px;
+    font-family:Orbitron;
+    letter-spacing:3px;
+}
+
+.scroll::after{
+    content:"";
+    display:block;
+
+    width:1px;
+    height:35px;
+
+    margin:8px auto;
+
+    background:#00eaff55;
+}
+
+/* STATS */
+
+.stats{
+    max-width:1000px;
+
+    margin:
+        -30px auto
+        100px;
+
+    padding:0 20px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
+}
+
+.stat{
+    padding:25px;
+
+    text-align:center;
+
+    background:#080d15cc;
+
+    border:1px solid #1e293b;
+
+    border-radius:12px;
+
+    backdrop-filter:blur(10px);
+}
+
+.stat strong{
+    display:block;
+
+    color:#00eaff;
+
+    font-family:Orbitron;
+
+    font-size:25px;
+}
+
+.stat span{
+    color:#6f7b8e;
+
+    font-size:10px;
+    letter-spacing:1px;
+}
+
+/* SECTIONS */
+
+section{
+    padding:
+        100px 7%;
+}
+
+.section-title{
+    text-align:center;
+
+    margin-bottom:55px;
+}
+
+.section-title small{
+    color:#8b5cf6;
+
+    font-family:Orbitron;
+
+    font-size:10px;
+
+    letter-spacing:4px;
+}
+
+.section-title h2{
+    margin-top:10px;
+
+    font-family:Orbitron;
+
+    font-size:36px;
+}
+
+.section-title p{
+    max-width:600px;
+
+    margin:15px auto;
+
+    color:#7d899c;
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+/* GAME SECTION */
+
+.game-card{
+    max-width:1100px;
+
+    margin:auto;
+
+    min-height:470px;
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    overflow:hidden;
+
+    border-radius:18px;
+
+    border:1px solid #263244;
+
+    background:#070b11;
+
+    box-shadow:
+        0 30px 100px #000;
+}
+
+.game-info{
+    padding:55px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+}
+
+.game-tag{
+    color:#00eaff;
+
+    font-family:Orbitron;
+
+    font-size:10px;
+
+    letter-spacing:3px;
+
+    margin-bottom:18px;
+}
+
+.game-info h3{
+    font-family:Orbitron;
+
+    font-size:37px;
+
+    line-height:1.1;
+
+    margin-bottom:18px;
+}
+
+.game-info p{
+    color:#8290a3;
+
+    line-height:1.8;
+
+    font-size:13px;
+}
+
+.game-info .btn{
+    align-self:flex-start;
+
+    margin-top:27px;
+}
+
+.game-preview{
+    position:relative;
+
+    min-height:470px;
+
+    display:grid;
+
+    place-items:center;
+
+    overflow:hidden;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #00eaff18,
+            transparent 38%
+        ),
+        #04070c;
+}
+
+/* ARENA VISUAL */
+
+.arena{
+    position:relative;
+
+    width:280px;
+    height:280px;
+
+    border-radius:50%;
+
+    border:
+        1px solid #00eaff55;
+
+    box-shadow:
+        0 0 30px #00eaff22,
+        inset 0 0 60px #00eaff12;
+
+    animation:
+        rotateArena 18s linear infinite;
+}
+
+.arena::before,
+.arena::after{
+    content:"";
+
+    position:absolute;
+
+    inset:30px;
+
+    border-radius:50%;
+
+    border:
+        1px solid #8b5cf655;
+}
+
+.arena::after{
+    inset:75px;
+
+    border-color:#00eaff77;
+}
+
+.warrior{
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    width:55px;
+    height:55px;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius:50%;
+
+    background:#00eaff;
+
+    box-shadow:
+        0 0 20px #00eaff,
+        0 0 70px #00eaff66;
+}
+
+.enemy{
+    position:absolute;
+
+    width:25px;
+    height:25px;
+
+    border-radius:50%;
+
+    background:#ff3655;
+
+    box-shadow:
+        0 0 18px #ff3655;
+
+    animation:
+        enemyFloat 2s ease-in-out infinite;
+}
+
+.enemy.one{
+    top:20px;
+    left:130px;
+}
+
+.enemy.two{
+    bottom:50px;
+    left:35px;
+    animation-delay:.5s;
+}
+
+.enemy.three{
+    bottom:35px;
+    right:35px;
+    animation-delay:1s;
+}
+
+@keyframes rotateArena{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+@keyframes enemyFloat{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-12px);
+    }
+
+}
+
+/* FEATURES */
+
+.features{
+    max-width:1100px;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:18px;
+}
+
+.feature{
+    padding:30px;
+
+    border-radius:12px;
+
+    border:1px solid #1e293b;
+
+    background:#080d15;
+
+    transition:.3s;
+}
+
+.feature:hover{
+    transform:translateY(-7px);
+
+    border-color:#00eaff55;
+
+    box-shadow:
+        0 20px 60px #00eaff08;
+}
+
+.icon{
+    width:46px;
+    height:46px;
+
+    display:grid;
+    place-items:center;
+
+    margin-bottom:20px;
+
+    border-radius:10px;
+
+    color:#00eaff;
+
+    background:#00eaff0d;
+
+    border:1px solid #00eaff33;
+
+    font-size:20px;
+}
+
+.feature h3{
+    font-family:Orbitron;
+
+    font-size:14px;
+
+    margin-bottom:10px;
+}
+
+.feature p{
+    color:#778497;
+
+    font-size:12px;
+
+    line-height:1.7;
+}
+
+/* HOW TO PLAY */
+
+.how{
+    max-width:900px;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:25px;
+}
+
+.step{
+    text-align:center;
+}
+
+.number{
+    width:58px;
+    height:58px;
+
+    display:grid;
+    place-items:center;
+
+    margin:
+        0 auto 20px;
+
+    border-radius:50%;
+
+    border:1px solid #334155;
+
+    background:#080d15;
+
+    color:#00eaff;
+
+    font-family:Orbitron;
+    font-weight:800;
+}
+
+.step h3{
+    font-family:Orbitron;
+
+    font-size:14px;
+}
+
+.step p{
+    color:#718096;
+
+    font-size:12px;
+
+    margin-top:8px;
+}
+
+/* CTA */
+
+.cta{
+    max-width:1000px;
+
+    margin:
+        40px auto 100px;
+
+    padding:80px 30px;
+
+    text-align:center;
+
+    border-radius:18px;
+
+    border:1px solid #00eaff22;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #00eaff0c,
+            transparent 60%
+        ),
+        #080d15;
+}
+
+.cta h2{
+    font-family:Orbitron;
+
+    font-size:38px;
+}
+
+.cta p{
+    color:#7e8a9c;
+
+    margin:
+        15px auto 25px;
+}
+
+/* FOOTER */
+
+footer{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    padding:
+        35px 7%;
+
+    border-top:1px solid #ffffff0d;
+
+    color:#566174;
+
     font-size:11px;
 }
 
-/* Start screen */
-
-#screen{
-    position:fixed;
-    inset:0;
-    z-index:20;
-    display:grid;
-    place-items:center;
-    background:#03050add;
-    backdrop-filter:blur(5px);
-}
-
-.modal{
-    width:min(520px,92%);
-    padding:42px;
-    text-align:center;
-    background:#0a1019;
-    border:1px solid #2c3a50;
-    border-radius:18px;
-    box-shadow:0 30px 100px #000;
-}
-
-.modal h1{
-    font:900 42px Orbitron;
-    margin-bottom:15px;
-}
-
-.modal h1 span{
+footer strong{
     color:#00eaff;
-    text-shadow:0 0 30px #00eaff66;
-}
 
-.modal p{
-    color:#929db0;
-    line-height:1.8;
-    font-size:13px;
-    margin-bottom:25px;
-}
-
-.play{
-    border:0;
-    padding:14px 30px;
-    border-radius:8px;
-    background:#00eaff;
-    color:#031016;
-    font-weight:800;
-    cursor:pointer;
     font-family:Orbitron;
-    box-shadow:0 0 30px #00eaff33;
 }
 
-.play:hover{
-    transform:translateY(-2px);
-    filter:brightness(1.1);
-}
+/* MOBILE */
 
-/* Pause */
+@media(max-width:800px){
 
-#pauseScreen{
-    display:none;
-    position:fixed;
-    inset:0;
-    z-index:15;
-    place-items:center;
-    background:#0009;
-}
-
-#pauseScreen.show{
-    display:grid;
-}
-
-/* Mobile */
-
-#mobile{
-    display:none;
-    position:fixed;
-    bottom:20px;
-    left:0;
-    right:0;
-    z-index:8;
-    justify-content:space-between;
-    padding:0 20px;
-    pointer-events:none;
-}
-
-.dpad{
-    pointer-events:auto;
-    text-align:center;
-}
-
-.dpad button,
-.attack{
-    width:50px;
-    height:50px;
-    margin:2px;
-    border-radius:10px;
-    border:1px solid #34445a;
-    background:#080d15dd;
-    color:white;
-    font-size:17px;
-}
-
-.attack{
-    pointer-events:auto;
-    width:75px;
-    height:75px;
-    border-radius:50%;
-    background:#ff365522;
-    border-color:#ff5470;
-    font-size:27px;
-}
-
-.hidden{
-    display:none!important;
-}
-
-@media(max-width:800px),(pointer:coarse){
-
-    #mobile{
-        display:flex;
+    header{
+        padding:0 20px;
     }
 
-    #controls{
-        opacity:.35;
-        bottom:4px;
-        font-size:8px;
+    nav{
+        display:none;
     }
 
-    .bar{
-        width:150px;
+    .hero h1{
+        letter-spacing:-2px;
     }
 
-    .modal{
-        padding:30px 20px;
+    .core{
+        width:340px;
+        height:340px;
     }
 
-    .modal h1{
-        font-size:32px;
+    .core::after{
+        inset:90px;
+        font-size:65px;
     }
+
+    .stats{
+        grid-template-columns:1fr;
+
+        max-width:420px;
+    }
+
+    .game-card{
+        grid-template-columns:1fr;
+    }
+
+    .game-preview{
+        min-height:350px;
+        order:-1;
+    }
+
+    .game-info{
+        padding:35px;
+    }
+
+    .features{
+        grid-template-columns:1fr;
+    }
+
+    .how{
+        grid-template-columns:1fr;
+
+        gap:45px;
+    }
+
+    .cta h2{
+        font-size:27px;
+    }
+
+    footer{
+        flex-direction:column;
+        gap:12px;
+        text-align:center;
+    }
+
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="game"></canvas>
+<div class="grid"></div>
 
-<!-- HUD -->
 
-<div id="hud">
+<!-- NAVIGATION -->
 
-    <div class="panel">
+<header>
 
-        <div class="title">
-            NEXUS // WARRIOR ARENA
-        </div>
-
-        <div class="label">
-            WARRIOR HEALTH
-        </div>
-
-        <div class="bar">
-            <div id="hp"></div>
-        </div>
-
+    <div class="logo">
+        NEXUS<span>//</span>
     </div>
 
-    <div class="panel" style="text-align:right">
+    <nav>
 
-        <div class="label">
-            SCORE
+        <a href="#home">
+            HOME
+        </a>
+
+        <a href="#game">
+            GAME
+        </a>
+
+        <a href="#features">
+            FEATURES
+        </a>
+
+        <a href="#how">
+            HOW TO PLAY
+        </a>
+
+        <a
+            class="nav-play"
+            href="game/index.html"
+        >
+            PLAY NOW
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- HERO -->
+
+<section
+    class="hero"
+    id="home"
+>
+
+    <div class="core"></div>
+
+    <div class="hero-content">
+
+        <div class="badge">
+            NEXT GENERATION BROWSER GAMING
         </div>
-
-        <div id="score">
-            0000
-        </div>
-
-        <div class="label">
-            WAVE <span id="wave">1</span>
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- TOP BUTTONS -->
-
-<div id="buttons">
-
-    <button class="smallBtn" id="pause">Ⅱ</button>
-    <button class="smallBtn" id="mute">🔊</button>
-
-</div>
-
-
-<!-- MOBILE CONTROLS -->
-
-<div id="mobile">
-
-    <div class="dpad">
-
-        <button data-key="up">▲</button>
-
-        <div>
-            <button data-key="left">◀</button>
-            <button data-key="down">▼</button>
-            <button data-key="right">▶</button>
-        </div>
-
-    </div>
-
-    <button class="attack" id="attack">
-        ⚔
-    </button>
-
-</div>
-
-
-<div id="controls">
-    WASD / ARROWS = MOVE &nbsp; • &nbsp; SPACE = ATTACK &nbsp; • &nbsp; P = PAUSE
-</div>
-
-
-<!-- PAUSE -->
-
-<div id="pauseScreen">
-
-    <div class="modal">
-
-        <h1>GAME <span>PAUSED</span></h1>
-
-        <p>
-            The arena is frozen. Your enemies are waiting.
-        </p>
-
-        <button class="play" id="resume">
-            RESUME
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- START -->
-
-<div id="screen">
-
-    <div class="modal">
 
         <h1>
-            NEXUS <span>WARRIOR</span>
+            NEXUS
+            <br>
+            <span>WARRIOR</span>
         </h1>
 
         <p>
-            Enter the arena and survive as many enemy waves
-            as possible. Destroy enemies, collect points and
-            become the ultimate warrior.
+            Enter a futuristic arena where every wave
+            gets harder, every enemy gets faster,
+            and only the strongest warriors survive.
         </p>
 
-        <button class="play" id="start">
-            ENTER THE ARENA
-        </button>
+        <div class="buttons">
+
+            <a
+                href="game/index.html"
+                class="btn primary"
+            >
+                ⚡ PLAY NOW
+            </a>
+
+            <a
+                href="#game"
+                class="btn secondary"
+            >
+                EXPLORE GAME
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="scroll">
+        SCROLL
+    </div>
+
+</section>
+
+
+<!-- STATS -->
+
+<div class="stats">
+
+    <div class="stat">
+
+        <strong>∞</strong>
+
+        <span>
+            ENDLESS COMBAT
+        </span>
+
+    </div>
+
+    <div class="stat">
+
+        <strong>⚡</strong>
+
+        <span>
+            FAST-PACED ACTION
+        </span>
+
+    </div>
+
+    <div class="stat">
+
+        <strong>100%</strong>
+
+        <span>
+            BROWSER GAME
+        </span>
 
     </div>
 
 </div>
 
 
-<script>
+<!-- GAME -->
 
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
+<section id="game">
 
-let W,H;
+    <div class="section-title">
 
-function resize(){
+        <small>
+            THE MAIN EXPERIENCE
+        </small>
 
-    W = canvas.width = innerWidth;
-    H = canvas.height = innerHeight;
+        <h2>
+            ENTER THE ARENA
+        </h2>
 
-}
+        <p>
+            No installation. No launcher.
+            Just open the game and start fighting.
+        </p>
 
-addEventListener("resize",resize);
-resize();
+    </div>
 
 
-/* ================= GAME STATE ================= */
+    <div class="game-card">
 
-let running = false;
-let paused = false;
+        <div class="game-info">
 
-let score = 0;
-let wave = 1;
+            <div class="game-tag">
+                NEXUS // WARRIOR ARENA
+            </div>
 
-let player;
-let enemies = [];
-let particles = [];
-let stars = [];
-
-let spawnTimer = 0;
-let attackCooldown = 0;
-let attackEffect = 0;
-
-let keys = {};
-
-let muted = false;
-let audio;
-
-
-/* ================= AUDIO ================= */
-
-function initAudio(){
-
-    if(audio) return;
-
-    audio = new (window.AudioContext ||
-                 window.webkitAudioContext)();
-
-}
-
-function sound(freq,duration,type="sine",volume=.04){
-
-    if(muted) return;
-
-    initAudio();
-
-    const oscillator = audio.createOscillator();
-    const gain = audio.createGain();
-
-    oscillator.type = type;
-    oscillator.frequency.value = freq;
-
-    gain.gain.value = volume;
-
-    oscillator.connect(gain);
-    gain.connect(audio.destination);
-
-    const now = audio.currentTime;
-
-    gain.gain.setValueAtTime(volume,now);
-
-    gain.gain.exponentialRampToValueAtTime(
-        .001,
-        now + duration
-    );
-
-    oscillator.start(now);
-    oscillator.stop(now + duration);
-
-}
-
-
-/* ================= INPUT ================= */
-
-addEventListener("keydown",e=>{
-
-    const key = e.key.toLowerCase();
-
-    keys[key] = true;
-
-    if(key === " "){
-        e.preventDefault();
-    }
-
-    if(key === "p"){
-        togglePause();
-    }
-
-});
-
-addEventListener("keyup",e=>{
-
-    keys[e.key.toLowerCase()] = false;
-
-});
-
-
-/* ================= STARS ================= */
-
-function createStars(){
-
-    stars = [];
-
-    for(let i=0;i<130;i++){
-
-        stars.push({
-
-            x:Math.random()*W,
-            y:Math.random()*H,
-            r:Math.random()*1.7+.3,
-            speed:Math.random()*25+5
-
-        });
-
-    }
-
-}
-
-
-/* ================= GAME START ================= */
-
-function startGame(){
-
-    initAudio();
-
-    score = 0;
-    wave = 1;
-
-    player = {
-
-        x:W/2,
-        y:H/2,
-        r:23,
-
-        speed:300,
-
-        hp:100,
-        maxHp:100,
-
-        direction:1
-
-    };
-
-    enemies = [];
-    particles = [];
-
-    spawnTimer = 0;
-    attackCooldown = 0;
-    attackEffect = 0;
-
-    paused = false;
-    running = true;
-
-    document.getElementById("screen")
-        .classList.add("hidden");
-
-    document.getElementById("pauseScreen")
-        .classList.remove("show");
-
-    createStars();
-
-    lastTime = performance.now();
-
-    requestAnimationFrame(loop);
-
-}
-
-
-/* ================= ENEMY ================= */
-
-function spawnEnemy(){
-
-    const side = Math.floor(Math.random()*4);
-
-    let x,y;
-
-    const pad = 70;
-
-    if(side===0){
-        x=-pad;
-        y=Math.random()*H;
-    }
-
-    if(side===1){
-        x=W+pad;
-        y=Math.random()*H;
-    }
-
-    if(side===2){
-        x=Math.random()*W;
-        y=-pad;
-    }
-
-    if(side===3){
-        x=Math.random()*W;
-        y=H+pad;
-    }
-
-    enemies.push({
-
-        x:x,
-        y:y,
-
-        r:16+Math.random()*8,
-
-        speed:
-            65+
-            wave*8+
-            Math.random()*35,
-
-        hp:
-            1+
-            Math.floor(wave/3),
-
-        maxHp:
-            1+
-            Math.floor(wave/3),
-
-        hit:0
-
-    });
-
-}
-
-
-/* ================= PARTICLES ================= */
-
-function burst(x,y,count=12){
-
-    for(let i=0;i<count;i++){
-
-        const angle =
-            Math.random()*Math.PI*2;
-
-        const speed =
-            60+Math.random()*180;
-
-        particles.push({
-
-            x:x,
-            y:y,
-
-            vx:Math.cos(angle)*speed,
-            vy:Math.sin(angle)*speed,
-
-            life:.4+Math.random()*.5
-
-        });
-
-    }
-
-}
-
-
-/* ================= ATTACK ================= */
-
-function attack(){
-
-    if(!running || paused) return;
-
-    if(attackCooldown>0) return;
-
-    attackCooldown=.35;
-    attackEffect=.16;
-
-    sound(180,.08,"sawtooth",.06);
-    sound(420,.06,"square",.035);
-
-    for(const enemy of enemies){
-
-        const dx=enemy.x-player.x;
-        const dy=enemy.y-player.y;
-
-        const distance=Math.hypot(dx,dy);
-
-        const front =
-            dx*player.direction > -25;
-
-        if(distance<100 && front){
-
-            enemy.hp--;
-
-            enemy.hit=.12;
-
-            burst(enemy.x,enemy.y,7);
-
-            if(enemy.hp<=0){
-
-                score += 100 + wave*15;
-
-                burst(
-                    enemy.x,
-                    enemy.y,
-                    20
-                );
-
-                sound(90,.1,"square",.04);
-
-            }
-
-        }
-
-    }
-
-    enemies =
-        enemies.filter(e=>e.hp>0);
-
-}
-
-
-/* ================= UPDATE ================= */
-
-function update(dt){
-
-    /* Movement */
-
-    let dx=0;
-    let dy=0;
-
-    if(keys.w || keys.arrowup){
-        dy--;
-    }
-
-    if(keys.s || keys.arrowdown){
-        dy++;
-    }
-
-    if(keys.a || keys.arrowleft){
-
-        dx--;
-        player.direction=-1;
-
-    }
-
-    if(keys.d || keys.arrowright){
-
-        dx++;
-        player.direction=1;
-
-    }
-
-    const length =
-        Math.hypot(dx,dy) || 1;
-
-    player.x +=
-        dx/length*
-        player.speed*
-        dt;
-
-    player.y +=
-        dy/length*
-        player.speed*
-        dt;
-
-
-    /* Boundaries */
-
-    player.x =
-        Math.max(
-            35,
-            Math.min(W-35,player.x)
-        );
-
-    player.y =
-        Math.max(
-            90,
-            Math.min(H-35,player.y)
-        );
-
-
-    /* Attack */
-
-    attackCooldown -= dt;
-
-    attackEffect =
-        Math.max(
-            0,
-            attackEffect-dt
-        );
-
-    if(keys[" "]){
-        attack();
-    }
-
-
-    /* Spawn */
-
-    spawnTimer -= dt;
-
-    const maxEnemies =
-        4 + wave*2;
-
-    if(
-        spawnTimer<=0 &&
-        enemies.length<maxEnemies
-    ){
-
-        spawnEnemy();
-
-        spawnTimer =
-            Math.max(
-                .25,
-                1.1-wave*.045
-            );
-
-    }
-
-
-    /* Enemies */
-
-    for(const enemy of enemies){
-
-        enemy.hit =
-            Math.max(0,enemy.hit-dt);
-
-        const dx =
-            player.x-enemy.x;
-
-        const dy =
-            player.y-enemy.y;
-
-        const distance =
-            Math.hypot(dx,dy)||1;
-
-        enemy.x +=
-            dx/distance*
-            enemy.speed*
-            dt;
-
-        enemy.y +=
-            dy/distance*
-            enemy.speed*
-            dt;
-
-
-        if(
-            distance<
-            player.r+enemy.r
-        ){
-
-            player.hp -=
-                18*dt;
-
-            enemy.x -=
-                dx/distance*12;
-
-            enemy.y -=
-                dy/distance*12;
-
-        }
-
-    }
-
-
-    /* Wave */
-
-    if(score >= wave*800){
-
-        wave++;
-
-        player.maxHp += 5;
-
-        player.hp =
-            Math.min(
-                player.maxHp,
-                player.hp+25
-            );
-
-        burst(
-            player.x,
-            player.y,
-            30
-        );
-
-        sound(
-            330,
-            .12,
-            "triangle",
-            .06
-        );
-
-        setTimeout(()=>{
-            sound(
-                495,
-                .18,
-                "triangle",
-                .05
-            );
-        },100);
-
-    }
-
-
-    /* Particles */
-
-    for(const p of particles){
-
-        p.x += p.vx*dt;
-        p.y += p.vy*dt;
-
-        p.life -= dt;
-
-    }
-
-    particles =
-        particles.filter(
-            p=>p.life>0
-        );
-
-
-    /* Stars */
-
-    for(const star of stars){
-
-        star.y += star.speed*dt;
-
-        if(star.y>H){
-
-            star.y=0;
-            star.x=Math.random()*W;
-
-        }
-
-    }
-
-
-    /* HUD */
-
-    document.getElementById("hp")
-        .style.width =
-        Math.max(
-            0,
-            player.hp/player.maxHp*100
-        )+"%";
-
-    document.getElementById("score")
-        .textContent =
-        String(score).padStart(4,"0");
-
-    document.getElementById("wave")
-        .textContent = wave;
-
-
-    /* Death */
-
-    if(player.hp<=0){
-
-        gameOver();
-
-    }
-
-}
-
-
-/* ================= DRAW ================= */
-
-function draw(){
-
-    /* Background */
-
-    const gradient =
-        ctx.createLinearGradient(
-            0,0,0,H
-        );
-
-    gradient.addColorStop(
-        0,
-        "#08111c"
-    );
-
-    gradient.addColorStop(
-        1,
-        "#020408"
-    );
-
-    ctx.fillStyle=gradient;
-
-    ctx.fillRect(
-        0,0,W,H
-    );
-
-
-    /* Stars */
-
-    for(const star of stars){
-
-        ctx.fillStyle =
-            "#00eaff99";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            star.x,
-            star.y,
-            star.r,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-
-    }
-
-
-    /* Grid */
-
-    ctx.strokeStyle="#101d29";
-    ctx.lineWidth=1;
-
-    const grid=55;
-
-    for(
-        let x=0;
-        x<W;
-        x+=grid
-    ){
-
-        ctx.beginPath();
-
-        ctx.moveTo(x,75);
-        ctx.lineTo(x,H);
-
-        ctx.stroke();
-
-    }
-
-    for(
-        let y=75;
-        y<H;
-        y+=grid
-    ){
-
-        ctx.beginPath();
-
-        ctx.moveTo(0,y);
-        ctx.lineTo(W,y);
-
-        ctx.stroke();
-
-    }
-
-
-    /* Arena glow */
-
-    const glow =
-        ctx.createRadialGradient(
-            player.x,
-            player.y,
-            20,
-            player.x,
-            player.y,
-            350
-        );
-
-    glow.addColorStop(
-        0,
-        "#00eaff0c"
-    );
-
-    glow.addColorStop(
-        1,
-        "transparent"
-    );
-
-    ctx.fillStyle=glow;
-
-    ctx.fillRect(
-        0,75,W,H-75
-    );
-
-
-    /* Particles */
-
-    for(const p of particles){
-
-        ctx.globalAlpha =
-            Math.max(0,p.life*2);
-
-        ctx.fillStyle="#00eaff";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            p.x,
-            p.y,
-            3,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-
-    }
-
-    ctx.globalAlpha=1;
-
-
-    /* Enemies */
-
-    for(const enemy of enemies){
-
-        ctx.save();
-
-        ctx.translate(
-            enemy.x,
-            enemy.y
-        );
-
-        ctx.shadowBlur=20;
-
-        ctx.shadowColor =
-            enemy.hit
-            ? "#ffffff"
-            : "#ff3655";
-
-        ctx.fillStyle =
-            enemy.hit
-            ? "#ffffff"
-            : "#ff3655";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            0,
-            0,
-            enemy.r,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-
-
-        /* eyes */
-
-        ctx.shadowBlur=0;
-
-        ctx.fillStyle="#16050a";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            -5,-3,3,
-            0,
-            Math.PI*2
-        );
-
-        ctx.arc(
-            5,-3,3,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-
-
-        /* health */
-
-        ctx.fillStyle="#29141a";
-
-        ctx.fillRect(
-            -20,
-            -enemy.r-9,
-            40,
-            4
-        );
-
-        ctx.fillStyle="#ff5470";
-
-        ctx.fillRect(
-            -20,
-            -enemy.r-9,
-            40*(enemy.hp/enemy.maxHp),
-            4
-        );
-
-        ctx.restore();
-
-    }
-
-
-    /* Player */
-
-    ctx.save();
-
-    ctx.translate(
-        player.x,
-        player.y
-    );
-
-    ctx.scale(
-        player.direction,
-        1
-    );
-
-
-    /* player glow */
-
-    ctx.shadowBlur=30;
-    ctx.shadowColor="#00eaff";
-
-    ctx.fillStyle="#00eaff";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        0,
-        0,
-        player.r,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    ctx.shadowBlur=0;
-
-
-    /* helmet */
-
-    ctx.fillStyle="#07121b";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        0,
-        -4,
-        15,
-        Math.PI,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    /* eyes */
-
-    ctx.fillStyle="#ffffff";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        -6,
-        -5,
-        3,
-        0,
-        Math.PI*2
-    );
-
-    ctx.arc(
-        6,
-        -5,
-        3,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    /* sword */
-
-    ctx.strokeStyle="#e7fbff";
-    ctx.lineWidth=5;
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        12,-5
-    );
-
-    ctx.lineTo(
-        52,-20
-    );
-
-    ctx.stroke();
-
-
-    ctx.strokeStyle="#00eaff";
-    ctx.lineWidth=2;
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        18,-8
-    );
-
-    ctx.lineTo(
-        52,-20
-    );
-
-    ctx.stroke();
-
-
-    /* attack */
-
-    if(attackEffect>0){
-
-        ctx.strokeStyle="#ffffff";
-
-        ctx.lineWidth=7;
-
-        ctx.shadowBlur=25;
-
-        ctx.shadowColor="#00eaff";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            0,
-            0,
-            78,
-            -.85,
-            .85
-        );
-
-        ctx.stroke();
-
-    }
-
-
-    ctx.restore();
-
-
-    /* arena text */
-
-    ctx.fillStyle="#ffffff33";
-
-    ctx.font="700 11px Poppins";
-
-    ctx.fillText(
-        "SURVIVE THE WAVE",
-        20,
-        H-42
-    );
-
-}
-
-
-/* ================= GAME OVER ================= */
-
-function gameOver(){
-
-    running=false;
-
-    sound(
-        70,
-        .3,
-        "sawtooth",
-        .06
-    );
-
-    const best =
-        Number(
-            localStorage.getItem(
-                "nexusBest"
-            )||0
-        );
-
-    if(score>best){
-
-        localStorage.setItem(
-            "nexusBest",
-            score
-        );
-
-    }
-
-    const high =
-        Math.max(score,best);
-
-    document.getElementById("screen")
-        .classList.remove("hidden");
-
-    document.getElementById("screen")
-        .innerHTML=`
-
-        <div class="modal">
-
-            <h1>
-                GAME <span>OVER</span>
-            </h1>
+            <h3>
+                SURVIVE.
+                <br>
+                FIGHT.
+                <br>
+                DOMINATE.
+            </h3>
 
             <p>
-
-                The arena has fallen silent.<br><br>
-
-                SCORE:
-                <strong style="color:#ffd45a">
-                    ${score}
-                </strong>
-
-                <br>
-
-                WAVE:
-                <strong style="color:#00eaff">
-                    ${wave}
-                </strong>
-
-                <br><br>
-
-                BEST SCORE:
-                <strong style="color:#8b5cf6">
-                    ${high}
-                </strong>
-
+                Control your warrior and fight endless
+                waves of enemies. Build your score,
+                unlock higher waves and try to beat
+                your personal best.
             </p>
 
-            <button
-                class="play"
-                onclick="startGame()"
+            <a
+                href="game/index.html"
+                class="btn primary"
             >
-                FIGHT AGAIN
-            </button>
+                ENTER THE ARENA →
+            </a>
 
         </div>
 
-        `;
 
-}
+        <div class="game-preview">
 
+            <div class="arena">
 
-/* ================= PAUSE ================= */
+                <div class="warrior"></div>
 
-function togglePause(){
+                <div class="enemy one"></div>
 
-    if(!running) return;
+                <div class="enemy two"></div>
 
-    paused=!paused;
+                <div class="enemy three"></div>
 
-    document.getElementById(
-        "pauseScreen"
-    ).classList.toggle(
-        "show",
-        paused
-    );
+            </div>
 
-    document.getElementById(
-        "pause"
-    ).textContent =
-        paused ? "▶" : "Ⅱ";
+        </div>
 
-}
+    </div>
+
+</section>
 
 
-/* ================= MAIN LOOP ================= */
+<!-- FEATURES -->
 
-let lastTime=0;
+<section id="features">
 
-function loop(time){
+    <div class="section-title">
 
-    if(!running) return;
+        <small>
+            NEXUS SYSTEM
+        </small>
 
-    const dt =
-        Math.min(
-            .033,
-            (time-lastTime)/1000
-        );
+        <h2>
+            GAME FEATURES
+        </h2>
 
-    lastTime=time;
+        <p>
+            Designed to make the arena feel fast,
+            challenging and immersive.
+        </p>
 
-    if(!paused){
-
-        update(dt);
-
-    }
-
-    draw();
-
-    requestAnimationFrame(loop);
-
-}
+    </div>
 
 
-/* ================= BUTTONS ================= */
+    <div class="features">
 
-document.getElementById(
-    "start"
-).onclick=startGame;
+        <div class="feature">
 
+            <div class="icon">
+                ⚔
+            </div>
 
-document.getElementById(
-    "pause"
-).onclick=togglePause;
+            <h3>
+                FAST COMBAT
+            </h3>
 
+            <p>
+                Move quickly around the arena and
+                strike enemies with your warrior.
+            </p>
 
-document.getElementById(
-    "resume"
-).onclick=togglePause;
-
-
-document.getElementById(
-    "mute"
-).onclick=()=>{
-
-    muted=!muted;
-
-    document.getElementById(
-        "mute"
-    ).textContent =
-        muted ? "🔇" : "🔊";
-
-};
+        </div>
 
 
-document.getElementById(
-    "attack"
-).addEventListener(
-    "touchstart",
-    e=>{
-        e.preventDefault();
-        attack();
-    },
-    {passive:false}
-);
+        <div class="feature">
+
+            <div class="icon">
+                ∞
+            </div>
+
+            <h3>
+                WAVE SYSTEM
+            </h3>
+
+            <p>
+                Enemy waves become progressively
+                more difficult as your score rises.
+            </p>
+
+        </div>
 
 
-/* ================= MOBILE D-PAD ================= */
+        <div class="feature">
 
-document.querySelectorAll(
-    "[data-key]"
-).forEach(button=>{
+            <div class="icon">
+                ♫
+            </div>
 
-    const key=button.dataset.key;
+            <h3>
+                SOUND EFFECTS
+            </h3>
 
-    const down=e=>{
+            <p>
+                Combat sounds and atmospheric effects
+                make the arena more immersive.
+            </p>
 
-        e.preventDefault();
-
-        if(key==="up")
-            keys.arrowup=true;
-
-        if(key==="down")
-            keys.arrowdown=true;
-
-        if(key==="left")
-            keys.arrowleft=true;
-
-        if(key==="right")
-            keys.arrowright=true;
-
-    };
-
-    const up=e=>{
-
-        e.preventDefault();
-
-        if(key==="up")
-            keys.arrowup=false;
-
-        if(key==="down")
-            keys.arrowdown=false;
-
-        if(key==="left")
-            keys.arrowleft=false;
-
-        if(key==="right")
-            keys.arrowright=false;
-
-    };
-
-    button.addEventListener(
-        "touchstart",
-        down,
-        {passive:false}
-    );
-
-    button.addEventListener(
-        "touchend",
-        up,
-        {passive:false}
-    );
-
-    button.addEventListener(
-        "mousedown",
-        down
-    );
-
-    button.addEventListener(
-        "mouseup",
-        up
-    );
-
-});
+        </div>
 
 
-</script>
+        <div class="feature">
+
+            <div class="icon">
+                📱
+            </div>
+
+            <h3>
+                MOBILE READY
+            </h3>
+
+            <p>
+                Touch controls let you play on phones
+                and tablets as well as computers.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">
+                ★
+            </div>
+
+            <h3>
+                HIGH SCORE
+            </h3>
+
+            <p>
+                Your best score is saved in your browser
+                so you can keep trying to beat it.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">
+                ☠
+            </div>
+
+            <h3>
+                JUMPSCARE
+            </h3>
+
+            <p>
+                Lose the battle and discover what waits
+                for fallen warriors.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- HOW TO PLAY -->
+
+<section id="how">
+
+    <div class="section-title">
+
+        <small>
+            QUICK START
+        </small>
+
+        <h2>
+            HOW TO PLAY
+        </h2>
+
+    </div>
+
+
+    <div class="how">
+
+        <div class="step">
+
+            <div class="number">
+                01
+            </div>
+
+            <h3>
+                ENTER
+            </h3>
+
+            <p>
+                Click PLAY NOW to launch NEXUS.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="number">
+                02
+            </div>
+
+            <h3>
+                SURVIVE
+            </h3>
+
+            <p>
+                Move, attack and avoid incoming enemies.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="number">
+                03
+            </div>
+
+            <h3>
+                DOMINATE
+            </h3>
+
+            <p>
+                Destroy enemies and chase the highest score.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FINAL CTA -->
+
+<div class="cta">
+
+    <h2>
+        THE ARENA IS WAITING.
+    </h2>
+
+    <p>
+        Think you can survive?
+    </p>
+
+    <a
+        href="game/index.html"
+        class="btn primary"
+    >
+        ⚡ START PLAYING
+    </a>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div>
+        © 2026
+        <strong>NEXUS</strong>
+        Gaming
+    </div>
+
+    <div>
+        WARRIOR ARENA • BROWSER GAME
+    </div>
+
+</footer>
+
 
 </body>
 </html>
