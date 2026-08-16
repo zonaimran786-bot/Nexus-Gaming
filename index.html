@@ -1,27 +1,18 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
+
+<head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NEXUS // Warrior Arena</title>
-    <div class="game-card">
-    <h2>Deadzone</h2>
-
-    <p>
-        Enter a new world and start your next adventure.
-    </p>
-
-    <a href="game2/index.html" class="play">
-        PLAY Deadzone
-    </a>
-</div>
-    <a href="game2/index.html">PLAY GAME 2</a>
-*{
+<title>NEXUS // Gaming Hub</title>
 
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap');
 
+*{
     margin:0;
     padding:0;
     box-sizing:border-box;
@@ -38,13 +29,16 @@ body{
     overflow-x:hidden;
 }
 
-/* BACKGROUND */
+/* =========================
+   BACKGROUND
+========================= */
 
 body::before{
     content:"";
     position:fixed;
     inset:0;
     z-index:-3;
+
     background:
         radial-gradient(
             circle at 20% 20%,
@@ -68,6 +62,7 @@ body::before{
     position:fixed;
     inset:0;
     z-index:-2;
+
     background-image:
         linear-gradient(
             #00eaff08 1px,
@@ -78,23 +73,29 @@ body::before{
             #00eaff08 1px,
             transparent 1px
         );
+
     background-size:50px 50px;
+
     mask-image:
         linear-gradient(
             to bottom,
             black,
             transparent 85%
         );
+
     pointer-events:none;
 }
 
-/* NAVBAR */
+/* =========================
+   NAVBAR
+========================= */
 
 header{
     position:fixed;
     top:0;
     left:0;
     right:0;
+
     height:74px;
 
     display:flex;
@@ -104,6 +105,7 @@ header{
     padding:0 6%;
 
     background:#03050add;
+
     border-bottom:1px solid #ffffff12;
 
     backdrop-filter:blur(15px);
@@ -120,6 +122,7 @@ header{
 
 .logo span{
     color:#00eaff;
+
     text-shadow:
         0 0 15px #00eaff,
         0 0 40px #00eaff55;
@@ -134,8 +137,10 @@ nav{
 nav a{
     color:#8793a6;
     text-decoration:none;
+
     font-size:12px;
     font-weight:600;
+
     transition:.25s;
 }
 
@@ -145,27 +150,39 @@ nav a:hover{
 
 .nav-play{
     color:#031016!important;
+
     background:#00eaff;
+
     padding:10px 18px;
+
     border-radius:6px;
 }
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
 
 .hero{
     min-height:100vh;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     text-align:center;
+
     padding:120px 20px 80px;
+
     position:relative;
+
     overflow:hidden;
 }
 
 .hero-content{
     max-width:950px;
+
     position:relative;
+
     z-index:2;
 }
 
@@ -173,15 +190,19 @@ nav a:hover{
     display:inline-block;
 
     padding:9px 17px;
+
     border-radius:30px;
 
     border:1px solid #00eaff33;
+
     background:#00eaff08;
 
     color:#00eaff;
 
     font-family:Orbitron;
+
     font-size:10px;
+
     letter-spacing:4px;
 
     margin-bottom:24px;
@@ -189,6 +210,7 @@ nav a:hover{
 
 .hero h1{
     font-family:Orbitron;
+
     font-size:clamp(
         55px,
         10vw,
@@ -213,23 +235,29 @@ nav a:hover{
 
 .hero p{
     max-width:650px;
+
     margin:30px auto;
 
     color:#8d99ac;
 
     line-height:1.8;
+
     font-size:14px;
 }
 
 .buttons{
     display:flex;
+
     justify-content:center;
+
     gap:12px;
+
     flex-wrap:wrap;
 }
 
 .btn{
     display:inline-flex;
+
     align-items:center;
     justify-content:center;
 
@@ -240,13 +268,17 @@ nav a:hover{
     text-decoration:none;
 
     font-size:12px;
+
     font-weight:800;
 
     transition:.25s;
+
+    cursor:pointer;
 }
 
 .primary{
     color:#031016;
+
     background:#00eaff;
 
     box-shadow:
@@ -262,6 +294,7 @@ nav a:hover{
 
 .secondary{
     color:white;
+
     background:#ffffff05;
 
     border:1px solid #334155;
@@ -269,10 +302,15 @@ nav a:hover{
 
 .secondary:hover{
     border-color:#00eaff;
+
     color:#00eaff;
+
+    transform:translateY(-4px);
 }
 
-/* FLOATING CORE */
+/* =========================
+   FLOATING CORE
+========================= */
 
 .core{
     position:absolute;
@@ -312,6 +350,7 @@ nav a:hover{
     inset:120px;
 
     display:grid;
+
     place-items:center;
 
     border-radius:50%;
@@ -323,6 +362,7 @@ nav a:hover{
     font-family:Orbitron;
 
     font-size:90px;
+
     font-weight:900;
 
     text-shadow:
@@ -346,14 +386,17 @@ nav a:hover{
             translateY(-20px)
             rotate(6deg);
     }
-
 }
 
-/* SCROLL INDICATOR */
+/* =========================
+   SCROLL
+========================= */
 
 .scroll{
     position:absolute;
+
     bottom:28px;
+
     left:50%;
 
     transform:translateX(-50%);
@@ -361,15 +404,19 @@ nav a:hover{
     color:#556174;
 
     font-size:9px;
+
     font-family:Orbitron;
+
     letter-spacing:3px;
 }
 
 .scroll::after{
     content:"";
+
     display:block;
 
     width:1px;
+
     height:35px;
 
     margin:8px auto;
@@ -377,14 +424,14 @@ nav a:hover{
     background:#00eaff55;
 }
 
-/* STATS */
+/* =========================
+   STATS
+========================= */
 
 .stats{
     max-width:1000px;
 
-    margin:
-        -30px auto
-        100px;
+    margin:-30px auto 100px;
 
     padding:0 20px;
 
@@ -424,14 +471,16 @@ nav a:hover{
     color:#6f7b8e;
 
     font-size:10px;
+
     letter-spacing:1px;
 }
 
-/* SECTIONS */
+/* =========================
+   SECTIONS
+========================= */
 
 section{
-    padding:
-        100px 7%;
+    padding:100px 7%;
 }
 
 .section-title{
@@ -470,13 +519,17 @@ section{
     line-height:1.7;
 }
 
-/* GAME SECTION */
+/* =========================
+   GAME CARDS
+========================= */
 
-.game-card{
+.games-container{
     max-width:1100px;
 
     margin:auto;
+}
 
+.game-card{
     min-height:470px;
 
     display:grid;
@@ -494,6 +547,17 @@ section{
 
     box-shadow:
         0 30px 100px #000;
+
+    transition:.35s;
+}
+
+.game-card:hover{
+    border-color:#00eaff55;
+
+    transform:translateY(-5px);
+
+    box-shadow:
+        0 35px 100px #00eaff0a;
 }
 
 .game-info{
@@ -516,6 +580,10 @@ section{
     letter-spacing:3px;
 
     margin-bottom:18px;
+}
+
+.red-tag{
+    color:#ff334d;
 }
 
 .game-info h3{
@@ -542,6 +610,10 @@ section{
     margin-top:27px;
 }
 
+/* =========================
+   GAME PREVIEW
+========================= */
+
 .game-preview{
     position:relative;
 
@@ -562,7 +634,19 @@ section{
         #04070c;
 }
 
-/* ARENA VISUAL */
+.deadzone-preview{
+    background:
+        radial-gradient(
+            circle at center,
+            #ff334d18,
+            transparent 38%
+        ),
+        #070303;
+}
+
+/* =========================
+   ARENA
+========================= */
 
 .arena{
     position:relative;
@@ -572,8 +656,7 @@ section{
 
     border-radius:50%;
 
-    border:
-        1px solid #00eaff55;
+    border:1px solid #00eaff55;
 
     box-shadow:
         0 0 30px #00eaff22,
@@ -593,14 +676,29 @@ section{
 
     border-radius:50%;
 
-    border:
-        1px solid #8b5cf655;
+    border:1px solid #8b5cf655;
 }
 
 .arena::after{
     inset:75px;
 
     border-color:#00eaff77;
+}
+
+.deadzone-arena{
+    border-color:#ff334d55;
+
+    box-shadow:
+        0 0 30px #ff334d22,
+        inset 0 0 60px #ff334d12;
+}
+
+.deadzone-arena::before{
+    border-color:#ff334d55;
+}
+
+.deadzone-arena::after{
+    border-color:#ff334d77;
 }
 
 .warrior{
@@ -624,6 +722,14 @@ section{
         0 0 70px #00eaff66;
 }
 
+.zombie-core{
+    background:#ff334d;
+
+    box-shadow:
+        0 0 20px #ff334d,
+        0 0 70px #ff334d66;
+}
+
 .enemy{
     position:absolute;
 
@@ -641,6 +747,13 @@ section{
         enemyFloat 2s ease-in-out infinite;
 }
 
+.zombie{
+    background:#7cff4f;
+
+    box-shadow:
+        0 0 18px #7cff4f;
+}
+
 .enemy.one{
     top:20px;
     left:130px;
@@ -649,12 +762,14 @@ section{
 .enemy.two{
     bottom:50px;
     left:35px;
+
     animation-delay:.5s;
 }
 
 .enemy.three{
     bottom:35px;
     right:35px;
+
     animation-delay:1s;
 }
 
@@ -663,7 +778,6 @@ section{
     to{
         transform:rotate(360deg);
     }
-
 }
 
 @keyframes enemyFloat{
@@ -675,10 +789,11 @@ section{
     50%{
         transform:translateY(-12px);
     }
-
 }
 
-/* FEATURES */
+/* =========================
+   FEATURES
+========================= */
 
 .features{
     max-width:1100px;
@@ -719,6 +834,7 @@ section{
     height:46px;
 
     display:grid;
+
     place-items:center;
 
     margin-bottom:20px;
@@ -750,7 +866,9 @@ section{
     line-height:1.7;
 }
 
-/* HOW TO PLAY */
+/* =========================
+   HOW TO PLAY
+========================= */
 
 .how{
     max-width:900px;
@@ -774,10 +892,10 @@ section{
     height:58px;
 
     display:grid;
+
     place-items:center;
 
-    margin:
-        0 auto 20px;
+    margin:0 auto 20px;
 
     border-radius:50%;
 
@@ -788,6 +906,7 @@ section{
     color:#00eaff;
 
     font-family:Orbitron;
+
     font-weight:800;
 }
 
@@ -805,13 +924,14 @@ section{
     margin-top:8px;
 }
 
-/* CTA */
+/* =========================
+   CTA
+========================= */
 
 .cta{
     max-width:1000px;
 
-    margin:
-        40px auto 100px;
+    margin:40px auto 100px;
 
     padding:80px 30px;
 
@@ -839,20 +959,21 @@ section{
 .cta p{
     color:#7e8a9c;
 
-    margin:
-        15px auto 25px;
+    margin:15px auto 25px;
 }
 
-/* FOOTER */
+/* =========================
+   FOOTER
+========================= */
 
 footer{
     display:flex;
 
     align-items:center;
+
     justify-content:space-between;
 
-    padding:
-        35px 7%;
+    padding:35px 7%;
 
     border-top:1px solid #ffffff0d;
 
@@ -867,7 +988,9 @@ footer strong{
     font-family:Orbitron;
 }
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:800px){
 
@@ -905,6 +1028,7 @@ footer strong{
 
     .game-preview{
         min-height:350px;
+
         order:-1;
     }
 
@@ -928,20 +1052,27 @@ footer strong{
 
     footer{
         flex-direction:column;
+
         gap:12px;
+
         text-align:center;
     }
 
 }
+
 </style>
+
 </head>
+
 
 <body>
 
 <div class="grid"></div>
 
 
-<!-- NAVIGATION -->
+<!-- =========================
+     NAVIGATION
+========================= -->
 
 <header>
 
@@ -955,8 +1086,8 @@ footer strong{
             HOME
         </a>
 
-        <a href="#game">
-            GAME
+        <a href="#games">
+            GAMES
         </a>
 
         <a href="#features">
@@ -969,7 +1100,7 @@ footer strong{
 
         <a
             class="nav-play"
-            href="game/index.html"
+            href="#games"
         >
             PLAY NOW
         </a>
@@ -979,7 +1110,9 @@ footer strong{
 </header>
 
 
-<!-- HERO -->
+<!-- =========================
+     HERO
+========================= -->
 
 <section
     class="hero"
@@ -997,13 +1130,13 @@ footer strong{
         <h1>
             NEXUS
             <br>
-            <span>WARRIOR</span>
+            <span>GAMING</span>
         </h1>
 
         <p>
-            Enter a futuristic arena where every wave
-            gets harder, every enemy gets faster,
-            and only the strongest warriors survive.
+            Enter the NEXUS gaming network.
+            Choose your world, enter the battlefield
+            and prove that you have what it takes to survive.
         </p>
 
         <div class="buttons">
@@ -1012,14 +1145,14 @@ footer strong{
                 href="game/index.html"
                 class="btn primary"
             >
-                ⚡ PLAY NOW
+                ⚡ WARRIOR ARENA
             </a>
 
             <a
-                href="#game"
+                href="game2/index.html"
                 class="btn secondary"
             >
-                EXPLORE GAME
+                ☠ DEADZONE
             </a>
 
         </div>
@@ -1033,26 +1166,28 @@ footer strong{
 </section>
 
 
-<!-- STATS -->
+<!-- =========================
+     STATS
+========================= -->
 
 <div class="stats">
 
     <div class="stat">
 
-        <strong>∞</strong>
+        <strong>02</strong>
 
         <span>
-            ENDLESS COMBAT
+            PLAYABLE GAMES
         </span>
 
     </div>
 
     <div class="stat">
 
-        <strong>⚡</strong>
+        <strong>∞</strong>
 
         <span>
-            FAST-PACED ACTION
+            BATTLEFIELD ACTION
         </span>
 
     </div>
@@ -1062,7 +1197,7 @@ footer strong{
         <strong>100%</strong>
 
         <span>
-            BROWSER GAME
+            BROWSER GAMING
         </span>
 
     </div>
@@ -1070,72 +1205,148 @@ footer strong{
 </div>
 
 
-<!-- GAME -->
+<!-- =========================
+     GAMES
+========================= -->
 
-<section id="game">
+<section id="games">
 
     <div class="section-title">
 
         <small>
-            THE MAIN EXPERIENCE
+            NEXUS GAME LIBRARY
         </small>
 
         <h2>
-            ENTER THE ARENA
+            CHOOSE YOUR GAME
         </h2>
 
         <p>
-            No installation. No launcher.
-            Just open the game and start fighting.
+            Two different worlds. Two different
+            challenges. Choose your battlefield
+            and start playing.
         </p>
 
     </div>
 
 
-    <div class="game-card">
+    <div class="games-container">
 
-        <div class="game-info">
 
-            <div class="game-tag">
-                NEXUS // WARRIOR ARENA
+        <!-- =====================
+             GAME 1
+        ====================== -->
+
+        <div class="game-card">
+
+            <div class="game-info">
+
+                <div class="game-tag">
+                    GAME 01 // NEXUS
+                </div>
+
+                <h3>
+                    WARRIOR
+                    <br>
+                    ARENA
+                </h3>
+
+                <p>
+                    Enter the futuristic arena and
+                    fight waves of enemies. Move,
+                    attack and survive as long as
+                    possible while chasing the
+                    highest score.
+                </p>
+
+                <a
+                    href="game/index.html"
+                    class="btn primary"
+                >
+                    ⚡ PLAY WARRIOR ARENA →
+                </a>
+
             </div>
 
-            <h3>
-                SURVIVE.
-                <br>
-                FIGHT.
-                <br>
-                DOMINATE.
-            </h3>
 
-            <p>
-                Control your warrior and fight endless
-                waves of enemies. Build your score,
-                unlock higher waves and try to beat
-                your personal best.
-            </p>
+            <div class="game-preview">
 
-            <a
-                href="game/index.html"
-                class="btn primary"
-            >
-                ENTER THE ARENA →
-            </a>
+                <div class="arena">
+
+                    <div class="warrior"></div>
+
+                    <div class="enemy one"></div>
+
+                    <div class="enemy two"></div>
+
+                    <div class="enemy three"></div>
+
+                </div>
+
+            </div>
 
         </div>
 
 
-        <div class="game-preview">
+        <div style="height:45px;"></div>
 
-            <div class="arena">
 
-                <div class="warrior"></div>
+        <!-- =====================
+             GAME 2
+        ====================== -->
 
-                <div class="enemy one"></div>
+        <div class="game-card">
 
-                <div class="enemy two"></div>
+            <div class="game-preview deadzone-preview">
 
-                <div class="enemy three"></div>
+                <div class="arena deadzone-arena">
+
+                    <div class="warrior zombie-core"></div>
+
+                    <div class="enemy zombie one"></div>
+
+                    <div class="enemy zombie two"></div>
+
+                    <div class="enemy zombie three"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="game-info">
+
+                <div class="game-tag red-tag">
+                    GAME 02 // DEADZONE
+                </div>
+
+                <h3>
+                    DEADZONE
+                    <br>
+                    ZOMBIE
+                    <br>
+                    PROTOCOL
+                </h3>
+
+                <p>
+                    Enter the infected zone.
+                    Fight dangerous zombies,
+                    reload your weapon, survive
+                    increasingly difficult levels
+                    and face powerful bosses.
+                </p>
+
+                <a
+                    href="game2/index.html"
+                    class="btn"
+                    style="
+                        background:#ff334d;
+                        color:white;
+                        box-shadow:0 0 25px #ff334d22;
+                    "
+                >
+                    ☠ PLAY DEADZONE →
+                </a>
 
             </div>
 
@@ -1146,7 +1357,9 @@ footer strong{
 </section>
 
 
-<!-- FEATURES -->
+<!-- =========================
+     FEATURES
+========================= -->
 
 <section id="features">
 
@@ -1161,14 +1374,15 @@ footer strong{
         </h2>
 
         <p>
-            Designed to make the arena feel fast,
-            challenging and immersive.
+            Everything you need for a futuristic
+            browser gaming experience.
         </p>
 
     </div>
 
 
     <div class="features">
+
 
         <div class="feature">
 
@@ -1177,12 +1391,13 @@ footer strong{
             </div>
 
             <h3>
-                FAST COMBAT
+                TWO GAMES
             </h3>
 
             <p>
-                Move quickly around the arena and
-                strike enemies with your warrior.
+                Switch between Warrior Arena
+                and Deadzone directly from
+                the NEXUS website.
             </p>
 
         </div>
@@ -1191,16 +1406,34 @@ footer strong{
         <div class="feature">
 
             <div class="icon">
-                ∞
+                ⚡
             </div>
 
             <h3>
-                WAVE SYSTEM
+                FAST COMBAT
             </h3>
 
             <p>
-                Enemy waves become progressively
-                more difficult as your score rises.
+                Quick movement, intense battles
+                and progressively harder enemies.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">
+                ☠
+            </div>
+
+            <h3>
+                ZOMBIE MODE
+            </h3>
+
+            <p>
+                Deadzone features zombie enemies,
+                weapons, levels and boss battles.
             </p>
 
         </div>
@@ -1217,26 +1450,8 @@ footer strong{
             </h3>
 
             <p>
-                Combat sounds and atmospheric effects
-                make the arena more immersive.
-            </p>
-
-        </div>
-
-
-        <div class="feature">
-
-            <div class="icon">
-                📱
-            </div>
-
-            <h3>
-                MOBILE READY
-            </h3>
-
-            <p>
-                Touch controls let you play on phones
-                and tablets as well as computers.
+                Games can contain their own
+                sound effects and atmospheric audio.
             </p>
 
         </div>
@@ -1253,8 +1468,8 @@ footer strong{
             </h3>
 
             <p>
-                Your best score is saved in your browser
-                so you can keep trying to beat it.
+                Fight for a higher score and
+                challenge yourself to improve.
             </p>
 
         </div>
@@ -1263,16 +1478,16 @@ footer strong{
         <div class="feature">
 
             <div class="icon">
-                ☠
+                🎮
             </div>
 
             <h3>
-                JUMPSCARE
+                BROWSER GAMING
             </h3>
 
             <p>
-                Lose the battle and discover what waits
-                for fallen warriors.
+                Launch the games directly from
+                your NEXUS website.
             </p>
 
         </div>
@@ -1282,7 +1497,9 @@ footer strong{
 </section>
 
 
-<!-- HOW TO PLAY -->
+<!-- =========================
+     HOW TO PLAY
+========================= -->
 
 <section id="how">
 
@@ -1301,6 +1518,7 @@ footer strong{
 
     <div class="how">
 
+
         <div class="step">
 
             <div class="number">
@@ -1308,11 +1526,11 @@ footer strong{
             </div>
 
             <h3>
-                ENTER
+                CHOOSE
             </h3>
 
             <p>
-                Click PLAY NOW to launch NEXUS.
+                Select Warrior Arena or Deadzone.
             </p>
 
         </div>
@@ -1325,11 +1543,12 @@ footer strong{
             </div>
 
             <h3>
-                SURVIVE
+                PLAY
             </h3>
 
             <p>
-                Move, attack and avoid incoming enemies.
+                Use the controls shown inside
+                your selected game.
             </p>
 
         </div>
@@ -1342,11 +1561,12 @@ footer strong{
             </div>
 
             <h3>
-                DOMINATE
+                SURVIVE
             </h3>
 
             <p>
-                Destroy enemies and chase the highest score.
+                Defeat enemies and try to
+                reach the highest level.
             </p>
 
         </div>
@@ -1356,45 +1576,71 @@ footer strong{
 </section>
 
 
-<!-- FINAL CTA -->
+<!-- =========================
+     FINAL CTA
+========================= -->
 
 <div class="cta">
 
     <h2>
-        THE ARENA IS WAITING.
+        CHOOSE YOUR BATTLEFIELD.
     </h2>
 
     <p>
-        Think you can survive?
+        Two games. One NEXUS.
     </p>
 
-    <a
-        href="game/index.html"
-        class="btn primary"
-    >
-        ⚡ START PLAYING
-    </a>
+
+    <div class="buttons">
+
+        <a
+            href="game/index.html"
+            class="btn primary"
+        >
+            ⚡ WARRIOR ARENA
+        </a>
+
+        <a
+            href="game2/index.html"
+            class="btn"
+            style="
+                background:#ff334d;
+                color:white;
+            "
+        >
+            ☠ DEADZONE
+        </a>
+
+    </div>
 
 </div>
 
 
-<!-- FOOTER -->
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
 
     <div>
+
         © 2026
-        <strong>NEXUS</strong>
+
+        <strong>
+            NEXUS
+        </strong>
+
         Gaming
+
     </div>
 
     <div>
-        WARRIOR ARENA • BROWSER GAME
+        WARRIOR ARENA • DEADZONE
     </div>
 
 </footer>
 
 
 </body>
+
 </html>
-```
