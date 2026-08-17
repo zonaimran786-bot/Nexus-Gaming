@@ -742,13 +742,31 @@ function updateCar(dt){
   car.rotation.z = -steer * .09;
   car.rotation.y = steer * .05;
 
+  // FIXED CAMERA AND WORLD RECYCLING TO FOLLOW THE CAR DYNAMICALLY:
+  camera.position.x = car.position.x * 0.5;
+  camera.position.y = car.position.y + 4.2;
+  camera.position.z = car.position.z + 10;
+  camera.lookAt(car.position.x * 0.3, car.position.y + 1.2, car.position.z - 6);
+
   recycleWorld();
   updateHUD();
 }
 
 function recycleWorld(){
-  for(const seg of roadSegments) if(seg.position.z - car.position.z > 100) seg.position.z -= 1400;
-  for(const g of buildingSegments) if(g.position.z - car.position.z > 150) g.position.z -= 1260;
+  for(const seg of roadSegments) {
+    if(seg.position.z - car.position.z > 60) {
+      seg.position.z -= 1400;
+    } else if(seg.position.z - car.position.z < -1340) {
+      seg.position.z += 1400;
+    }
+  }
+  for(const g of buildingSegments) {
+    if(g.position.z - car.position.z > 80) {
+      g.position.z -= 1260;
+    } else if(g.position.z - car.position.z < -1180) {
+      g.position.z += 1260;
+    }
+  }
 }
 
 function updateRivals(dt){
