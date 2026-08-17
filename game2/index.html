@@ -69,6 +69,90 @@ button:hover{transform:translateY(-2px);filter:brightness(1.15)}
  .panel{padding:32px 20px}
 }
 @media(min-width:801px){#touch{display:none}}
+
+/* ===== CHECKPOINT TIMER / ZOMBIE ROBOT SYSTEM ===== */
+#checkpointTimer{
+    position:fixed;
+    top:145px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:35;
+    min-width:220px;
+    padding:10px 18px;
+    border:1px solid #00eaff66;
+    border-radius:12px;
+    background:rgba(2,7,12,.88);
+    box-shadow:0 0 25px #00eaff18;
+    text-align:center;
+    color:#fff;
+    font-weight:800;
+    letter-spacing:1px;
+    display:none;
+}
+#checkpointTimer .timer-label{
+    display:block;
+    color:#8b9aaa;
+    font-size:9px;
+    letter-spacing:3px;
+    margin-bottom:4px;
+}
+#checkpointTime{
+    font-family:Arial,sans-serif;
+    font-size:25px;
+    color:#ffdf6b;
+}
+#checkpointDistance{
+    display:block;
+    margin-top:3px;
+    color:#7f91a5;
+    font-size:10px;
+}
+#checkpointTimer.danger{
+    border-color:#ff334d99;
+    box-shadow:0 0 35px #ff334d22;
+}
+#checkpointTimer.danger #checkpointTime{
+    color:#ff334d;
+    animation:timerPulse .5s infinite alternate;
+}
+@keyframes timerPulse{
+    from{transform:scale(1)}
+    to{transform:scale(1.08)}
+}
+
+#zombieWarning{
+    position:fixed;
+    left:50%;
+    top:52%;
+    transform:translate(-50%,-50%) scale(.8);
+    z-index:45;
+    pointer-events:none;
+    opacity:0;
+    padding:18px 30px;
+    border:1px solid #7cff4f88;
+    border-radius:14px;
+    background:rgba(2,10,4,.9);
+    color:#7cff4f;
+    font-family:Arial,sans-serif;
+    font-size:14px;
+    font-weight:900;
+    letter-spacing:4px;
+    box-shadow:0 0 45px #7cff4f22;
+}
+#zombieWarning.show{
+    animation:zombieWarn .9s ease-out forwards;
+}
+@keyframes zombieWarn{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.65)}
+    20%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}
+    70%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(1)}
+}
+
+.zombie-target{
+    position:relative;
+}
+
 </style>
 </head>
 <body>
@@ -129,6 +213,15 @@ button:hover{transform:translateY(-2px);filter:brightness(1.15)}
 </div>
 
 <div id="crosshair"></div>
+
+<div id="checkpointTimer">
+    <span class="timer-label">CHECKPOINT DEADLINE</span>
+    <span id="checkpointTime">30.0</span>
+    <span id="checkpointDistance">CHECKPOINT AHEAD</span>
+</div>
+
+<div id="zombieWarning">⚠ ZOMBIE ROBOT ACTIVATED ⚠</div>
+
 <div id="damage"></div>
 
 <div id="checkpointBanner">
