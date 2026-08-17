@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NEXUS // Gaming Hub</title>
+<title>NEON DRIVE // 3D Street Racing</title>
 
 <style>
 
@@ -23,15 +23,15 @@ html{
 }
 
 body{
-    background:#03050a;
+    background:#020509;
     color:white;
     font-family:Poppins,sans-serif;
     overflow-x:hidden;
 }
 
-/* =========================
+/* =========================================================
    BACKGROUND
-========================= */
+========================================================= */
 
 body::before{
     content:"";
@@ -42,19 +42,24 @@ body::before{
     background:
         radial-gradient(
             circle at 20% 20%,
-            #00eaff12,
+            #00eaff18,
             transparent 30%
         ),
         radial-gradient(
             circle at 80% 70%,
-            #8b5cf612,
+            #0055ff15,
             transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            #8b5cf610,
+            transparent 35%
         ),
         linear-gradient(
             135deg,
-            #03050a,
-            #07101a,
-            #03050a
+            #020509,
+            #07131c,
+            #020509
         );
 }
 
@@ -80,15 +85,34 @@ body::before{
         linear-gradient(
             to bottom,
             black,
-            transparent 85%
+            transparent 90%
         );
 
     pointer-events:none;
 }
 
-/* =========================
+/* =========================================================
+   SCANLINES
+========================================================= */
+
+.scanlines{
+    position:fixed;
+    inset:0;
+    z-index:999;
+    pointer-events:none;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0px,
+            transparent 3px,
+            rgba(0,234,255,.018) 4px
+        );
+}
+
+/* =========================================================
    NAVBAR
-========================= */
+========================================================= */
 
 header{
     position:fixed;
@@ -104,7 +128,7 @@ header{
 
     padding:0 6%;
 
-    background:#03050add;
+    background:#020509dd;
 
     border-bottom:1px solid #ffffff12;
 
@@ -156,11 +180,14 @@ nav a:hover{
     padding:10px 18px;
 
     border-radius:6px;
+
+    box-shadow:
+        0 0 20px #00eaff22;
 }
 
-/* =========================
+/* =========================================================
    HERO
-========================= */
+========================================================= */
 
 .hero{
     min-height:100vh;
@@ -206,13 +233,16 @@ nav a:hover{
     letter-spacing:4px;
 
     margin-bottom:24px;
+
+    box-shadow:
+        0 0 25px #00eaff08;
 }
 
 .hero h1{
     font-family:Orbitron;
 
     font-size:clamp(
-        55px,
+        50px,
         10vw,
         115px
     );
@@ -274,6 +304,8 @@ nav a:hover{
     transition:.25s;
 
     cursor:pointer;
+
+    border:none;
 }
 
 .primary{
@@ -289,7 +321,7 @@ nav a:hover{
     transform:translateY(-4px);
 
     box-shadow:
-        0 0 40px #00eaff55;
+        0 0 40px #00eaff66;
 }
 
 .secondary{
@@ -308,9 +340,34 @@ nav a:hover{
     transform:translateY(-4px);
 }
 
-/* =========================
+/* =========================================================
+   PRICE BUTTON
+========================================================= */
+
+.price-btn{
+    color:white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0c8cff,
+            #00eaff
+        );
+
+    box-shadow:
+        0 0 25px #00eaff25;
+}
+
+.price-btn:hover{
+    transform:translateY(-4px) scale(1.02);
+
+    box-shadow:
+        0 0 45px #00eaff55;
+}
+
+/* =========================================================
    FLOATING CORE
-========================= */
+========================================================= */
 
 .core{
     position:absolute;
@@ -339,11 +396,14 @@ nav a:hover{
 
     border-radius:50%;
 
-    border:1px solid #8b5cf633;
+    border:1px solid #008cff33;
+
+    box-shadow:
+        0 0 60px #00eaff08;
 }
 
 .core::after{
-    content:"N";
+    content:"ND";
 
     position:absolute;
 
@@ -361,7 +421,7 @@ nav a:hover{
 
     font-family:Orbitron;
 
-    font-size:90px;
+    font-size:55px;
 
     font-weight:900;
 
@@ -388,9 +448,60 @@ nav a:hover{
     }
 }
 
-/* =========================
+/* =========================================================
+   ROAD DECORATION
+========================================================= */
+
+.road-lines{
+    position:absolute;
+
+    bottom:-50px;
+    left:50%;
+
+    width:600px;
+    height:250px;
+
+    transform:
+        translateX(-50%)
+        perspective(250px)
+        rotateX(55deg);
+
+    opacity:.5;
+}
+
+.road-lines::before,
+.road-lines::after{
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    bottom:0;
+
+    width:2px;
+
+    background:
+        linear-gradient(
+            transparent,
+            #00eaff,
+            transparent
+        );
+
+    box-shadow:
+        0 0 15px #00eaff;
+}
+
+.road-lines::before{
+    left:25%;
+}
+
+.road-lines::after{
+    right:25%;
+}
+
+/* =========================================================
    SCROLL
-========================= */
+========================================================= */
 
 .scroll{
     position:absolute;
@@ -424,12 +535,12 @@ nav a:hover{
     background:#00eaff55;
 }
 
-/* =========================
+/* =========================================================
    STATS
-========================= */
+========================================================= */
 
 .stats{
-    max-width:1000px;
+    max-width:1100px;
 
     margin:-30px auto 100px;
 
@@ -438,7 +549,7 @@ nav a:hover{
     display:grid;
 
     grid-template-columns:
-        repeat(3,1fr);
+        repeat(4,1fr);
 
     gap:15px;
 }
@@ -455,6 +566,14 @@ nav a:hover{
     border-radius:12px;
 
     backdrop-filter:blur(10px);
+
+    transition:.3s;
+}
+
+.stat:hover{
+    transform:translateY(-5px);
+
+    border-color:#00eaff44;
 }
 
 .stat strong{
@@ -475,9 +594,9 @@ nav a:hover{
     letter-spacing:1px;
 }
 
-/* =========================
+/* =========================================================
    SECTIONS
-========================= */
+========================================================= */
 
 section{
     padding:100px 7%;
@@ -490,7 +609,7 @@ section{
 }
 
 .section-title small{
-    color:#8b5cf6;
+    color:#00eaff;
 
     font-family:Orbitron;
 
@@ -508,7 +627,7 @@ section{
 }
 
 .section-title p{
-    max-width:600px;
+    max-width:650px;
 
     margin:15px auto;
 
@@ -519,9 +638,9 @@ section{
     line-height:1.7;
 }
 
-/* =========================
-   GAME CARDS
-========================= */
+/* =========================================================
+   GAME SHOWCASE
+========================================================= */
 
 .games-container{
     max-width:1100px;
@@ -530,7 +649,7 @@ section{
 }
 
 .game-card{
-    min-height:470px;
+    min-height:500px;
 
     display:grid;
 
@@ -582,10 +701,6 @@ section{
     margin-bottom:18px;
 }
 
-.red-tag{
-    color:#ff334d;
-}
-
 .game-info h3{
     font-family:Orbitron;
 
@@ -610,14 +725,14 @@ section{
     margin-top:27px;
 }
 
-/* =========================
-   GAME PREVIEW
-========================= */
+/* =========================================================
+   CAR PREVIEW
+========================================================= */
 
 .game-preview{
     position:relative;
 
-    min-height:470px;
+    min-height:500px;
 
     display:grid;
 
@@ -631,169 +746,278 @@ section{
             #00eaff18,
             transparent 38%
         ),
-        #04070c;
+        linear-gradient(
+            180deg,
+            #02070d,
+            #07141d
+        );
 }
 
-.deadzone-preview{
-    background:
-        radial-gradient(
-            circle at center,
-            #ff334d18,
-            transparent 38%
-        ),
-        #070303;
+.city{
+    position:absolute;
+
+    inset:0;
+
+    opacity:.7;
 }
 
-/* =========================
-   ARENA
-========================= */
+.city span{
+    position:absolute;
 
-.arena{
-    position:relative;
+    bottom:0;
 
-    width:280px;
-    height:280px;
+    width:40px;
 
-    border-radius:50%;
+    background:#07111b;
 
-    border:1px solid #00eaff55;
+    border:1px solid #00eaff12;
 
     box-shadow:
-        0 0 30px #00eaff22,
-        inset 0 0 60px #00eaff12;
-
-    animation:
-        rotateArena 18s linear infinite;
+        inset 0 0 20px #00eaff05;
 }
 
-.arena::before,
-.arena::after{
+.city span:nth-child(1){
+    left:3%;
+    height:45%;
+}
+
+.city span:nth-child(2){
+    left:12%;
+    height:65%;
+}
+
+.city span:nth-child(3){
+    left:23%;
+    height:35%;
+}
+
+.city span:nth-child(4){
+    left:34%;
+    height:75%;
+}
+
+.city span:nth-child(5){
+    right:5%;
+    height:55%;
+}
+
+.city span:nth-child(6){
+    right:16%;
+    height:75%;
+}
+
+.city span:nth-child(7){
+    right:29%;
+    height:42%;
+}
+
+.city span:nth-child(8){
+    right:40%;
+    height:63%;
+}
+
+/* ROAD */
+
+.preview-road{
+    position:absolute;
+
+    bottom:-80px;
+    left:50%;
+
+    width:470px;
+    height:330px;
+
+    transform:
+        translateX(-50%)
+        perspective(300px)
+        rotateX(55deg);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 48%,
+            #ffffff55 49%,
+            #ffffff55 51%,
+            transparent 52%
+        ),
+        #111820;
+
+    border-left:
+        3px solid #00eaff55;
+
+    border-right:
+        3px solid #00eaff55;
+
+    box-shadow:
+        0 0 50px #00eaff12;
+}
+
+/* CAR */
+
+.preview-car{
+    position:absolute;
+
+    bottom:70px;
+    left:50%;
+
+    width:130px;
+    height:230px;
+
+    transform:
+        translateX(-50%);
+
+    filter:
+        drop-shadow(
+            0 0 20px #00eaff55
+        );
+
+    animation:
+        carFloat 2s ease-in-out infinite;
+}
+
+.car-body{
+    position:absolute;
+
+    left:10px;
+    right:10px;
+
+    top:45px;
+    bottom:15px;
+
+    border-radius:
+        25px
+        25px
+        18px
+        18px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #0758c7,
+            #00aaff,
+            #0758c7
+        );
+
+    border:1px solid #61eaff88;
+
+    box-shadow:
+        inset 0 0 25px #ffffff15,
+        0 0 20px #00eaff55;
+}
+
+.car-window{
+    position:absolute;
+
+    left:30px;
+    right:30px;
+
+    top:60px;
+
+    height:70px;
+
+    border-radius:18px 18px 8px 8px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #10283c,
+            #02070c
+        );
+
+    border:1px solid #8beeff44;
+}
+
+.car-window::after{
     content:"";
 
     position:absolute;
 
-    inset:30px;
-
-    border-radius:50%;
-
-    border:1px solid #8b5cf655;
-}
-
-.arena::after{
-    inset:75px;
-
-    border-color:#00eaff77;
-}
-
-.deadzone-arena{
-    border-color:#ff334d55;
-
-    box-shadow:
-        0 0 30px #ff334d22,
-        inset 0 0 60px #ff334d12;
-}
-
-.deadzone-arena::before{
-    border-color:#ff334d55;
-}
-
-.deadzone-arena::after{
-    border-color:#ff334d77;
-}
-
-.warrior{
-    position:absolute;
-
-    top:50%;
     left:50%;
 
-    width:55px;
-    height:55px;
+    top:0;
+    bottom:0;
 
-    transform:
-        translate(-50%,-50%);
+    width:1px;
 
-    border-radius:50%;
-
-    background:#00eaff;
-
-    box-shadow:
-        0 0 20px #00eaff,
-        0 0 70px #00eaff66;
+    background:#00eaff55;
 }
 
-.zombie-core{
-    background:#ff334d;
-
-    box-shadow:
-        0 0 20px #ff334d,
-        0 0 70px #ff334d66;
-}
-
-.enemy{
+.car-light{
     position:absolute;
 
-    width:25px;
-    height:25px;
+    width:27px;
+    height:8px;
 
-    border-radius:50%;
+    top:35px;
 
-    background:#ff3655;
+    border-radius:10px;
 
-    box-shadow:
-        0 0 18px #ff3655;
-
-    animation:
-        enemyFloat 2s ease-in-out infinite;
-}
-
-.zombie{
-    background:#7cff4f;
+    background:white;
 
     box-shadow:
-        0 0 18px #7cff4f;
+        0 0 15px white,
+        0 0 35px #00eaff;
 }
 
-.enemy.one{
-    top:20px;
-    left:130px;
+.car-light.left{
+    left:18px;
 }
 
-.enemy.two{
-    bottom:50px;
-    left:35px;
-
-    animation-delay:.5s;
+.car-light.right{
+    right:18px;
 }
 
-.enemy.three{
-    bottom:35px;
-    right:35px;
+.car-wheel{
+    position:absolute;
 
-    animation-delay:1s;
+    width:20px;
+    height:58px;
+
+    background:#020202;
+
+    border-radius:8px;
+
+    border:1px solid #27313a;
 }
 
-@keyframes rotateArena{
-
-    to{
-        transform:rotate(360deg);
-    }
+.car-wheel.left{
+    left:0;
+    top:70px;
 }
 
-@keyframes enemyFloat{
+.car-wheel.right{
+    right:0;
+    top:70px;
+}
+
+.car-wheel.left2{
+    left:0;
+    bottom:40px;
+}
+
+.car-wheel.right2{
+    right:0;
+    bottom:40px;
+}
+
+@keyframes carFloat{
 
     0%,100%{
-        transform:translateY(0);
+        transform:
+            translateX(-50%)
+            translateY(0);
     }
 
     50%{
-        transform:translateY(-12px);
+        transform:
+            translateX(-50%)
+            translateY(-8px);
     }
 }
 
-/* =========================
+/* =========================================================
    FEATURES
-========================= */
+========================================================= */
 
 .features{
     max-width:1100px;
@@ -866,19 +1090,19 @@ section{
     line-height:1.7;
 }
 
-/* =========================
+/* =========================================================
    HOW TO PLAY
-========================= */
+========================================================= */
 
 .how{
-    max-width:900px;
+    max-width:1000px;
 
     margin:auto;
 
     display:grid;
 
     grid-template-columns:
-        repeat(3,1fr);
+        repeat(4,1fr);
 
     gap:25px;
 }
@@ -908,6 +1132,15 @@ section{
     font-family:Orbitron;
 
     font-weight:800;
+
+    transition:.3s;
+}
+
+.step:hover .number{
+    border-color:#00eaff;
+
+    box-shadow:
+        0 0 25px #00eaff22;
 }
 
 .step h3{
@@ -924,9 +1157,91 @@ section{
     margin-top:8px;
 }
 
-/* =========================
+/* =========================================================
+   PURCHASE
+========================================================= */
+
+.purchase{
+    max-width:1000px;
+
+    margin:40px auto 100px;
+
+    padding:70px 30px;
+
+    text-align:center;
+
+    border-radius:20px;
+
+    border:1px solid #00eaff33;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #00eaff12,
+            transparent 60%
+        ),
+        #080d15;
+
+    box-shadow:
+        0 30px 100px #000;
+}
+
+.purchase-label{
+    color:#00eaff;
+
+    font-family:Orbitron;
+
+    font-size:10px;
+
+    letter-spacing:4px;
+}
+
+.purchase h2{
+    margin-top:12px;
+
+    font-family:Orbitron;
+
+    font-size:40px;
+}
+
+.price{
+    margin:20px 0;
+
+    font-family:Orbitron;
+
+    font-size:54px;
+
+    font-weight:900;
+
+    color:#00eaff;
+
+    text-shadow:
+        0 0 25px #00eaff55;
+}
+
+.purchase p{
+    max-width:600px;
+
+    margin:0 auto 25px;
+
+    color:#7e8a9c;
+
+    line-height:1.8;
+
+    font-size:13px;
+}
+
+.purchase-note{
+    margin-top:15px;
+
+    color:#566174;
+
+    font-size:10px;
+}
+
+/* =========================================================
    CTA
-========================= */
+========================================================= */
 
 .cta{
     max-width:1000px;
@@ -962,9 +1277,9 @@ section{
     margin:15px auto 25px;
 }
 
-/* =========================
+/* =========================================================
    FOOTER
-========================= */
+========================================================= */
 
 footer{
     display:flex;
@@ -988,9 +1303,23 @@ footer strong{
     font-family:Orbitron;
 }
 
-/* =========================
-   MOBILE
-========================= */
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:900px){
+
+    .stats{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .how{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+}
 
 @media(max-width:800px){
 
@@ -1013,7 +1342,7 @@ footer strong{
 
     .core::after{
         inset:90px;
-        font-size:65px;
+        font-size:42px;
     }
 
     .stats{
@@ -1027,7 +1356,7 @@ footer strong{
     }
 
     .game-preview{
-        min-height:350px;
+        min-height:390px;
 
         order:-1;
     }
@@ -1044,6 +1373,14 @@ footer strong{
         grid-template-columns:1fr;
 
         gap:45px;
+    }
+
+    .purchase h2{
+        font-size:28px;
+    }
+
+    .price{
+        font-size:45px;
     }
 
     .cta h2{
@@ -1069,15 +1406,17 @@ footer strong{
 
 <div class="grid"></div>
 
+<div class="scanlines"></div>
 
-<!-- =========================
+
+<!-- ======================================================
      NAVIGATION
-========================= -->
+====================================================== -->
 
 <header>
 
     <div class="logo">
-        NEXUS<span>//</span>
+        NEON<span>//</span>
     </div>
 
     <nav>
@@ -1086,8 +1425,8 @@ footer strong{
             HOME
         </a>
 
-        <a href="#games">
-            GAMES
+        <a href="#game">
+            GAME
         </a>
 
         <a href="#features">
@@ -1100,9 +1439,9 @@ footer strong{
 
         <a
             class="nav-play"
-            href="#games"
+            href="#purchase"
         >
-            PLAY NOW
+            UNLOCK
         </a>
 
     </nav>
@@ -1110,9 +1449,9 @@ footer strong{
 </header>
 
 
-<!-- =========================
+<!-- ======================================================
      HERO
-========================= -->
+====================================================== -->
 
 <section
     class="hero"
@@ -1121,22 +1460,25 @@ footer strong{
 
     <div class="core"></div>
 
+    <div class="road-lines"></div>
+
     <div class="hero-content">
 
         <div class="badge">
-            NEXT GENERATION BROWSER GAMING
+            NEXT GENERATION 3D STREET RACING
         </div>
 
         <h1>
-            NEXUS
+            NEON
             <br>
-            <span>GAMING</span>
+            <span>DRIVE</span>
         </h1>
 
         <p>
-            Enter the NEXUS gaming network.
-            Choose your world, enter the battlefield
-            and prove that you have what it takes to survive.
+            Enter a futuristic city at night.
+            Push your car to maximum speed,
+            dodge traffic, survive collisions
+            and chase the highest distance score.
         </p>
 
         <div class="buttons">
@@ -1145,14 +1487,14 @@ footer strong{
                 href="game/index.html"
                 class="btn primary"
             >
-                ⚡ WARRIOR ARENA
+                ⚡ PLAY NEON DRIVE
             </a>
 
             <a
-                href="game2/index.html"
+                href="#purchase"
                 class="btn secondary"
             >
-                ☠ DEADZONE
+                $28.99 UNLOCK
             </a>
 
         </div>
@@ -1166,18 +1508,38 @@ footer strong{
 </section>
 
 
-<!-- =========================
+<!-- ======================================================
      STATS
-========================= -->
+====================================================== -->
 
 <div class="stats">
 
     <div class="stat">
 
-        <strong>02</strong>
+        <strong>3D</strong>
 
         <span>
-            PLAYABLE GAMES
+            REAL-TIME GRAPHICS
+        </span>
+
+    </div>
+
+    <div class="stat">
+
+        <strong>65</strong>
+
+        <span>
+            MAX SPEED
+        </span>
+
+    </div>
+
+    <div class="stat">
+
+        <strong>12+</strong>
+
+        <span>
+            TRAFFIC CARS
         </span>
 
     </div>
@@ -1187,17 +1549,7 @@ footer strong{
         <strong>∞</strong>
 
         <span>
-            BATTLEFIELD ACTION
-        </span>
-
-    </div>
-
-    <div class="stat">
-
-        <strong>100%</strong>
-
-        <span>
-            BROWSER GAMING
+            ENDLESS ROAD
         </span>
 
     </div>
@@ -1205,26 +1557,27 @@ footer strong{
 </div>
 
 
-<!-- =========================
-     GAMES
-========================= -->
+<!-- ======================================================
+     GAME
+====================================================== -->
 
-<section id="games">
+<section id="game">
 
     <div class="section-title">
 
         <small>
-            NEXUS GAME LIBRARY
+            NEON DRIVE // GAME SYSTEM
         </small>
 
         <h2>
-            CHOOSE YOUR GAME
+            ENTER THE CITY
         </h2>
 
         <p>
-            Two different worlds. Two different
-            challenges. Choose your battlefield
-            and start playing.
+            A fast-paced browser racing experience
+            featuring a futuristic city, traffic,
+            rain, lighting, collisions and dynamic
+            driving controls.
         </p>
 
     </div>
@@ -1233,120 +1586,83 @@ footer strong{
     <div class="games-container">
 
 
-        <!-- =====================
-             GAME 1
-        ====================== -->
-
         <div class="game-card">
+
 
             <div class="game-info">
 
                 <div class="game-tag">
-                    GAME 01 // NEXUS
+                    GAME 01 // STREET RACING
                 </div>
 
                 <h3>
-                    WARRIOR
+                    NEON
                     <br>
-                    ARENA
+                    DRIVE
                 </h3>
 
                 <p>
-                    Enter the futuristic arena and
-                    fight waves of enemies. Move,
-                    attack and survive as long as
-                    possible while chasing the
-                    highest score.
+                    Take control of a powerful sports car
+                    and race through a dark futuristic city.
+                    Accelerate, brake and steer through
+                    traffic while building your distance.
+                </p>
+
+                <p style="margin-top:15px;">
+                    Dynamic headlights, engine audio,
+                    rain effects, traffic vehicles,
+                    collision damage and a live speedometer
+                    make every drive different.
                 </p>
 
                 <a
                     href="game/index.html"
                     class="btn primary"
                 >
-                    ⚡ PLAY WARRIOR ARENA →
+                    ⚡ START DRIVING →
                 </a>
 
             </div>
 
+
+            <!-- CAR PREVIEW -->
 
             <div class="game-preview">
 
-                <div class="arena">
+                <div class="city">
 
-                    <div class="warrior"></div>
-
-                    <div class="enemy one"></div>
-
-                    <div class="enemy two"></div>
-
-                    <div class="enemy three"></div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div style="height:45px;"></div>
-
-
-        <!-- =====================
-             GAME 2
-        ====================== -->
-
-        <div class="game-card">
-
-            <div class="game-preview deadzone-preview">
-
-                <div class="arena deadzone-arena">
-
-                    <div class="warrior zombie-core"></div>
-
-                    <div class="enemy zombie one"></div>
-
-                    <div class="enemy zombie two"></div>
-
-                    <div class="enemy zombie three"></div>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
 
                 </div>
 
-            </div>
+
+                <div class="preview-road"></div>
 
 
-            <div class="game-info">
+                <div class="preview-car">
 
-                <div class="game-tag red-tag">
-                    GAME 02 // DEADZONE
+                    <div class="car-body"></div>
+
+                    <div class="car-window"></div>
+
+                    <div class="car-light left"></div>
+
+                    <div class="car-light right"></div>
+
+                    <div class="car-wheel left"></div>
+                    <div class="car-wheel right"></div>
+
+                    <div class="car-wheel left2"></div>
+                    <div class="car-wheel right2"></div>
+
                 </div>
-
-                <h3>
-                    DEADZONE
-                    <br>
-                    ZOMBIE
-                    <br>
-                    PROTOCOL
-                </h3>
-
-                <p>
-                    Enter the infected zone.
-                    Fight dangerous zombies,
-                    reload your weapon, survive
-                    increasingly difficult levels
-                    and face powerful bosses.
-                </p>
-
-                <a
-                    href="game2/index.html"
-                    class="btn"
-                    style="
-                        background:#ff334d;
-                        color:white;
-                        box-shadow:0 0 25px #ff334d22;
-                    "
-                >
-                    ☠ PLAY DEADZONE →
-                </a>
 
             </div>
 
@@ -1357,16 +1673,16 @@ footer strong{
 </section>
 
 
-<!-- =========================
+<!-- ======================================================
      FEATURES
-========================= -->
+====================================================== -->
 
 <section id="features">
 
     <div class="section-title">
 
         <small>
-            NEXUS SYSTEM
+            NEON DRIVE SYSTEM
         </small>
 
         <h2>
@@ -1374,8 +1690,8 @@ footer strong{
         </h2>
 
         <p>
-            Everything you need for a futuristic
-            browser gaming experience.
+            Everything included in the NEON DRIVE
+            street-racing experience.
         </p>
 
     </div>
@@ -1387,17 +1703,92 @@ footer strong{
         <div class="feature">
 
             <div class="icon">
-                ⚔
+                🚗
             </div>
 
             <h3>
-                TWO GAMES
+                3D SPORTS CAR
             </h3>
 
             <p>
-                Switch between Warrior Arena
-                and Deadzone directly from
-                the NEXUS website.
+                Drive a detailed futuristic sports car
+                with body panels, cabin, roof,
+                wheels, headlights and tail lights.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">
+                🌃
+            </div>
+
+            <h3>
+                FUTURISTIC CITY
+            </h3>
+
+            <p>
+                Race through a large nighttime city
+                surrounded by buildings, streets,
+                sidewalks and trees.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">
+                🌧
+            </div>
+
+            <h3>
+                DYNAMIC RAIN
+            </h3>
+
+            <p>
+                Atmospheric rain particles fall around
+                the car while you race through the
+                dark city.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">
+                🚦
+            </div>
+
+            <h3>
+                TRAFFIC SYSTEM
+            </h3>
+
+            <p>
+                Avoid multiple AI traffic cars traveling
+                through different lanes of the road.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="icon">
+                💥
+            </div>
+
+            <h3>
+                COLLISION DAMAGE
+            </h3>
+
+            <p>
+                Hitting traffic damages your vehicle
+                and reduces your health. Drive carefully
+                to keep your car alive.
             </p>
 
         </div>
@@ -1410,12 +1801,13 @@ footer strong{
             </div>
 
             <h3>
-                FAST COMBAT
+                LIVE SPEED SYSTEM
             </h3>
 
             <p>
-                Quick movement, intense battles
-                and progressively harder enemies.
+                Watch your speed, gear and driving
+                distance update in real time as you
+                accelerate through the city.
             </p>
 
         </div>
@@ -1424,16 +1816,17 @@ footer strong{
         <div class="feature">
 
             <div class="icon">
-                ☠
+                🔊
             </div>
 
             <h3>
-                ZOMBIE MODE
+                ENGINE AUDIO
             </h3>
 
             <p>
-                Deadzone features zombie enemies,
-                weapons, levels and boss battles.
+                The game dynamically changes engine
+                audio as your car accelerates and
+                reaches higher speeds.
             </p>
 
         </div>
@@ -1442,16 +1835,17 @@ footer strong{
         <div class="feature">
 
             <div class="icon">
-                ♫
+                💡
             </div>
 
             <h3>
-                SOUND EFFECTS
+                NIGHT HEADLIGHTS
             </h3>
 
             <p>
-                Games can contain their own
-                sound effects and atmospheric audio.
+                Powerful headlights illuminate the
+                road ahead while you drive through
+                the dark environment.
             </p>
 
         </div>
@@ -1460,34 +1854,16 @@ footer strong{
         <div class="feature">
 
             <div class="icon">
-                ★
+                🏁
             </div>
 
             <h3>
-                HIGH SCORE
+                DISTANCE SCORE
             </h3>
 
             <p>
-                Fight for a higher score and
-                challenge yourself to improve.
-            </p>
-
-        </div>
-
-
-        <div class="feature">
-
-            <div class="icon">
-                🎮
-            </div>
-
-            <h3>
-                BROWSER GAMING
-            </h3>
-
-            <p>
-                Launch the games directly from
-                your NEXUS website.
+                Keep driving and increase your distance.
+                Try to beat your previous record.
             </p>
 
         </div>
@@ -1497,9 +1873,9 @@ footer strong{
 </section>
 
 
-<!-- =========================
+<!-- ======================================================
      HOW TO PLAY
-========================= -->
+====================================================== -->
 
 <section id="how">
 
@@ -1510,8 +1886,12 @@ footer strong{
         </small>
 
         <h2>
-            HOW TO PLAY
+            HOW TO DRIVE
         </h2>
+
+        <p>
+            Master the controls and survive the traffic.
+        </p>
 
     </div>
 
@@ -1526,11 +1906,11 @@ footer strong{
             </div>
 
             <h3>
-                CHOOSE
+                ACCELERATE
             </h3>
 
             <p>
-                Select Warrior Arena or Deadzone.
+                Press W or ↑ to increase your speed.
             </p>
 
         </div>
@@ -1543,12 +1923,11 @@ footer strong{
             </div>
 
             <h3>
-                PLAY
+                STEER
             </h3>
 
             <p>
-                Use the controls shown inside
-                your selected game.
+                Use A/D or ←/→ to move between lanes.
             </p>
 
         </div>
@@ -1561,12 +1940,28 @@ footer strong{
             </div>
 
             <h3>
+                BRAKE
+            </h3>
+
+            <p>
+                Press S or ↓ to brake or reverse.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="number">
+                04
+            </div>
+
+            <h3>
                 SURVIVE
             </h3>
 
             <p>
-                Defeat enemies and try to
-                reach the highest level.
+                Avoid traffic and push your distance higher.
             </p>
 
         </div>
@@ -1576,18 +1971,65 @@ footer strong{
 </section>
 
 
-<!-- =========================
+<!-- ======================================================
+     PURCHASE
+====================================================== -->
+
+<section id="purchase">
+
+    <div class="purchase">
+
+        <div class="purchase-label">
+            NEON DRIVE // FULL ACCESS
+        </div>
+
+        <h2>
+            UNLOCK NEON DRIVE
+        </h2>
+
+        <div class="price">
+            $28.99
+        </div>
+
+        <p>
+            Unlock access to the NEON DRIVE experience
+            and enter the futuristic streets. This button
+            is currently a demo purchase interface and does
+            not process a real payment.
+        </p>
+
+        <div class="buttons">
+
+            <a
+                href="game/index.html"
+                class="btn price-btn"
+            >
+                ⚡ UNLOCK FOR $28.99
+            </a>
+
+        </div>
+
+        <div class="purchase-note">
+            DEMO CHECKOUT • NO REAL PAYMENT IS PROCESSED
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
      FINAL CTA
-========================= -->
+====================================================== -->
 
 <div class="cta">
 
     <h2>
-        CHOOSE YOUR BATTLEFIELD.
+        START YOUR ENGINE.
     </h2>
 
     <p>
-        Two games. One NEXUS.
+        The city is waiting. How far can you drive?
     </p>
 
 
@@ -1597,18 +2039,14 @@ footer strong{
             href="game/index.html"
             class="btn primary"
         >
-            ⚡ WARRIOR ARENA
+            ⚡ PLAY NEON DRIVE
         </a>
 
         <a
-            href="game2/index.html"
-            class="btn"
-            style="
-                background:#ff334d;
-                color:white;
-            "
+            href="#features"
+            class="btn secondary"
         >
-            ☠ DEADZONE
+            VIEW FEATURES
         </a>
 
     </div>
@@ -1616,9 +2054,9 @@ footer strong{
 </div>
 
 
-<!-- =========================
+<!-- ======================================================
      FOOTER
-========================= -->
+====================================================== -->
 
 <footer>
 
@@ -1627,15 +2065,15 @@ footer strong{
         © 2026
 
         <strong>
-            NEXUS
+            NEON DRIVE
         </strong>
 
-        Gaming
+        Racing
 
     </div>
 
     <div>
-        WARRIOR ARENA • DEADZONE
+        3D STREET RACING • NIGHT CITY • TRAFFIC • RAIN
     </div>
 
 </footer>
