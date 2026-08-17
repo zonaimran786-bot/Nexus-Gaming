@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>NEON DRIVE // ULTIMATE</title>
+<title>NEON COMBAT // RACER X</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&display=swap');
 
@@ -13,67 +13,80 @@ canvas{display:block}
 .hidden{display:none!important}
 
 #hud{position:fixed;inset:0;z-index:20;pointer-events:none}
-.panelbox{position:absolute;background:rgba(3,7,14,.78);border:1px solid #ffffff20;border-radius:14px;backdrop-filter:blur(12px);box-shadow:0 12px 50px #0008}
-#speedBox{left:22px;bottom:22px;width:205px;padding:16px 18px}
-#speed{font-size:42px;font-weight:900;line-height:1}
+.panelbox{position:absolute;background:rgba(3,7,14,.82);border:1px solid #00eaff44;border-radius:14px;backdrop-filter:blur(12px);box-shadow:0 12px 40px #0008}
+#speedBox{left:22px;bottom:22px;width:215px;padding:16px 18px}
+#speed{font-size:40px;font-weight:900;line-height:1;color:#00eaff;text-shadow:0 0 15px #00eaff66}
 #kmh{font-size:10px;color:#718096;letter-spacing:3px;margin-top:5px}
-#gear{font-size:12px;color:#00eaff;margin-top:9px}
+#gear{font-size:12px;color:#ffd76a;margin-top:7px}
+
 #scoreBox{right:22px;top:22px;min-width:190px;padding:13px 18px;text-align:right}
 .mini{font-size:9px;color:#718096;letter-spacing:2px}
-#score{font-size:22px;margin-top:4px}
-#levelBox{top:22px;left:50%;transform:translateX(-50%);min-width:190px;padding:11px 20px;text-align:center}
-#level{font-size:19px;color:#00eaff;font-weight:900}
-#timer{font-size:10px;color:#ffd76a;margin-top:5px;letter-spacing:1px}
-#healthBox{top:92px;left:50%;transform:translateX(-50%);width:250px;height:13px;overflow:hidden;border-radius:20px;border:1px solid #ffffff2a;background:#06080d}
-#health{height:100%;width:100%;background:linear-gradient(90deg,#00eaff,#52ffb2);box-shadow:0 0 20px #00eaff;transition:.18s}
-#weaponStatus{left:50%;bottom:24px;transform:translateX(-50%);padding:10px 16px;font-size:10px;letter-spacing:2px;color:#8ea0b3}
-#weaponStatus.active{color:#ffcf5a;border-color:#ffcf5a66;box-shadow:0 0 25px #ffcf5a18}
-#damage{position:fixed;inset:0;z-index:25;pointer-events:none;border:0 solid #ff174466;transition:.08s}
-#crosshair{position:fixed;left:50%;top:50%;width:26px;height:26px;transform:translate(-50%,-50%);z-index:19;pointer-events:none;opacity:.65}
-#crosshair:before,#crosshair:after{content:"";position:absolute;background:#00eaff}
-#crosshair:before{width:26px;height:1px;top:12px;left:0}
-#crosshair:after{height:26px;width:1px;left:12px;top:0}
+#score{font-size:22px;margin-top:4px;color:#fff}
 
-.overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 45%,#102b43,#04070d 55%,#010205)}
-.panel{width:min(680px,92%);padding:45px 42px;text-align:center;background:rgba(3,7,13,.94);border:1px solid #ffffff18;border-radius:24px;box-shadow:0 30px 120px #000;color:white}
-h1{font-size:clamp(34px,7vw,68px);letter-spacing:5px;margin-bottom:12px}
-h1 span{color:#00eaff;text-shadow:0 0 18px #00eaff,0 0 55px #00eaff55}
-.subtitle{font-family:Arial,sans-serif;color:#9aa8b8;line-height:1.7;font-size:14px;margin-bottom:27px}
-button{font-family:Orbitron;padding:14px 30px;border:1px solid #00eaff55;border-radius:9px;background:#00eaff;color:#001015;font-weight:900;cursor:pointer;box-shadow:0 0 28px #00eaff22;transition:.2s}
-button:hover{transform:translateY(-2px);filter:brightness(1.15)}
-#bossUI{position:fixed;top:122px;left:50%;transform:translateX(-50%);width:min(560px,75%);z-index:30;display:none;text-align:center}
-#bossTitle{font-size:13px;color:#ff4058;letter-spacing:4px;margin-bottom:7px;text-shadow:0 0 15px #ff4058}
-#bossBar{height:16px;border:1px solid #ff405888;background:#090205;border-radius:20px;overflow:hidden}
+#levelBox{top:22px;left:50%;transform:translateX(-50%);min-width:210px;padding:11px 20px;text-align:center;border-color:#ff174466}
+#level{font-size:17px;color:#ff1744;font-weight:900;text-shadow:0 0 12px #ff174488}
+#timer{font-size:10px;color:#ffd76a;margin-top:5px;letter-spacing:1px}
+
+#healthBox{top:92px;left:50%;transform:translateX(-50%);width:260px;height:14px;overflow:hidden;border-radius:20px;border:1px solid #00eaff55;background:#06080d}
+#health{height:100%;width:100%;background:linear-gradient(90deg,#00eaff,#52ffb2);box-shadow:0 0 20px #00eaff;transition:.15s}
+
+#energyBox{top:113px;left:50%;transform:translateX(-50%);width:200px;height:9px;overflow:hidden;border-radius:20px;border:1px solid #ffcf5a55;background:#06080d}
+#energy{height:100%;width:100%;background:linear-gradient(90deg,#ff8800,#ffdf6b);box-shadow:0 0 15px #ffcf5a;transition:.1s}
+
+#weaponStatus{left:50%;bottom:24px;transform:translateX(-50%);padding:10px 20px;font-size:10px;letter-spacing:2px;color:#ffdf6b;border-color:#ffdf6b66;box-shadow:0 0 25px #ffdf6b22}
+
+#damage{position:fixed;inset:0;z-index:25;pointer-events:none;border:0 solid #ff174488;transition:.08s}
+#crosshair{position:fixed;left:50%;top:50%;width:28px;height:28px;transform:translate(-50%,-50%);z-index:19;pointer-events:none;opacity:.8}
+#crosshair:before,#crosshair:after{content:"";position:absolute;background:#ff1744}
+#crosshair:before{width:28px;height:2px;top:13px;left:0}
+#crosshair:after{height:28px;width:2px;left:13px;top:0}
+
+.overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 45%,#1c0b1f,#04070d 60%,#010205)}
+.panel{width:min(720px,92%);padding:45px 42px;text-align:center;background:rgba(5,9,18,.96);border:1px solid #00eaff44;border-radius:24px;box-shadow:0 30px 120px #000;color:white}
+h1{font-size:clamp(30px,6.5vw,62px);letter-spacing:4px;margin-bottom:12px}
+h1 span{color:#ff1744;text-shadow:0 0 20px #ff1744,0 0 60px #ff174466}
+.subtitle{font-family:Arial,sans-serif;color:#a3b2c2;line-height:1.7;font-size:14px;margin-bottom:28px}
+button{font-family:Orbitron;padding:15px 34px;border:1px solid #00eaff66;border-radius:10px;background:linear-gradient(135deg,#00eaff,#0088ff);color:#001015;font-weight:900;cursor:pointer;box-shadow:0 0 30px #00eaff33;transition:.2s}
+button:hover{transform:translateY(-3px);filter:brightness(1.2);box-shadow:0 0 40px #00eaff66}
+
+#bossUI{position:fixed;top:132px;left:50%;transform:translateX(-50%);width:min(580px,80%);z-index:30;display:none;text-align:center}
+#bossTitle{font-size:13px;color:#ff1744;letter-spacing:4px;margin-bottom:7px;text-shadow:0 0 15px #ff1744}
+#bossBar{height:16px;border:1px solid #ff1744aa;background:#090205;border-radius:20px;overflow:hidden}
 #bossHealth{height:100%;width:100%;background:linear-gradient(90deg,#ff173d,#ff7a45);box-shadow:0 0 20px #ff334d}
+
 #checkpointBanner{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%) scale(.7);opacity:0;z-index:60;pointer-events:none;text-align:center;transition:.4s}
 #checkpointBanner.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
-#checkpointBanner strong{display:block;font-size:clamp(28px,6vw,58px);letter-spacing:5px;color:#00eaff;text-shadow:0 0 25px #00eaff}
+#checkpointBanner strong{display:block;font-size:clamp(26px,5.5vw,54px);letter-spacing:5px;color:#00eaff;text-shadow:0 0 25px #00eaff}
 #checkpointBanner small{font-family:Arial;color:#d5e2ed;font-size:13px}
+
 #touch{position:fixed;inset:0;z-index:50;pointer-events:none;display:none}
-.tbtn{position:absolute;width:70px;height:70px;border-radius:18px;border:1px solid #ffffff35;background:#06121dcc;color:#fff;display:grid;place-items:center;pointer-events:auto;user-select:none;backdrop-filter:blur(8px);font-size:24px}
-.tbtn.active{background:#00eaff40;border-color:#00eaff;color:#00eaff;transform:scale(.94)}
+.tbtn{position:absolute;width:72px;height:72px;border-radius:18px;border:1px solid #00eaff44;background:#06121ecc;color:#fff;display:grid;place-items:center;pointer-events:auto;user-select:none;backdrop-filter:blur(8px);font-size:24px}
+.tbtn.active{background:#00eaff66;border-color:#00eaff;color:#fff;transform:scale(.92)}
 #left{left:18px;bottom:30px} #right{left:98px;bottom:30px}
-#gas{right:18px;bottom:118px;width:82px;height:82px}
+#gas{right:18px;bottom:124px;width:82px;height:82px;background:#0e2418cc;border-color:#52ffb266}
 #brake{right:25px;bottom:28px}
-#fire{right:118px;bottom:42px;width:70px;height:70px;color:#ffcf5a;border-color:#ffcf5a55}
-#touchHint{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);font:9px Arial;color:#9ba8b8;white-space:nowrap;background:#0008;padding:7px 10px;border-radius:7px}
+#punchBtn{right:116px;bottom:28px;width:72px;height:72px;color:#ffdf6b;border-color:#ffdf6b66;background:#241d0ecc}
+#shootBtn{right:116px;bottom:108px;width:72px;height:72px;color:#ff1744;border-color:#ff174466;background:#240c12cc}
+#nitroBtn{left:180px;bottom:30px;width:72px;height:72px;color:#00eaff;border-color:#00eaff66}
+#touchHint{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);font:9px Arial;color:#9ba8b8;white-space:nowrap;background:#0008;padding:6px 10px;border-radius:7px}
+
 @media(max-width:800px){
  #touch{display:block}
- #controls{display:none}
- #speedBox{left:8px;bottom:120px;transform:scale(.78);transform-origin:left bottom}
- #scoreBox{right:8px;top:8px;transform:scale(.82);transform-origin:right top}
- #levelBox{top:8px;transform:translateX(-50%) scale(.82)}
- #healthBox{top:77px;width:190px}
- #weaponStatus{bottom:8px;transform:translateX(-50%) scale(.8)}
- #crosshair{opacity:.35}
- .panel{padding:32px 20px}
+ #speedBox{left:8px;bottom:115px;transform:scale(.75);transform-origin:left bottom}
+ #scoreBox{right:8px;top:8px;transform:scale(.8);transform-origin:right top}
+ #levelBox{top:8px;transform:translateX(-50%) scale(.8)}
+ #healthBox{top:74px;width:190px}
+ #energyBox{top:94px;width:150px}
+ #weaponStatus{bottom:8px;transform:translateX(-50%) scale(.75)}
+ #crosshair{opacity:.4}
+ .panel{padding:30px 20px}
 }
 @media(min-width:801px){#touch{display:none}}
 
-/* ===== CHECKPOINT TIMER / ZOMBIE ROBOT SYSTEM ===== */
+/* Checkpoint / Combat Timer */
 #checkpointTimer{
     position:fixed;
-    top:145px;
+    top:132px;
     left:50%;
     transform:translateX(-50%);
     z-index:35;
@@ -89,141 +102,108 @@ button:hover{transform:translateY(-2px);filter:brightness(1.15)}
     letter-spacing:1px;
     display:none;
 }
-#checkpointTimer .timer-label{
-    display:block;
-    color:#8b9aaa;
-    font-size:9px;
-    letter-spacing:3px;
-    margin-bottom:4px;
-}
-#checkpointTime{
-    font-family:Arial,sans-serif;
-    font-size:25px;
-    color:#ffdf6b;
-}
-#checkpointDistance{
-    display:block;
-    margin-top:3px;
-    color:#7f91a5;
-    font-size:10px;
-}
-#checkpointTimer.danger{
-    border-color:#ff334d99;
-    box-shadow:0 0 35px #ff334d22;
-}
-#checkpointTimer.danger #checkpointTime{
-    color:#ff334d;
-    animation:timerPulse .5s infinite alternate;
-}
-@keyframes timerPulse{
-    from{transform:scale(1)}
-    to{transform:scale(1.08)}
-}
+#checkpointTimer .timer-label{display:block;color:#8b9aaa;font-size:9px;letter-spacing:3px;margin-bottom:4px}
+#checkpointTime{font-family:Arial,sans-serif;font-size:24px;color:#ffdf6b}
+#checkpointDistance{display:block;margin-top:3px;color:#7f91a5;font-size:10px}
+#checkpointTimer.danger{border-color:#ff334d99;box-shadow:0 0 35px #ff334d22}
+#checkpointTimer.danger #checkpointTime{color:#ff334d;animation:timerPulse .5s infinite alternate}
+@keyframes timerPulse{from{transform:scale(1)} to{transform:scale(1.08)}}
 
-#zombieWarning{
+#combatHint{
     position:fixed;
+    top:56%;
     left:50%;
-    top:52%;
     transform:translate(-50%,-50%) scale(.8);
     z-index:45;
     pointer-events:none;
     opacity:0;
-    padding:18px 30px;
-    border:1px solid #7cff4f88;
+    padding:16px 28px;
+    border:1px solid #ff1744aa;
     border-radius:14px;
-    background:rgba(2,10,4,.9);
-    color:#7cff4f;
+    background:rgba(15,3,6,.92);
+    color:#ff1744;
     font-family:Arial,sans-serif;
-    font-size:14px;
+    font-size:15px;
     font-weight:900;
-    letter-spacing:4px;
-    box-shadow:0 0 45px #7cff4f22;
+    letter-spacing:3px;
+    box-shadow:0 0 50px #ff174433;
 }
-#zombieWarning.show{
-    animation:zombieWarn .9s ease-out forwards;
-}
-@keyframes zombieWarn{
-    0%{opacity:0;transform:translate(-50%,-50%) scale(.65)}
-    20%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}
+#combatHint.show{animation:combWarn .8s ease-out forwards}
+@keyframes combWarn{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}
+    25%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}
     70%{opacity:1;transform:translate(-50%,-50%) scale(1)}
     100%{opacity:0;transform:translate(-50%,-50%) scale(1)}
 }
-
-.zombie-target{
-    position:relative;
-}
-
-#robotMode{position:fixed;left:50%;top:185px;transform:translateX(-50%);z-index:36;display:none;padding:8px 18px;border:1px solid #7cff4f88;border-radius:10px;background:rgba(4,12,7,.9);color:#7cff4f;font-weight:900;font-size:11px;letter-spacing:3px;box-shadow:0 0 30px #7cff4f22}
-#fireBtn{position:fixed;right:24px;bottom:28px;z-index:60;width:78px;height:78px;border-radius:50%;border:1px solid #7cff4f99;background:#102414dd;color:#7cff4f;font-size:12px;font-weight:900;display:none;touch-action:none;user-select:none;box-shadow:0 0 25px #7cff4f22}
-#fireBtn:active{transform:scale(.92);background:#7cff4f33}
 </style>
 </head>
 <body>
 
 <div id="start" class="overlay">
   <div class="panel">
-    <h1>NEON <span>DRIVE</span></h1>
+    <h1>NEON COMBAT <span>RACER X</span></h1>
     <div class="subtitle">
-      RIDE THROUGH A CONTINUOUS NEON CITY.<br><br>
-      Reach every glowing <b>CHECKPOINT</b> to finish a level.<br>
-      The road is endless — scenery and road segments recycle ahead of you.<br><br>
-      <b>Desktop:</b> W/A/S/D or Arrow Keys • Move mouse to steer/parallax • Click to fire when weapons are active<br>
-      <b>Mobile:</b> Touch steering/throttle/fire controls.
+      THE ULTIMATE HIGH-SPEED RACING & MELEE FIGHTING EXPERIENCE.<br><br>
+      🏁 <b>RACE:</b> Drive at insane speeds, drift through neon sectors, use <b>NITRO (Shift / N)</b> and beat checkpoint timers.<br>
+      ⚔️ <b>FIGHT:</b> Ram rivals, <b>PUNCH (J / Click)</b> enemy bikers on the highway, fire <b>MISSILES (K / Space)</b>, and duel epic Boss Mechs!<br><br>
+      <b>Desktop:</b> W/A/S/D or Arrows • J = Punch/Melee • K = Fire Missile • Shift = Nitro • Mouse = Aim/Steer<br>
+      <b>Mobile:</b> On-screen touch buttons for steering, gas, nitro, punch, and missiles.
     </div>
-    <button id="startBtn">START ENGINE</button>
+    <button id="startBtn">START ENGINES</button>
   </div>
 </div>
 
 <div id="levelComplete" class="overlay hidden">
   <div class="panel">
-    <h1>CHECKPOINT <span id="doneNum">1</span></h1>
-    <div class="subtitle">LEVEL COMPLETE.<br><br>Next sector is faster, brighter and more dangerous.</div>
-    <button id="nextBtn">ENTER NEXT SECTOR</button>
+    <h1>SECTOR <span id="doneNum">1</span> <span>CLEARED</span></h1>
+    <div class="subtitle" id="completeText">SECTOR COMPLETE.<br><br>Prepare for higher speeds and tougher enemy combatants.</div>
+    <button id="nextBtn">NEXT SECTOR</button>
   </div>
 </div>
 
 <div id="bossIntro" class="overlay hidden">
   <div class="panel">
-    <h1>FINAL <span>SECTOR</span></h1>
+    <h1>FINAL <span>SHOWDOWN</span></h1>
     <div class="subtitle">
-      FIVE CHECKPOINTS CLEARED.<br><br>
-      The vehicle is converting to <b>ROBOT ASSAULT MODE</b>.<br>
-      A weapon system is online. Destroy the boss before it catches you.
+      FIVE SECTORS CONQUERED.<br><br>
+      The <b>CYBERPUNK MECH BOSS</b> has intercepted your highway.<br>
+      Use your high-speed maneuvers, melee punches, and missile barrage to destroy the boss before time runs out!
     </div>
-    <button id="bossBtn">ACTIVATE ROBOT MODE</button>
+    <button id="bossBtn">ENGAGE BOSS COMBAT</button>
   </div>
 </div>
 
 <div id="gameOver" class="overlay hidden">
   <div class="panel">
-    <h1>DRIVE <span>ENDED</span></h1>
-    <div class="subtitle">Distance: <b id="finalDist">0</b> m<br>Sector: <b id="finalLevel">1</b></div>
-    <button id="restartBtn">RESTART</button>
+    <h1>COMBAT <span>TERMINATED</span></h1>
+    <div class="subtitle">Distance: <b id="finalDist">0</b> m<br>Sector Reached: <b id="finalLevel">1</b></div>
+    <button id="restartBtn">TRY AGAIN</button>
   </div>
 </div>
 
 <div id="bossUI">
-  <div id="bossTitle">⚠ NEON HUNTER // FINAL BOSS</div>
+  <div id="bossTitle">⚠ CYBER MECH BOSS // COMBAT INTERCEPT</div>
   <div id="bossBar"><div id="bossHealth"></div></div>
 </div>
 
 <div id="hud">
-  <div id="speedBox" class="panelbox"><div id="speed">0</div><div id="kmh">KM/H</div><div id="gear">GEAR N</div></div>
+  <div id="speedBox" class="panelbox"><div id="speed">0</div><div id="kmh">KM/H</div><div id="gear">GEAR D</div></div>
   <div id="scoreBox" class="panelbox"><div class="mini">DISTANCE</div><div id="score">0 m</div></div>
-  <div id="levelBox" class="panelbox"><div id="level">LEVEL 1</div><div id="timer">CHECKPOINT: 0 m</div></div>
+  <div id="levelBox" class="panelbox"><div id="level">SECTOR 1</div><div id="timer">CHECKPOINT: 0 m</div></div>
   <div id="healthBox"><div id="health"></div></div>
-  <div id="weaponStatus" class="panelbox">WEAPON LOCKED • DRIVE TO CHECKPOINTS</div>
+  <div id="energyBox"><div id="energy"></div></div>
+  <div id="weaponStatus" class="panelbox">WEAPONS & MELEE READY • PUNCH [J] / MISSILE [K]</div>
 </div>
 
 <div id="crosshair"></div>
 
 <div id="checkpointTimer">
     <span class="timer-label">CHECKPOINT DEADLINE</span>
-    <span id="checkpointTime">30.0</span>
+    <span id="checkpointTime">35.0</span>
     <span id="checkpointDistance">CHECKPOINT AHEAD</span>
 </div>
 
-<div id="zombieWarning">⚠ ZOMBIE ROBOT ACTIVATED ⚠</div><div id="robotMode">ROBOT ASSAULT MODE // ONLINE</div><button id="fireBtn">FIRE</button>
+<div id="combatHint">⚔ MELEE STRIKE HIT! ⚔</div>
 
 <div id="damage"></div>
 
@@ -237,666 +217,683 @@ button:hover{transform:translateY(-2px);filter:brightness(1.15)}
   <div class="tbtn" id="right">▶</div>
   <div class="tbtn" id="gas">▲</div>
   <div class="tbtn" id="brake">▼</div>
-  <div class="tbtn" id="fire">✦</div>
-  <div id="touchHint">DRAG / MOVE TO STEER • FIRE WHEN WEAPON IS ACTIVE</div>
+  <div class="tbtn" id="nitroBtn">⚡</div>
+  <div class="tbtn" id="punchBtn">👊</div>
+  <div class="tbtn" id="shootBtn">🚀</div>
+  <div id="touchHint">DRAG TO STEER • PUNCH & MISSILE TO FIGHT RIVALS</div>
 </div>
 
 <script type="module">
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
 
-let scene,camera,renderer,clock;
-let car,roadGroup,cityGroup,checkpoint;
-let traffic=[],bullets=[],enemyBullets=[],particles=[];
-let boss=null,bossParts=[];
-let started=false,bossMode=false,robotMode=false;
-let level=1,health=100,distance=0,speed=0,steer=0;
-let levelDistance=0,checkpointDistance=700,checkpointTimeLeft=42,checkpointFailing=false;
-let zombieRobots=[];
-let mouseX=.5,mouseY=.5,targetMouseX=.5,targetMouseY=.5;
-let keys={},fireHeld=false,collisionCooldown=0;
-let bossHealth=100,bossFireTimer=0,bossHitCooldown=0;
-let audioCtx=null,engineOsc=null,engineGain=null;
-let roadSegments=[],buildingSegments=[],lightSegments=[];
-let weaponTimer=0;
-let lastTime=0;
+let scene, camera, renderer, clock;
+let car, roadGroup, cityGroup, checkpoint;
+let rivals = [], bullets = [], enemyBullets = [], particles = [];
+let boss = null;
+let started = false, bossMode = false;
+let level = 1, health = 100, energy = 100, distance = 0, speed = 0, steer = 0;
+let levelDistance = 0, checkpointDistance = 800, checkpointTimeLeft = 45, checkpointFailing = false;
+let mouseX = .5, mouseY = .5, targetMouseX = .5, targetMouseY = .5;
+let keys = {}, nitroActive = false;
+let bossHealth = 100, bossFireTimer = 0;
+let audioCtx = null, engineOsc = null, engineGain = null;
+let roadSegments = [], buildingSegments = [];
+let punchCooldown = 0, missileCooldown = 0, collisionCooldown = 0;
 
-const LEVELS=[
- null,
- {distance:700,time:42,traffic:7,trafficSpeed:18},
- {distance:850,time:45,traffic:9,trafficSpeed:22},
- {distance:1000,time:48,traffic:11,trafficSpeed:26},
- {distance:1150,time:51,traffic:13,trafficSpeed:30},
- {distance:1300,time:55,traffic:15,trafficSpeed:34}
+const LEVELS = [
+  null,
+  { distance: 800, time: 42, rivals: 8, rivalSpeed: 20 },
+  { distance: 950, time: 45, rivals: 10, rivalSpeed: 24 },
+  { distance: 1100, time: 48, rivals: 12, rivalSpeed: 28 },
+  { distance: 1250, time: 52, rivals: 14, rivalSpeed: 32 },
+  { distance: 1400, time: 56, rivals: 16, rivalSpeed: 36 }
 ];
 
 function init(){
- scene=new THREE.Scene();
- scene.background=new THREE.Color(0x020712);
- scene.fog=new THREE.Fog(0x020712,55,330);
- camera=new THREE.PerspectiveCamera(65,innerWidth/innerHeight,.1,1200);
- renderer=new THREE.WebGLRenderer({antialias:true});
- renderer.setSize(innerWidth,innerHeight);
- renderer.setPixelRatio(Math.min(devicePixelRatio,2));
- renderer.shadowMap.enabled=true;
- renderer.outputColorSpace=THREE.SRGBColorSpace;
- document.body.appendChild(renderer.domElement);
- clock=new THREE.Clock();
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x02040a);
+  scene.fog = new THREE.Fog(0x02040a, 55, 340);
 
- createLights();
- createWorld();
- createCar();
- createTraffic();
- createRain();
+  camera = new THREE.PerspectiveCamera(65, innerWidth/innerHeight, .1, 1200);
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  document.body.appendChild(renderer.domElement);
+  clock = new THREE.Clock();
 
- window.addEventListener("resize",resize);
- window.addEventListener("keydown",e=>{keys[e.key.toLowerCase()]=true;if(["arrowup","arrowdown","arrowleft","arrowright"," "].includes(e.key.toLowerCase()))e.preventDefault()});
- window.addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
- window.addEventListener("mousemove",e=>{
-   targetMouseX=e.clientX/innerWidth;
-   targetMouseY=e.clientY/innerHeight;
- });
- window.addEventListener("mousedown",()=>{if(robotMode||weaponTimer>0)fireHeld=true});
- window.addEventListener("mouseup",()=>fireHeld=false);
+  createLights();
+  createWorld();
+  createPlayerCar();
+  createRivals();
+  createRain();
 
- bindTouch("left","left"); bindTouch("right","right"); bindTouch("gas","up"); bindTouch("brake","down"); bindFire("fire");
+  window.addEventListener("resize", resize);
+  window.addEventListener("keydown", e => {
+    keys[e.key.toLowerCase()] = true;
+    if(e.key.toLowerCase() === 'j') punchAction();
+    if(e.key.toLowerCase() === 'k') fireMissile();
+    if(e.key.toLowerCase() === 'shift') nitroActive = true;
+    if(["arrowup","arrowdown","arrowleft","arrowright"," "].includes(e.key.toLowerCase())) e.preventDefault();
+  });
+  window.addEventListener("keyup", e => {
+    keys[e.key.toLowerCase()] = false;
+    if(e.key.toLowerCase() === 'shift') nitroActive = false;
+  });
+  window.addEventListener("mousemove", e => {
+    targetMouseX = e.clientX / innerWidth;
+    targetMouseY = e.clientY / innerHeight;
+  });
+  window.addEventListener("mousedown", () => {
+    if(started && !bossMode) punchAction();
+  });
 
- document.getElementById("startBtn").onclick=startGame;
- document.getElementById("nextBtn").onclick=nextLevel;
- document.getElementById("bossBtn").onclick=startBoss;
- document.getElementById("restartBtn").onclick=()=>location.reload();
+  bindTouch("left", "left"); bindTouch("right", "right");
+  bindTouch("gas", "up"); bindTouch("brake", "down");
+  bindTouchBtn("punchBtn", punchAction);
+  bindTouchBtn("shootBtn", fireMissile);
+  bindTouchNitro("nitroBtn");
 
- animate();
+  document.getElementById("startBtn").onclick = startGame;
+  document.getElementById("nextBtn").onclick = nextLevel;
+  document.getElementById("bossBtn").onclick = startBoss;
+  document.getElementById("restartBtn").onclick = () => location.reload();
+
+  animate();
 }
 
-function bindTouch(id,key){
- const el=document.getElementById(id);
- const on=e=>{e.preventDefault();keys["arrow"+key]=true;el.classList.add("active")};
- const off=e=>{e.preventDefault();keys["arrow"+key]=false;el.classList.remove("active")};
- el.addEventListener("pointerdown",on);el.addEventListener("pointerup",off);el.addEventListener("pointercancel",off);el.addEventListener("pointerleave",off);
+function bindTouch(id, key){
+  const el = document.getElementById(id);
+  const on = e => { e.preventDefault(); keys["arrow"+key] = true; el.classList.add("active"); };
+  const off = e => { e.preventDefault(); keys["arrow"+key] = false; el.classList.remove("active"); };
+  el.addEventListener("pointerdown", on); el.addEventListener("pointerup", off);
+  el.addEventListener("pointercancel", off); el.addEventListener("pointerleave", off);
 }
-function bindFire(id){
- const el=document.getElementById(id);
- const on=e=>{e.preventDefault();fireHeld=true;el.classList.add("active")};
- const off=e=>{e.preventDefault();fireHeld=false;el.classList.remove("active")};
- el.addEventListener("pointerdown",on);el.addEventListener("pointerup",off);el.addEventListener("pointercancel",off);el.addEventListener("pointerleave",off);
+function bindTouchBtn(id, action){
+  const el = document.getElementById(id);
+  const on = e => { e.preventDefault(); action(); el.classList.add("active"); };
+  const off = e => { e.preventDefault(); el.classList.remove("active"); };
+  el.addEventListener("pointerdown", on); el.addEventListener("pointerup", off);
+  el.addEventListener("pointercancel", off); el.addEventListener("pointerleave", off);
+}
+function bindTouchNitro(id){
+  const el = document.getElementById(id);
+  const on = e => { e.preventDefault(); nitroActive = true; el.classList.add("active"); };
+  const off = e => { e.preventDefault(); nitroActive = false; el.classList.remove("active"); };
+  el.addEventListener("pointerdown", on); el.addEventListener("pointerup", off);
+  el.addEventListener("pointercancel", off); el.addEventListener("pointerleave", off);
 }
 
 function initAudio(){
- if(audioCtx)return;
- audioCtx=new (window.AudioContext||window.webkitAudioContext)();
- engineOsc=audioCtx.createOscillator();engineGain=audioCtx.createGain();
- engineOsc.type="sawtooth";engineOsc.frequency.value=65;engineGain.gain.value=.025;
- engineOsc.connect(engineGain);engineGain.connect(audioCtx.destination);engineOsc.start();
+  if(audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  engineOsc = audioCtx.createOscillator(); engineGain = audioCtx.createGain();
+  engineOsc.type = "sawtooth"; engineOsc.frequency.value = 65; engineGain.gain.value = .025;
+  engineOsc.connect(engineGain); engineGain.connect(audioCtx.destination); engineOsc.start();
 }
-function beep(f=500,d=.1,v=.06,type="sine"){
- if(!audioCtx)return;
- const o=audioCtx.createOscillator(),g=audioCtx.createGain();
- o.type=type;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(audioCtx.destination);o.start();
- g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);o.stop(audioCtx.currentTime+d);
+function beep(f=500, d=.1, v=.06, type="sine"){
+  if(!audioCtx) return;
+  const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+  o.type = type; o.frequency.value = f; g.gain.value = v;
+  o.connect(g); g.connect(audioCtx.destination); o.start();
+  g.gain.exponentialRampToValueAtTime(.001, audioCtx.currentTime + d);
+  o.stop(audioCtx.currentTime + d);
 }
 function updateAudio(){
- if(engineOsc) {engineOsc.frequency.value=60+Math.abs(speed)*2.8;engineGain.gain.value=.02+Math.abs(speed)/80*.055}
+  if(engineOsc) {
+    let boostFactor = nitroActive ? 1.5 : 1;
+    engineOsc.frequency.value = (65 + Math.abs(speed) * 2.8) * boostFactor;
+    engineGain.gain.value = .02 + Math.abs(speed)/80 * .055;
+  }
 }
 
 function createLights(){
- scene.add(new THREE.HemisphereLight(0x91bfff,0x050609,1.6));
- const moon=new THREE.DirectionalLight(0x9fc9ff,2.5);moon.position.set(-40,80,-80);moon.castShadow=true;scene.add(moon);
- const cyan=new THREE.PointLight(0x00eaff,30,80);cyan.position.set(0,7,0);scene.add(cyan);
- const mag=new THREE.PointLight(0xff1f86,22,90);mag.position.set(18,5,-30);scene.add(mag);
+  scene.add(new THREE.HemisphereLight(0x91bfff, 0x050609, 1.6));
+  const moon = new THREE.DirectionalLight(0x9fc9ff, 2.5);
+  moon.position.set(-40, 80, -80); moon.castShadow = true; scene.add(moon);
+  const cyan = new THREE.PointLight(0x00eaff, 30, 80); cyan.position.set(0, 7, 0); scene.add(cyan);
+  const mag = new THREE.PointLight(0xff1f86, 25, 90); mag.position.set(18, 5, -30); scene.add(mag);
 }
 
 function createWorld(){
- roadGroup=new THREE.Group();cityGroup=new THREE.Group();scene.add(roadGroup,cityGroup);
+  roadGroup = new THREE.Group(); cityGroup = new THREE.Group(); scene.add(roadGroup, cityGroup);
 
- const roadMat=new THREE.MeshStandardMaterial({color:0x10151d,roughness:.82,metalness:.12});
- const shoulderMat=new THREE.MeshStandardMaterial({color:0x242b35,roughness:1});
- const lineMat=new THREE.MeshBasicMaterial({color:0xeefaff});
+  const roadMat = new THREE.MeshStandardMaterial({ color: 0x10151d, roughness: .82, metalness: .12 });
+  const shoulderMat = new THREE.MeshStandardMaterial({ color: 0x242b35, roughness: 1 });
+  const lineMat = new THREE.MeshBasicMaterial({ color: 0xeefaff });
 
- // Long recycled road segments ensure road NEVER disappears.
- for(let i=0;i<12;i++){
-   const seg=new THREE.Group();
-   const road=new THREE.Mesh(new THREE.BoxGeometry(22,.25,100),roadMat);
-   road.position.y=-.12;road.receiveShadow=true;seg.add(road);
-   for(let x of [-11.7,11.7]){
-     const shoulder=new THREE.Mesh(new THREE.BoxGeometry(1.5,.3,100),shoulderMat);
-     shoulder.position.set(x,-.02,0);seg.add(shoulder);
-   }
-   for(let z=-45;z<=45;z+=10){
-     const line=new THREE.Mesh(new THREE.BoxGeometry(.18,.035,4.5),lineMat);line.position.set(0,.05,z);seg.add(line);
-   }
-   seg.position.z=-i*100+50;
-   roadGroup.add(seg);roadSegments.push(seg);
- }
+  for(let i = 0; i < 14; i++){
+    const seg = new THREE.Group();
+    const road = new THREE.Mesh(new THREE.BoxGeometry(22, .25, 100), roadMat);
+    road.position.y = -.12; road.receiveShadow = true; seg.add(road);
+    for(let x of [-11.7, 11.7]){
+      const shoulder = new THREE.Mesh(new THREE.BoxGeometry(1.5, .3, 100), shoulderMat);
+      shoulder.position.set(x, -.02, 0); seg.add(shoulder);
+    }
+    for(let z = -45; z <= 45; z += 10){
+      const line = new THREE.Mesh(new THREE.BoxGeometry(.18, .035, 4.5), lineMat);
+      line.position.set(0, .05, z); seg.add(line);
+    }
+    seg.position.z = -i * 100 + 50;
+    roadGroup.add(seg); roadSegments.push(seg);
+  }
 
- // Neon roadside rails, signs and buildings are also recycled.
- for(let i=0;i<18;i++){
-   const g=new THREE.Group();
-   for(let side of [-1,1]){
-     const x=side*(17+Math.random()*8);
-     const pole=new THREE.Mesh(new THREE.CylinderGeometry(.08,.08,7,8),new THREE.MeshBasicMaterial({color:0x00eaff}));
-     pole.position.set(x,3.5,0);g.add(pole);
-     const lamp=new THREE.PointLight(side<0?0x00eaff:0xff2b9a,7,28);lamp.position.set(x,6.5,0);g.add(lamp);
-     if(Math.random()>.35){
-       const b=createBuilding();b.position.set(side*(23+Math.random()*15),0,Math.random()*12-6);g.add(b);
-     }
-   }
-   g.position.z=-i*70;
-   cityGroup.add(g);buildingSegments.push(g);
- }
+  for(let i = 0; i < 18; i++){
+    const g = new THREE.Group();
+    for(let side of [-1, 1]){
+      const x = side * (17 + Math.random() * 8);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(.08, .08, 7, 8), new THREE.MeshBasicMaterial({ color: 0x00eaff }));
+      pole.position.set(x, 3.5, 0); g.add(pole);
+      const lamp = new THREE.PointLight(side < 0 ? 0x00eaff : 0xff2b9a, 7, 28);
+      lamp.position.set(x, 6.5, 0); g.add(lamp);
+      if(Math.random() > .35){
+        const b = createBuilding();
+        b.position.set(side * (23 + Math.random() * 15), 0, Math.random() * 12 - 6);
+        g.add(b);
+      }
+    }
+    g.position.z = -i * 70;
+    cityGroup.add(g); buildingSegments.push(g);
+  }
 }
 
 function createBuilding(){
- const h=8+Math.random()*28,w=5+Math.random()*9,d=8+Math.random()*12;
- const g=new THREE.Group();
- const m=new THREE.MeshStandardMaterial({color:new THREE.Color(.035+Math.random()*.06,.045+Math.random()*.07,.07+Math.random()*.1),roughness:.95});
- const b=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);b.position.y=h/2;b.castShadow=true;g.add(b);
- for(let y=3;y<h;y+=3.8){
-   const win=new THREE.Mesh(new THREE.PlaneGeometry(1.1,1.1),new THREE.MeshBasicMaterial({color:Math.random()>.42?0xffd96a:0x0b1721}));
-   win.position.set(-w/2-.01,y,0);win.rotation.y=-Math.PI/2;g.add(win);
-   const win2=win.clone();win2.position.x=w/2+.01;win2.rotation.y=Math.PI/2;g.add(win2);
- }
- return g;
+  const h = 8 + Math.random() * 28, w = 5 + Math.random() * 9, d = 8 + Math.random() * 12;
+  const g = new THREE.Group();
+  const m = new THREE.MeshStandardMaterial({ color: new THREE.Color(.035 + Math.random() * .06, .045 + Math.random() * .07, .07 + Math.random() * .1), roughness: .95 });
+  const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); b.position.y = h / 2; b.castShadow = true; g.add(b);
+  for(let y = 3; y < h; y += 3.8){
+    const win = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 1.1), new THREE.MeshBasicMaterial({ color: Math.random() > .42 ? 0xffd96a : 0x0b1721 }));
+    win.position.set(-w / 2 - .01, y, 0); win.rotation.y = -Math.PI / 2; g.add(win);
+    const win2 = win.clone(); win2.position.x = w / 2 + .01; win2.rotation.y = Math.PI / 2; g.add(win2);
+  }
+  return g;
 }
 
-function createCar(){
- car=new THREE.Group();
- const bodyMat=new THREE.MeshStandardMaterial({color:0x075eff,metalness:.85,roughness:.2});
- const dark=new THREE.MeshStandardMaterial({color:0x07121c,metalness:.45,roughness:.13});
- const body=new THREE.Mesh(new THREE.BoxGeometry(2.5,.65,5),bodyMat);body.position.y=.82;
- const hood=new THREE.Mesh(new THREE.BoxGeometry(2.25,.23,1.7),bodyMat);hood.position.set(0,1.2,-1.35);
- const cabin=new THREE.Mesh(new THREE.BoxGeometry(1.75,.82,2),dark);cabin.position.set(0,1.42,.45);
- const roof=new THREE.Mesh(new THREE.BoxGeometry(1.58,.1,1.65),dark);roof.position.set(0,1.88,.45);
- car.add(body,hood,cabin,roof);
+function createPlayerCar(){
+  car = new THREE.Group();
+  const bodyMat = new THREE.MeshStandardMaterial({ color: 0xff1744, metalness: .85, roughness: .2 });
+  const dark = new THREE.MeshStandardMaterial({ color: 0x07121c, metalness: .45, roughness: .13 });
+  const body = new THREE.Mesh(new THREE.BoxGeometry(2.5, .65, 5), bodyMat); body.position.y = .82;
+  const hood = new THREE.Mesh(new THREE.BoxGeometry(2.25, .23, 1.7), bodyMat); hood.position.set(0, 1.2, -1.35);
+  const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.75, .82, 2), dark); cabin.position.set(0, 1.42, .45);
+  const roof = new THREE.Mesh(new THREE.BoxGeometry(1.58, .1, 1.65), dark); roof.position.set(0, 1.88, .45);
 
- for(const x of [-1.25,1.25])for(const z of [-1.65,1.65]){
-   const w=new THREE.Mesh(new THREE.CylinderGeometry(.46,.46,.34,20),new THREE.MeshStandardMaterial({color:0x030405,roughness:.7}));
-   w.rotation.z=Math.PI/2;w.position.set(x,.45,z);car.add(w);
- }
- for(const x of [-.72,.72]){
-   const head=new THREE.Mesh(new THREE.BoxGeometry(.45,.13,.08),new THREE.MeshBasicMaterial({color:0xb9f7ff}));
-   head.position.set(x,1.03,-2.52);car.add(head);
-   const tail=new THREE.Mesh(new THREE.BoxGeometry(.55,.12,.08),new THREE.MeshBasicMaterial({color:0xff1837}));
-   tail.position.set(x,1.02,2.52);car.add(tail);
- }
- car.position.set(0,0,10);scene.add(car);
+  // Combat Spikes / Melee Blades on Hood
+  const bladeMat = new THREE.MeshStandardMaterial({ color: 0x00ffff, metalness: 1, roughness: .1, emissive: 0x00ffff, emissiveIntensity: .5 });
+  const leftBlade = new THREE.Mesh(new THREE.BoxGeometry(.15, .2, 1.2), bladeMat); leftBlade.position.set(-1.1, 1.2, -1.5);
+  const rightBlade = leftBlade.clone(); rightBlade.position.x = 1.1;
+
+  car.add(body, hood, cabin, roof, leftBlade, rightBlade);
+
+  for(const x of [-1.25, 1.25]) for(const z of [-1.65, 1.65]){
+    const w = new THREE.Mesh(new THREE.CylinderGeometry(.46, .46, .34, 20), new THREE.MeshStandardMaterial({ color: 0x030405, roughness: .7 }));
+    w.rotation.z = Math.PI / 2; w.position.set(x, .45, z); car.add(w);
+  }
+  for(const x of [-.72, .72]){
+    const head = new THREE.Mesh(new THREE.BoxGeometry(.45, .13, .08), new THREE.MeshBasicMaterial({ color: 0xb9f7ff }));
+    head.position.set(x, 1.03, -2.52); car.add(head);
+    const tail = new THREE.Mesh(new THREE.BoxGeometry(.55, .12, .08), new THREE.MeshBasicMaterial({ color: 0xff1837 }));
+    tail.position.set(x, 1.02, 2.52); car.add(tail);
+  }
+  car.position.set(0, 0, 10); scene.add(car);
 }
 
-function transformToRobot(){
- if(robotMode)return;
- robotMode=true;
- weaponTimer=9999;
- car.clear();
- // Heavy robot-car body.
- const red=new THREE.MeshStandardMaterial({color:0x10151f,metalness:.9,roughness:.18});
- const cyan=new THREE.MeshBasicMaterial({color:0x00eaff});
- const body=new THREE.Mesh(new THREE.BoxGeometry(2.8,1.1,4.8),red);body.position.y=1;
- const chest=new THREE.Mesh(new THREE.BoxGeometry(2.1,1.5,1.4),new THREE.MeshStandardMaterial({color:0x183042,metalness:.75,roughness:.2}));chest.position.set(0,1.9,.2);
- const head=new THREE.Mesh(new THREE.BoxGeometry(1.25,.85,1.1),red);head.position.set(0,3.05,.25);
- const visor=new THREE.Mesh(new THREE.BoxGeometry(.85,.12,.08),cyan);visor.position.set(0,3.08,-.33);
- car.add(body,chest,head,visor);
- for(const x of [-1.25,1.25]){
-   const leg=new THREE.Mesh(new THREE.BoxGeometry(.5,1.4,.65),red);leg.position.set(x*.65,.25,.3);car.add(leg);
-   const arm=new THREE.Mesh(new THREE.BoxGeometry(.5,1.6,.55),red);arm.position.set(x*1.0,1.65,-.25);arm.rotation.z=x<0?.25:-.25;car.add(arm);
- }
- // Gun turret.
- const gunBase=new THREE.Mesh(new THREE.CylinderGeometry(.38,.38,.3,16),red);gunBase.rotation.x=Math.PI/2;gunBase.position.set(0,2.1,-.85);
- const barrel=new THREE.Mesh(new THREE.CylinderGeometry(.14,.14,2.5,12),new THREE.MeshStandardMaterial({color:0x313b49,metalness:1,roughness:.15}));barrel.rotation.x=Math.PI/2;barrel.position.set(0,2.1,-2.0);
- const muzzle=new THREE.Mesh(new THREE.TorusGeometry(.18,.06,8,16),cyan);muzzle.rotation.x=Math.PI/2;muzzle.position.set(0,2.1,-3.25);
- car.add(gunBase,barrel,muzzle);
- beep(180,.5,.13,"sawtooth");
+function createRivals(){
+  rivals.forEach(v => scene.remove(v));
+  rivals = [];
+  const amount = LEVELS[level]?.rivals || 10;
+
+  for(let i = 0; i < amount; i++){
+    const rival = createRivalCar();
+    const lane = [-6, -2, 2, 6][i % 4];
+    rival.position.set(lane, 0, -50 - Math.floor(i / 4) * 55 - (i % 4) * 15);
+    rival.userData.speed = LEVELS[level].rivalSpeed + Math.random * 8;
+    rival.userData.health = 50;
+    rivals.push(rival);
+    scene.add(rival);
+  }
 }
 
-function createTraffic(){
-    traffic.forEach(v=>scene.remove(v));
-    traffic=[];
-    const amount=LEVELS[level]?.traffic||15;
-
-    for(let i=0;i<amount;i++){
-        const vehicle=createTrafficCar();
-        const lane=[-6,-2,2,6][i%4];
-        vehicle.position.set(
-            lane,
-            0,
-            -45-Math.floor(i/4)*55-(i%4)*15
-        );
-        vehicle.userData.speed=LEVELS[level].trafficSpeed+Math.random()*8;
-        traffic.push(vehicle);
-        scene.add(vehicle);
-    }
-}
-
-function createTrafficCar(){
- const g=new THREE.Group();
- const colors=[0xff2349,0xffc52e,0x24aaff,0xf4f6ff,0x54e58c,0xb36bff];
- const body=new THREE.Mesh(new THREE.BoxGeometry(2,.65,4),new THREE.MeshStandardMaterial({color:colors[Math.floor(Math.random()*colors.length)],metalness:.55,roughness:.3}));body.position.y=.8;
- const cabin=new THREE.Mesh(new THREE.BoxGeometry(1.55,.72,1.7),new THREE.MeshStandardMaterial({color:0x111a23,roughness:.15}));cabin.position.set(0,1.35,.3);
- g.add(body,cabin);return g;
+function createRivalCar(){
+  const g = new THREE.Group();
+  const colors = [0xff2349, 0xffc52e, 0x24aaff, 0x9b51e0, 0x27ae60];
+  const mat = new THREE.MeshStandardMaterial({ color: colors[Math.floor(Math.random() * colors.length)], metalness: .6, roughness: .3 });
+  const body = new THREE.Mesh(new THREE.BoxGeometry(2.1, .68, 4.2), mat); body.position.y = .8;
+  const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.55, .72, 1.7), new THREE.MeshStandardMaterial({ color: 0x111a23, roughness: .15 }));
+  cabin.position.set(0, 1.35, .3);
+  g.add(body, cabin);
+  return g;
 }
 
 function createRain(){
- const geo=new THREE.BufferGeometry(),a=[];
- for(let i=0;i<1800;i++)a.push((Math.random()-.5)*100,Math.random()*40,(Math.random()-.5)*400);
- geo.setAttribute("position",new THREE.Float32BufferAttribute(a,3));
- const p=new THREE.Points(geo,new THREE.PointsMaterial({color:0x9edcff,size:.075,transparent:true,opacity:.5}));
- p.userData.rain=true;scene.add(p);
+  const geo = new THREE.BufferGeometry(), a = [];
+  for(let i = 0; i < 1600; i++) a.push((Math.random() - .5) * 100, Math.random() * 40, (Math.random() - .5) * 400);
+  geo.setAttribute("position", new THREE.Float32BufferAttribute(a, 3));
+  const p = new THREE.Points(geo, new THREE.PointsMaterial({ color: 0x9edcff, size: .075, transparent: true, opacity: .5 }));
+  p.userData.rain = true; scene.add(p);
 }
 
 function createCheckpoint(){
- if(checkpoint)scene.remove(checkpoint);
- checkpoint=new THREE.Group();
- const mat=new THREE.MeshBasicMaterial({color:0x00eaff,transparent:true,opacity:.95});
- for(const x of [-9,9]){
-   const post=new THREE.Mesh(new THREE.BoxGeometry(.3,6,.3),mat);post.position.set(x,3,0);checkpoint.add(post);
- }
- const top=new THREE.Mesh(new THREE.BoxGeometry(18,.3,.35),mat);top.position.y=6;checkpoint.add(top);
- const stripe=new THREE.Mesh(new THREE.BoxGeometry(18,.05,4),new THREE.MeshBasicMaterial({color:0x00eaff,transparent:true,opacity:.12}));stripe.position.y=.08;checkpoint.add(stripe);
- checkpoint.position.z=car.position.z-checkpointDistance;
- scene.add(checkpoint);
+  if(checkpoint) scene.remove(checkpoint);
+  checkpoint = new THREE.Group();
+  const mat = new THREE.MeshBasicMaterial({ color: 0x00eaff, transparent: true, opacity: .95 });
+  for(const x of [-9, 9]){
+    const post = new THREE.Mesh(new THREE.BoxGeometry(.3, 6, .3), mat); post.position.set(x, 3, 0); checkpoint.add(post);
+  }
+  const top = new THREE.Mesh(new THREE.BoxGeometry(18, .3, .35), mat); top.position.y = 6; checkpoint.add(top);
+  const stripe = new THREE.Mesh(new THREE.BoxGeometry(18, .05, 4), new THREE.MeshBasicMaterial({ color: 0x00eaff, transparent: true, opacity: .12 }));
+  stripe.position.y = .08; checkpoint.add(stripe);
+  checkpoint.position.z = car.position.z - checkpointDistance;
+  scene.add(checkpoint);
 }
 
 function resetSector(){
-    levelDistance=0;
-    health=Math.min(100,health+25);
-    speed=0;
-    checkpointTimeLeft=LEVELS[level].time;
-    checkpointFailing=false;
-    createTraffic();
-    createCheckpoint();
-    document.getElementById("checkpointTimer").style.display="block";
-    updateHUD();
+  levelDistance = 0;
+  health = Math.min(100, health + 25);
+  energy = 100;
+  speed = 0;
+  checkpointTimeLeft = LEVELS[level].time;
+  checkpointFailing = false;
+  createRivals();
+  createCheckpoint();
+  document.getElementById("checkpointTimer").style.display = "block";
+  updateHUD();
 }
+
 function updateCheckpointTimer(dt){
-    if(!started || bossMode || checkpointFailing) return;
+  if(!started || bossMode || checkpointFailing) return;
+  checkpointTimeLeft -= dt;
 
-    checkpointTimeLeft-=dt;
+  const box = document.getElementById("checkpointTimer");
+  const time = document.getElementById("checkpointTime");
+  const dist = document.getElementById("checkpointDistance");
 
-    const box=document.getElementById("checkpointTimer");
-    const time=document.getElementById("checkpointTime");
-    const dist=document.getElementById("checkpointDistance");
+  box.style.display = "block";
+  time.textContent = Math.max(0, checkpointTimeLeft).toFixed(1);
+  dist.textContent = Math.max(0, Math.floor(checkpointDistance - levelDistance)) + " m TO CHECKPOINT";
+  box.classList.toggle("danger", checkpointTimeLeft <= 8);
 
-    box.style.display="block";
-    time.textContent=Math.max(0,checkpointTimeLeft).toFixed(1);
-    dist.textContent=Math.max(0,Math.floor(checkpointDistance-levelDistance))+" m TO CHECKPOINT";
-    box.classList.toggle("danger",checkpointTimeLeft<=7);
-
-    if(levelDistance>=checkpointDistance){
-        reachCheckpoint();
-        return;
-    }
-
-    if(checkpointTimeLeft<=0){
-        restartTimedOutLevel();
-    }
+  if(levelDistance >= checkpointDistance){
+    reachCheckpoint();
+    return;
+  }
+  if(checkpointTimeLeft <= 0){
+    restartTimedOutLevel();
+  }
 }
+
 function reachCheckpoint(){
-    if(!started || checkpointFailing) return;
+  if(!started || checkpointFailing) return;
+  started = false; speed = 0; checkpointTimeLeft = 0;
+  document.getElementById("checkpointTimer").style.display = "none";
 
-    started=false;
-    speed=0;
-    checkpointTimeLeft=0;
-    document.getElementById("checkpointTimer").style.display="none";
+  if(checkpoint){
+    checkpoint.traverse(obj => {
+      if(obj.isMesh){ obj.material.transparent = true; obj.material.opacity = .2; }
+    });
+  }
 
-    if(checkpoint){
-        checkpoint.traverse(obj=>{
-            if(obj.isMesh){
-                obj.material.transparent=true;
-                obj.material.opacity=.2;
-            }
-        });
-    }
+  beep(1100, .18, .1); beep(1500, .25, .08);
 
-    beep(1100,.18,.1);
-    beep(1500,.25,.08);
-
-    if(level<5){
-        document.getElementById("completedNumber").textContent=level;
-        document.querySelector("#levelComplete .subtitle").innerHTML=
-            "<b>CHECKPOINT REACHED!</b><br><br>Level "+level+" complete.<br><br>Get ready for Level "+(level+1)+".";
-        document.getElementById("nextLevelButton").textContent="NEXT LEVEL";
-        document.getElementById("levelComplete").classList.remove("hidden");
-    }else{
-        // Level 5 checkpoint is the boss gate.
-        transformToRobot();
-        document.getElementById("bossIntro").classList.remove("hidden");
-    }
-}
-function restartTimedOutLevel(){
-    if(checkpointFailing) return;
-    checkpointFailing=true;
-    started=false;
-    speed=0;
-    document.getElementById("checkpointTimer").style.display="none";
-    beep(80,.45,.13,"sawtooth");
-
-    clearZombieRobots();
-
-    document.getElementById("completedNumber").textContent=level;
-    document.querySelector("#levelComplete .subtitle").innerHTML=
-        "<b>TIME UP!</b><br><br>You did not reach the checkpoint in time.<br><br>Restarting Level "+level+"...";
-    document.getElementById("nextLevelButton").textContent="RESTART LEVEL";
+  if(level < 5){
+    document.getElementById("doneNum").textContent = level;
+    document.getElementById("completeText").innerHTML = "<b>SECTOR CLEARED!</b><br><br>Checkpoint reached successfully.<br><br>Get ready for Sector " + (level + 1) + ".";
+    document.getElementById("nextBtn").textContent = "NEXT SECTOR";
     document.getElementById("levelComplete").classList.remove("hidden");
+  } else {
+    document.getElementById("bossIntro").classList.remove("hidden");
+  }
+}
 
-    setTimeout(()=>{
-        document.getElementById("levelComplete").classList.add("hidden");
-        resetSector();
-        started=true;
-        checkpointFailing=false;
-        beep(650,.18,.1);
-    },1200);
+function restartTimedOutLevel(){
+  if(checkpointFailing) return;
+  checkpointFailing = true; started = false; speed = 0;
+  document.getElementById("checkpointTimer").style.display = "none";
+  beep(80, .45, .13, "sawtooth");
+
+  document.getElementById("doneNum").textContent = level;
+  document.getElementById("completeText").innerHTML = "<b>TIME UP!</b><br><br>You failed to reach the checkpoint in time.<br><br>Restarting Sector " + level + "...";
+  document.getElementById("nextBtn").textContent = "RETRY SECTOR";
+  document.getElementById("levelComplete").classList.remove("hidden");
+
+  setTimeout(() => {
+    document.getElementById("levelComplete").classList.add("hidden");
+    resetSector();
+    started = true;
+    checkpointFailing = false;
+    beep(650, .18, .1);
+  }, 1200);
 }
 
 function startGame(){
- initAudio();if(audioCtx.state==="suspended")audioCtx.resume();
- started=true;bossMode=false;robotMode=false;level=1;distance=0;health=100;
- checkpointDistance=LEVELS[1].distance;
- document.getElementById("start").classList.add("hidden");
- resetSector();beep(800,.2,.1);
+  initAudio(); if(audioCtx.state === "suspended") audioCtx.resume();
+  started = true; bossMode = false; level = 1; distance = 0; health = 100; energy = 100;
+  checkpointDistance = LEVELS[1].distance;
+  document.getElementById("start").classList.add("hidden");
+  resetSector(); beep(800, .2, .1);
 }
+
 function nextLevel(){
-    document.getElementById("levelComplete").classList.add("hidden");
-
-    if(document.getElementById("nextLevelButton").textContent==="RESTART LEVEL"){
-        resetSector();
-        started=true;
-        beep(650,.18,.1);
-        return;
-    }
-
-    level++;
-    if(level<=5){
-        checkpointDistance=LEVELS[level].distance;
-        resetSector();
-        started=true;
-        if(level===5) transformToRobot();
-        beep(1100,.18,.1);
-    }
+  document.getElementById("levelComplete").classList.add("hidden");
+  if(document.getElementById("nextBtn").textContent === "RETRY SECTOR"){
+    resetSector(); started = true; beep(650, .18, .1);
+    return;
+  }
+  level++;
+  if(level <= 5){
+    checkpointDistance = LEVELS[level].distance;
+    resetSector(); started = true;
+    beep(1100, .18, .1);
+  }
 }
+
 function startBoss(){
- document.getElementById("bossIntro").classList.add("hidden");
- bossMode=true;started=true;bossHealth=100;
- document.getElementById("bossUI").style.display="block";
- transformToRobot();createBoss();
- beep(120,.8,.16,"sawtooth");
+  document.getElementById("bossIntro").classList.add("hidden");
+  bossMode = true; started = true; bossHealth = 100;
+  document.getElementById("bossUI").style.display = "block";
+  createBoss();
+  beep(120, .8, .16, "sawtooth");
 }
 
 function createBoss(){
- if(boss)scene.remove(boss);
- boss=new THREE.Group();bossParts=[];
- const body=new THREE.Mesh(new THREE.BoxGeometry(5.2,1.5,8.5),new THREE.MeshStandardMaterial({color:0x510713,metalness:.92,roughness:.16}));body.position.y=1.2;
- const cabin=new THREE.Mesh(new THREE.BoxGeometry(3.1,1.7,3.2),new THREE.MeshStandardMaterial({color:0x070b11,metalness:.5,roughness:.08}));cabin.position.set(0,2.55,.4);
- const core=new THREE.Mesh(new THREE.SphereGeometry(.75,24,16),new THREE.MeshBasicMaterial({color:0xff244b}));core.position.set(0,2.55,-1.4);
- boss.add(body,cabin,core);
- for(const x of [-1.8,1.8]){
-   const gun=new THREE.Mesh(new THREE.CylinderGeometry(.22,.3,2.7,12),new THREE.MeshStandardMaterial({color:0x4b5563,metalness:1}));gun.rotation.x=Math.PI/2;gun.position.set(x,2,-3.7);boss.add(gun);
- }
- boss.position.set(0,0,car.position.z-75);scene.add(boss);
+  if(boss) scene.remove(boss);
+  boss = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.BoxGeometry(5.2, 1.8, 8.5), new THREE.MeshStandardMaterial({ color: 0x610719, metalness: .92, roughness: .16 }));
+  body.position.y = 1.2;
+  const cabin = new THREE.Mesh(new THREE.BoxGeometry(3.1, 1.8, 3.2), new THREE.MeshStandardMaterial({ color: 0x070b11, metalness: .5, roughness: .08 }));
+  cabin.position.set(0, 2.6, .4);
+  const core = new THREE.Mesh(new THREE.SphereGeometry(.8, 24, 16), new THREE.MeshBasicMaterial({ color: 0xff1744 }));
+  core.position.set(0, 2.6, -1.4);
+  boss.add(body, cabin, core);
+  for(const x of [-1.8, 1.8]){
+    const gun = new THREE.Mesh(new THREE.CylinderGeometry(.22, .3, 2.7, 12), new THREE.MeshStandardMaterial({ color: 0x4b5563, metalness: 1 }));
+    gun.rotation.x = Math.PI / 2; gun.position.set(x, 2, -3.7); boss.add(gun);
+  }
+  boss.position.set(0, 0, car.position.z - 70);
+  scene.add(boss);
 }
 
-function shoot(){
- if(!started || (!robotMode&&!weaponTimer))return;
- const dir=new THREE.Vector3(0,0,-1).applyQuaternion(car.quaternion).normalize();
- const b=new THREE.Mesh(new THREE.SphereGeometry(.09,8,8),new THREE.MeshBasicMaterial({color:0xffd45c}));
- b.position.copy(car.position);b.position.y+=2.1;
- b.userData.velocity=dir.multiplyScalar(95);b.userData.life=2.2;bullets.push(b);scene.add(b);
- beep(720,.045,.035,"square");
+// ===== COMBAT ACTIONS =====
+function punchAction(){
+  if(!started) return;
+  if(punchCooldown > 0) return;
+  punchCooldown = .35;
+  beep(500, .12, .1, "square");
+
+  // Melee attack range check against nearby rivals or boss
+  let hitAny = false;
+  rivals.forEach(v => {
+    if(car.position.distanceTo(v.position) < 4.5){
+      v.userData.health -= 25;
+      hitAny = true;
+      spawnBurst(v.position, 0xff1744, 12);
+      v.position.z -= 15; // knockback
+      if(v.userData.health <= 0){
+        v.position.z -= 200; // eliminate rival
+        v.userData.health = 50;
+        distance += 100; // bonus score
+      }
+    }
+  });
+
+  if(bossMode && boss && car.position.distanceTo(boss.position) < 8){
+    bossHealth -= 8;
+    hitAny = true;
+    spawnBurst(boss.position, 0xff1744, 15);
+    updateBossUI();
+    if(bossHealth <= 0) defeatBoss();
+  }
+
+  if(hitAny){
+    showCombatHint("⚡ MELEE SMASH HIT! ⚡");
+  }
 }
 
-let shootCooldown=0;
-function updateShooting(dt){
- if(!fireHeld && !keys[" "])return;
- if(shootCooldown<=0){shoot();shootCooldown=robotMode?.16:.22}
+function fireMissile(){
+  if(!started) return;
+  if(missileCooldown > 0 || energy < 15) return;
+  missileCooldown = .25;
+  energy -= 15;
+  beep(750, .08, .08, "square");
+
+  const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(car.quaternion).normalize();
+  const m = new THREE.Mesh(new THREE.ConeGeometry(.15, .7, 8), new THREE.MeshBasicMaterial({ color: 0xffdf6b }));
+  m.rotation.x = Math.PI / 2;
+  m.position.copy(car.position); m.position.y += 1.2;
+  m.userData.velocity = dir.multiplyScalar(110);
+  m.userData.life = 2.5;
+  bullets.push(m);
+  scene.add(m);
 }
+
 function updateBullets(dt){
- shootCooldown-=dt;
- for(let i=bullets.length-1;i>=0;i--){
-   const b=bullets[i];b.position.addScaledVector(b.userData.velocity,dt);b.userData.life-=dt;
-   let hit=false;
-   if(bossMode&&boss&&b.position.distanceTo(boss.position)<6){
-     bossHealth-=4;hit=true;spawnBurst(b.position,0xff3858,7);updateBossUI();if(bossHealth<=0)defeatBoss();
-   }
-   if(!hit)for(const v of traffic){if(b.position.distanceTo(v.position)<2.2){v.position.z-=25;spawnBurst(b.position,0xffcf5a,5);hit=true;break}}
-   if(hit||b.userData.life<=0){scene.remove(b);bullets.splice(i,1)}
- }
+  punchCooldown -= dt;
+  missileCooldown -= dt;
+  energy = Math.min(100, energy + 8 * dt);
+
+  for(let i = bullets.length - 1; i >= 0; i--){
+    const b = bullets[i];
+    b.position.addScaledVector(b.userData.velocity, dt);
+    b.userData.life -= dt;
+    let hit = false;
+
+    if(bossMode && boss && b.position.distanceTo(boss.position) < 7){
+      bossHealth -= 6;
+      hit = true;
+      spawnBurst(b.position, 0xffdf6b, 8);
+      updateBossUI();
+      if(bossHealth <= 0) defeatBoss();
+    }
+
+    if(!hit){
+      for(const v of rivals){
+        if(b.position.distanceTo(v.position) < 2.5){
+          v.userData.health -= 25;
+          hit = true;
+          spawnBurst(b.position, 0xffdf6b, 8);
+          v.position.z -= 10;
+          if(v.userData.health <= 0){
+            v.position.z -= 200;
+            v.userData.health = 50;
+            distance += 120;
+          }
+          break;
+        }
+      }
+    }
+
+    if(hit || b.userData.life <= 0){
+      scene.remove(b);
+      bullets.splice(i, 1);
+    }
+  }
+}
+
+function showCombatHint(text){
+  const el = document.getElementById("combatHint");
+  el.textContent = text;
+  el.classList.remove("show");
+  void el.offsetWidth;
+  el.classList.add("show");
 }
 
 function updateCar(dt){
- if(!started)return;
- const accel=keys["w"]||keys["arrowup"],brake=keys["s"]||keys["arrowdown"];
- if(accel)speed+=28*dt;else speed-=9*dt;
- if(brake)speed-=48*dt;
- speed=THREE.MathUtils.clamp(speed,-8,70);
- const left=keys["a"]||keys["arrowleft"],right=keys["d"]||keys["arrowright"];
- let manual=(right?1:0)-(left?1:0);
- // Cursor directly controls lane movement while keyboard remains available.
- const cursorSteer=(targetMouseX-.5)*2;
- const target=manual!==0?manual:cursorSteer;
- steer=THREE.MathUtils.lerp(steer,target,dt*7);
- car.position.x+=steer*(.035+Math.abs(speed)/70*.07)*Math.max(speed,10)*dt;
- car.position.x=THREE.MathUtils.clamp(car.position.x,-8.4,8.4);
- car.position.z-=speed*dt;
- distance+=Math.max(0,speed)*dt;levelDistance+=Math.max(0,speed)*dt;
- car.rotation.z=-steer*.08;car.rotation.y=steer*.045;
- recycleWorld();
- if(checkpoint&&car.position.z<checkpoint.position.z+5){
-   if(level<5)finishCheckpoint();
-   else {started=false;showBossIntro();}
- }
- updateHUD();
+  if(!started) return;
+  const accel = keys["w"] || keys["arrowup"], brake = keys["s"] || keys["arrowdown"];
+
+  let topSpeed = nitroActive ? 95 : 68;
+  let accelRate = nitroActive ? 45 : 28;
+
+  if(accel) speed += accelRate * dt; else speed -= 10 * dt;
+  if(brake) speed -= 55 * dt;
+  speed = THREE.MathUtils.clamp(speed, -8, topSpeed);
+
+  const left = keys["a"] || keys["arrowleft"], right = keys["d"] || keys["arrowright"];
+  let manual = (right ? 1 : 0) - (left ? 1 : 0);
+  const cursorSteer = (targetMouseX - .5) * 2;
+  const target = manual !== 0 ? manual : cursorSteer;
+
+  steer = THREE.MathUtils.lerp(steer, target, dt * 7);
+  car.position.x += steer * (.035 + Math.abs(speed) / 70 * .07) * Math.max(speed, 10) * dt;
+  car.position.x = THREE.MathUtils.clamp(car.position.x, -8.5, 8.5);
+  car.position.z -= speed * dt;
+  distance += Math.max(0, speed) * dt;
+  levelDistance += Math.max(0, speed) * dt;
+
+  car.rotation.z = -steer * .09;
+  car.rotation.y = steer * .05;
+
+  recycleWorld();
+  updateHUD();
 }
 
 function recycleWorld(){
- for(const seg of roadSegments)if(seg.position.z-car.position.z>100)seg.position.z-=1200;
- for(const g of buildingSegments)if(g.position.z-car.position.z>150)g.position.z-=1260;
- // checkpoint is placed ahead in world space; no disappearing road.
+  for(const seg of roadSegments) if(seg.position.z - car.position.z > 100) seg.position.z -= 1400;
+  for(const g of buildingSegments) if(g.position.z - car.position.z > 150) g.position.z -= 1260;
 }
 
-function finishCheckpoint(){
- started=false;speed=0;beep(1000,.25,.12);
- document.getElementById("doneNum").textContent=level;
- document.getElementById("levelComplete").classList.remove("hidden");
- showCheckpoint("LEVEL "+level+" COMPLETE");
-}
-function showBossIntro(){document.getElementById("bossIntro").classList.remove("hidden");showCheckpoint("FINAL CHECKPOINT");}
-function showCheckpoint(text){
- const b=document.getElementById("checkpointBanner");document.getElementById("checkpointText").textContent=text;b.classList.add("show");
- setTimeout(()=>b.classList.remove("show"),1600);
-}
+function updateRivals(dt){
+  collisionCooldown = Math.max(0, collisionCooldown - dt);
 
-function updateTraffic(dt){
-    collisionCooldown=Math.max(0,collisionCooldown-dt);
+  rivals.forEach(rival => {
+    rival.position.z += rival.userData.speed * dt;
 
-    traffic.forEach(vehicle=>{
-        // Vehicles approach the player continuously.
-        vehicle.position.z += vehicle.userData.speed*dt;
+    if(rival.position.z > car.position.z + 30){
+      rival.position.x = [-6, -2, 2, 6][Math.floor(Math.random() * 4)];
+      rival.position.z = car.position.z - 180 - Math.random() * 160;
+      rival.userData.health = 50;
+    }
 
-        if(vehicle.position.z>car.position.z+28){
-            vehicle.position.x=[-6,-2,2,6][Math.floor(Math.random()*4)];
-            vehicle.position.z=car.position.z-180-Math.random()*160;
-        }
+    const dx = Math.abs(rival.position.x - car.position.x);
+    const dz = Math.abs(rival.position.z - car.position.z);
 
-        const dx=Math.abs(vehicle.position.x-car.position.x);
-        const dz=Math.abs(vehicle.position.z-car.position.z);
-
-        if(dx<2.15 && dz<3.1 && collisionCooldown<=0){
-            collisionCooldown=1;
-            speed*=.3;
-            spawnZombieRobot(vehicle);
-            damage();
-        }
-    });
+    // High-speed Ramming / Fighting Collision
+    if(dx < 2.2 && dz < 3.2 && collisionCooldown <= 0){
+      collisionCooldown = .8;
+      speed *= .35;
+      damage();
+      showCombatHint("💥 RAM COLLISION! 💥");
+      spawnBurst(car.position, 0xff1744, 10);
+    }
+  });
 }
 
-function spawnZombieRobot(vehicle){
-    const z=new THREE.Group();
-
-    const metal=new THREE.MeshStandardMaterial({
-        color:0x173c1c,metalness:.85,roughness:.2,
-        emissive:0x0b6b18,emissiveIntensity:1.5
-    });
-    const dark=new THREE.MeshStandardMaterial({
-        color:0x060b08,metalness:.9,roughness:.12
-    });
-
-    const body=new THREE.Mesh(new THREE.BoxGeometry(2.3,.9,4),metal);
-    body.position.y=1;
-
-    const head=new THREE.Mesh(new THREE.BoxGeometry(1.35,.75,.9),metal);
-    head.position.set(0,2.15,-.2);
-
-    const cabin=new THREE.Mesh(new THREE.BoxGeometry(1.5,.8,1.5),dark);
-    cabin.position.set(0,1.6,.3);
-
-    const eyeMat=new THREE.MeshBasicMaterial({color:0x7cff4f});
-    const e1=new THREE.Mesh(new THREE.BoxGeometry(.3,.14,.08),eyeMat);
-    const e2=e1.clone();
-    e1.position.set(-.35,2.18,-.67);
-    e2.position.set(.35,2.18,-.67);
-
-    const armMat=metal;
-    const a1=new THREE.Mesh(new THREE.BoxGeometry(.3,1.7,.35),armMat);
-    const a2=a1.clone();
-    a1.position.set(-1.3,1.1,0);
-    a2.position.set(1.3,1.1,0);
-
-    z.add(body,head,cabin,e1,e2,a1,a2);
-    z.position.copy(vehicle.position);
-    z.userData.speed=12+level*2.5;
-
-    zombieRobots.push(z);
-    scene.add(z);
-    scene.remove(vehicle);
-
-    const idx=traffic.indexOf(vehicle);
-    if(idx>=0)traffic.splice(idx,1);
-
-    const warning=document.getElementById("zombieWarning");
-    warning.classList.remove("show");
-    void warning.offsetWidth;
-    warning.classList.add("show");
-
-    beep(170,.2,.1,"square");
-    beep(80,.3,.08,"sawtooth");
+function damage(){
+  health -= 20;
+  beep(140, .2, .12, "sawtooth");
+  const d = document.getElementById("damage");
+  d.style.borderWidth = "8px";
+  setTimeout(() => d.style.borderWidth = "0", 100);
+  if(health <= 0) gameOver();
 }
-function updateZombieRobots(dt){
-    zombieRobots=zombieRobots.filter(z=>{
-        if(!z.parent)return false;
 
-        // Run toward the player's current position.
-        const dx=car.position.x-z.position.x;
-        z.position.x+=Math.sign(dx)*7*dt;
-        z.position.x=THREE.MathUtils.clamp(z.position.x,-8,8);
-
-        z.position.z+=z.userData.speed*dt;
-
-        // Keep it behind/near the player instead of disappearing.
-        if(z.position.z>car.position.z+8)
-            z.position.z=car.position.z+7;
-
-        const dx2=Math.abs(z.position.x-car.position.x);
-        const dz2=Math.abs(z.position.z-car.position.z);
-
-        if(dx2<2.2&&dz2<3.5&&collisionCooldown<=0){
-            collisionCooldown=1;
-            damage();
-            z.position.z+=8;
-        }
-
-        if(checkpoint && z.position.z<=checkpoint.position.z+4){
-            scene.remove(z);
-            return false;
-        }
-        return true;
-    });
-}
-function clearZombieRobots(){
-    zombieRobots.forEach(z=>scene.remove(z));
-    zombieRobots=[];
+function gameOver(){
+  started = false;
+  document.getElementById("finalDist").textContent = Math.floor(distance);
+  document.getElementById("finalLevel").textContent = level;
+  document.getElementById("gameOver").classList.remove("hidden");
+  beep(50, .6, .18, "sawtooth");
 }
 
 function updateBoss(dt){
- if(!bossMode||!boss)return;
- boss.position.z-=9*dt;
- boss.position.x+=Math.sin(performance.now()*.0012)*3.8*dt;
- boss.position.x=THREE.MathUtils.clamp(boss.position.x,-7,7);
- bossFireTimer-=dt;bossHitCooldown-=dt;
- if(bossFireTimer<=0){
-   bossFireTimer=1.25;
-   const dir=car.position.clone().sub(boss.position).normalize();
-   const eb=new THREE.Mesh(new THREE.SphereGeometry(.16,10,10),new THREE.MeshBasicMaterial({color:0xff3058}));
-   eb.position.copy(boss.position);eb.position.y=1.8;eb.userData.velocity=dir.multiplyScalar(32);eb.userData.life=4;enemyBullets.push(eb);scene.add(eb);beep(180,.08,.03,"sawtooth");
- }
- if(boss.position.z>car.position.z+28)boss.position.z=car.position.z-95;
- if(boss.position.distanceTo(car.position)<6&&bossHitCooldown<=0){bossHitCooldown=1;health=Math.max(0,health-18);damageFlash();speed*=.7;if(health<=0)gameOver()}
+  if(!bossMode || !boss) return;
+  boss.position.z = car.position.z - 65;
+  bossFireTimer += dt;
+  if(bossFireTimer > 1.2){
+    bossFireTimer = 0;
+    const eb = new THREE.Mesh(new THREE.SphereGeometry(.2, 8, 8), new THREE.MeshBasicMaterial({ color: 0xff1744 }));
+    eb.position.copy(boss.position); eb.position.y += 2;
+    eb.userData.velocity = new THREE.Vector3(0, 0, 1).multiplyScalar(60);
+    enemyBullets.push(eb); scene.add(eb);
+  }
+  for(let i = enemyBullets.length - 1; i >= 0; i--){
+    const eb = enemyBullets[i];
+    eb.position.addScaledVector(eb.userData.velocity, dt);
+    if(eb.position.distanceTo(car.position) < 2.3){
+      scene.remove(eb); enemyBullets.splice(i, 1); damage();
+    }
+  }
 }
 
-function updateEnemyBullets(dt){
- for(let i=enemyBullets.length-1;i>=0;i--){
-   const b=enemyBullets[i];b.position.addScaledVector(b.userData.velocity,dt);b.userData.life-=dt;
-   if(b.position.distanceTo(car.position)<2.4){health=Math.max(0,health-12);damageFlash();spawnBurst(b.position,0xff3058,9);scene.remove(b);enemyBullets.splice(i,1);if(health<=0)gameOver();continue}
-   if(b.userData.life<=0){scene.remove(b);enemyBullets.splice(i,1)}
- }
-}
 function updateBossUI(){
- document.getElementById("bossHealth").style.width=Math.max(0,bossHealth)+"%";
+  document.getElementById("bossHealth").style.width = Math.max(0, bossHealth) + "%";
 }
+
 function defeatBoss(){
- bossMode=false;started=false;document.getElementById("bossUI").style.display="none";beep(1200,.7,.16);
- setTimeout(()=>alert("🏆 NEON DRIVE COMPLETE!\n\nAll 5 checkpoints cleared.\nFINAL BOSS DEFEATED!"),350);
-}
-function damageFlash(){
- const d=document.getElementById("damage");d.style.borderWidth="28px";setTimeout(()=>d.style.borderWidth="0",130);
-}
-
-function spawnBurst(pos,color,count){
- for(let i=0;i<count;i++){
-  const p=new THREE.Mesh(new THREE.SphereGeometry(.04+Math.random()*.07,6,6),new THREE.MeshBasicMaterial({color}));
-  p.position.copy(pos);p.userData.velocity=new THREE.Vector3((Math.random()-.5)*8,Math.random()*7,(Math.random()-.5)*8);p.userData.life=.45+Math.random()*.45;particles.push(p);scene.add(p);
- }
-}
-function updateParticles(dt){
- for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.position.addScaledVector(p.userData.velocity,dt);p.userData.velocity.y-=10*dt;p.userData.life-=dt;if(p.userData.life<=0){scene.remove(p);particles.splice(i,1)}}
+  bossMode = false; scene.remove(boss); boss = null;
+  document.getElementById("bossUI").style.display = "none";
+  showCheckpoint("VICTORY // HIGHWAY CONQUERED");
+  setTimeout(() => {
+    document.getElementById("finalDist").textContent = Math.floor(distance);
+    document.getElementById("finalLevel").textContent = "VICTORY (MAX)";
+    document.getElementById("gameOver").classList.remove("hidden");
+  }, 2200);
 }
 
-function updateRain(){
- const rain=scene.children.find(o=>o.userData.rain);if(!rain)return;
- const a=rain.geometry.attributes.position.array;
- for(let i=1;i<a.length;i+=3){a[i]-=.75;if(a[i]<0)a[i]=40}
- rain.position.z=car.position.z;
- rain.position.x=car.position.x;
+function showCheckpoint(text){
+  const b = document.getElementById("checkpointBanner");
+  document.getElementById("checkpointText").textContent = text;
+  b.classList.add("show");
+  setTimeout(() => b.classList.remove("show"), 1800);
 }
-function updateCamera(dt){
- mouseX=THREE.MathUtils.lerp(mouseX,targetMouseX,dt*5);mouseY=THREE.MathUtils.lerp(mouseY,targetMouseY,dt*5);
- const px=(mouseX-.5)*4.5,py=(mouseY-.5)*1.7;
- camera.position.x=THREE.MathUtils.lerp(camera.position.x,car.position.x+px,dt*4);
- camera.position.y=THREE.MathUtils.lerp(camera.position.y,5.0-py,dt*4);
- camera.position.z=THREE.MathUtils.lerp(camera.position.z,car.position.z+11,dt*4);
- camera.lookAt(car.position.x+px*.35,1.1,car.position.z-18);
+
+function spawnBurst(pos, color, count){
+  const geo = new THREE.BufferGeometry(), mat = new THREE.PointsMaterial({ color: color, size: .25 });
+  const arr = [];
+  for(let i = 0; i < count; i++) arr.push(pos.x + (Math.random() - .5), pos.y + (Math.random() - .5) + .5, pos.z + (Math.random() - .5));
+  geo.setAttribute("position", new THREE.Float32BufferAttribute(arr, 3));
+  const pts = new THREE.Points(geo, mat); scene.add(pts);
+  setTimeout(() => scene.remove(pts), 400);
 }
+
 function updateHUD(){
- const kmh=Math.round(Math.abs(speed)*3.6);
- document.getElementById("speed").textContent=kmh;
- document.getElementById("gear").textContent="GEAR "+(speed<0?"R":kmh>100?"5":kmh>75?"4":kmh>50?"3":kmh>25?"2":"1");
- document.getElementById("score").textContent=Math.floor(distance)+" m";
- document.getElementById("level").textContent=bossMode?"FINAL BOSS":"LEVEL "+level;
- document.getElementById("timer").textContent=bossMode?"DESTROY THE BOSS":Math.max(0,checkpointTimeLeft).toFixed(1)+" sec";
- document.getElementById("health").style.width=health+"%";
+  document.getElementById("speed").textContent = Math.abs(Math.round(speed * 2.2));
+  document.getElementById("score").textContent = Math.floor(distance) + " m";
+  document.getElementById("level").textContent = "SECTOR " + level;
+  document.getElementById("gear").textContent = nitroActive ? "NITRO BOOST [ON]" : (speed >= 0 ? "GEAR D" : "GEAR R");
+  document.getElementById("health").style.width = Math.max(0, health) + "%";
+  document.getElementById("energy").style.width = Math.max(0, energy) + "%";
 }
-function gameOver(){
- started=false;bossMode=false;speed=0;document.getElementById("bossUI").style.display="none";
- document.getElementById("finalDist").textContent=Math.floor(distance);document.getElementById("finalLevel").textContent=level;
- document.getElementById("gameOver").classList.remove("hidden");
-}
+
 function resize(){
- camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
 }
+
 function animate(){
- requestAnimationFrame(animate);
- const dt=Math.min(clock.getDelta(),.05);
- updateCar(dt);updateTraffic(dt);updateCheckpointTimer(dt);
-updateZombieRobots(dt);updateBoss(dt);updateShooting(dt);updateBullets(dt);updateEnemyBullets(dt);updateParticles(dt);updateRain();updateCamera(dt);updateAudio();
- renderer.render(scene,camera);
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), .1);
+
+  if(started){
+    updateCar(dt);
+    updateRivals(dt);
+    updateBullets(dt);
+    updateCheckpointTimer(dt);
+    if(bossMode) updateBoss(dt);
+    updateAudio();
+  }
+
+  scene.traverse(obj => {
+    if(obj.userData && obj.userData.rain){
+      const pos = obj.geometry.attributes.position.array;
+      for(let i = 1; i < pos.length; i += 3){
+        pos[i] -= 85 * dt; if(pos[i] < 0) pos[i] = 40;
+      }
+      obj.geometry.attributes.position.needsUpdate=true;
+    }
+  });
+
+  if(checkpoint && started){
+    checkpoint.rotation.y += dt * 1.5;
+  }
+
+  renderer.render(scene, camera);
 }
-init();
+
+window.onload = init;
 </script>
 </body>
 </html>
