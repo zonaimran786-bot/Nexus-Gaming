@@ -153,6 +153,9 @@ button:hover{transform:translateY(-2px);filter:brightness(1.15)}
     position:relative;
 }
 
+#robotMode{position:fixed;left:50%;top:185px;transform:translateX(-50%);z-index:36;display:none;padding:8px 18px;border:1px solid #7cff4f88;border-radius:10px;background:rgba(4,12,7,.9);color:#7cff4f;font-weight:900;font-size:11px;letter-spacing:3px;box-shadow:0 0 30px #7cff4f22}
+#fireBtn{position:fixed;right:24px;bottom:28px;z-index:60;width:78px;height:78px;border-radius:50%;border:1px solid #7cff4f99;background:#102414dd;color:#7cff4f;font-size:12px;font-weight:900;display:none;touch-action:none;user-select:none;box-shadow:0 0 25px #7cff4f22}
+#fireBtn:active{transform:scale(.92);background:#7cff4f33}
 </style>
 </head>
 <body>
@@ -220,7 +223,7 @@ button:hover{transform:translateY(-2px);filter:brightness(1.15)}
     <span id="checkpointDistance">CHECKPOINT AHEAD</span>
 </div>
 
-<div id="zombieWarning">⚠ ZOMBIE ROBOT ACTIVATED ⚠</div>
+<div id="zombieWarning">⚠ ZOMBIE ROBOT ACTIVATED ⚠</div><div id="robotMode">ROBOT ASSAULT MODE // ONLINE</div><button id="fireBtn">FIRE</button>
 
 <div id="damage"></div>
 
@@ -247,7 +250,8 @@ let traffic=[],bullets=[],enemyBullets=[],particles=[];
 let boss=null,bossParts=[];
 let started=false,bossMode=false,robotMode=false;
 let level=1,health=100,distance=0,speed=0,steer=0;
-let levelDistance=0,checkpointDistance=700;
+let levelDistance=0,checkpointDistance=700,checkpointTimeLeft=42,checkpointFailing=false;
+let zombieRobots=[];
 let mouseX=.5,mouseY=.5,targetMouseX=.5,targetMouseY=.5;
 let keys={},fireHeld=false,collisionCooldown=0;
 let bossHealth=100,bossFireTimer=0,bossHitCooldown=0;
@@ -443,15 +447,24 @@ function transformToRobot(){
 }
 
 function createTraffic(){
- traffic.forEach(v=>scene.remove(v));traffic=[];
- const amount=LEVELS[level].traffic;
- for(let i=0;i<amount;i++){
-   const v=createTrafficCar();
-   v.position.set([-7,-3.5,3.5,7][i%4],0,-70-i*75-Math.random()*100);
-   v.userData.speed=LEVELS[level].trafficSpeed+Math.random()*12;
-   traffic.push(v);scene.add(v);
- }
+    traffic.forEach(v=>scene.remove(v));
+    traffic=[];
+    const amount=LEVELS[level]?.traffic||15;
+
+    for(let i=0;i<amount;i++){
+        const vehicle=createTrafficCar();
+        const lane=[-6,-2,2,6][i%4];
+        vehicle.position.set(
+            lane,
+            0,
+            -45-Math.floor(i/4)*55-(i%4)*15
+        );
+        vehicle.userData.speed=LEVELS[level].trafficSpeed+Math.random()*8;
+        traffic.push(vehicle);
+        scene.add(vehicle);
+    }
 }
+
 function createTrafficCar(){
  const g=new THREE.Group();
  const colors=[0xff2349,0xffc52e,0x24aaff,0xf4f6ff,0x54e58c,0xb36bff];
@@ -482,8 +495,94 @@ function createCheckpoint(){
 }
 
 function resetSector(){
- levelDistance=0;health=Math.min(100,health+25);speed=0;
- createTraffic();createCheckpoint();updateHUD();
+    levelDistance=0;
+    health=Math.min(100,health+25);
+    speed=0;
+    checkpointTimeLeft=LEVELS[level].time;
+    checkpointFailing=false;
+    createTraffic();
+    createCheckpoint();
+    document.getElementById("checkpointTimer").style.display="block";
+    updateHUD();
+}
+function updateCheckpointTimer(dt){
+    if(!started || bossMode || checkpointFailing) return;
+
+    checkpointTimeLeft-=dt;
+
+    const box=document.getElementById("checkpointTimer");
+    const time=document.getElementById("checkpointTime");
+    const dist=document.getElementById("checkpointDistance");
+
+    box.style.display="block";
+    time.textContent=Math.max(0,checkpointTimeLeft).toFixed(1);
+    dist.textContent=Math.max(0,Math.floor(checkpointDistance-levelDistance))+" m TO CHECKPOINT";
+    box.classList.toggle("danger",checkpointTimeLeft<=7);
+
+    if(levelDistance>=checkpointDistance){
+        reachCheckpoint();
+        return;
+    }
+
+    if(checkpointTimeLeft<=0){
+        restartTimedOutLevel();
+    }
+}
+function reachCheckpoint(){
+    if(!started || checkpointFailing) return;
+
+    started=false;
+    speed=0;
+    checkpointTimeLeft=0;
+    document.getElementById("checkpointTimer").style.display="none";
+
+    if(checkpoint){
+        checkpoint.traverse(obj=>{
+            if(obj.isMesh){
+                obj.material.transparent=true;
+                obj.material.opacity=.2;
+            }
+        });
+    }
+
+    beep(1100,.18,.1);
+    beep(1500,.25,.08);
+
+    if(level<5){
+        document.getElementById("completedNumber").textContent=level;
+        document.querySelector("#levelComplete .subtitle").innerHTML=
+            "<b>CHECKPOINT REACHED!</b><br><br>Level "+level+" complete.<br><br>Get ready for Level "+(level+1)+".";
+        document.getElementById("nextLevelButton").textContent="NEXT LEVEL";
+        document.getElementById("levelComplete").classList.remove("hidden");
+    }else{
+        // Level 5 checkpoint is the boss gate.
+        transformToRobot();
+        document.getElementById("bossIntro").classList.remove("hidden");
+    }
+}
+function restartTimedOutLevel(){
+    if(checkpointFailing) return;
+    checkpointFailing=true;
+    started=false;
+    speed=0;
+    document.getElementById("checkpointTimer").style.display="none";
+    beep(80,.45,.13,"sawtooth");
+
+    clearZombieRobots();
+
+    document.getElementById("completedNumber").textContent=level;
+    document.querySelector("#levelComplete .subtitle").innerHTML=
+        "<b>TIME UP!</b><br><br>You did not reach the checkpoint in time.<br><br>Restarting Level "+level+"...";
+    document.getElementById("nextLevelButton").textContent="RESTART LEVEL";
+    document.getElementById("levelComplete").classList.remove("hidden");
+
+    setTimeout(()=>{
+        document.getElementById("levelComplete").classList.add("hidden");
+        resetSector();
+        started=true;
+        checkpointFailing=false;
+        beep(650,.18,.1);
+    },1200);
 }
 
 function startGame(){
@@ -494,9 +593,23 @@ function startGame(){
  resetSector();beep(800,.2,.1);
 }
 function nextLevel(){
- level++;
- document.getElementById("levelComplete").classList.add("hidden");
- if(level<=5){checkpointDistance=LEVELS[level].distance;started=true;resetSector();beep(1100,.18,.1)}
+    document.getElementById("levelComplete").classList.add("hidden");
+
+    if(document.getElementById("nextLevelButton").textContent==="RESTART LEVEL"){
+        resetSector();
+        started=true;
+        beep(650,.18,.1);
+        return;
+    }
+
+    level++;
+    if(level<=5){
+        checkpointDistance=LEVELS[level].distance;
+        resetSector();
+        started=true;
+        if(level===5) transformToRobot();
+        beep(1100,.18,.1);
+    }
 }
 function startBoss(){
  document.getElementById("bossIntro").classList.add("hidden");
@@ -590,33 +703,114 @@ function showCheckpoint(text){
 }
 
 function updateTraffic(dt){
- collisionCooldown=Math.max(0,collisionCooldown-dt);
- for(const v of traffic){
-   v.position.z-=v.userData.speed*dt;
-   if(v.position.z-car.position.z>50)v.position.z=car.position.z-650-Math.random()*160;
-   const dx=Math.abs(v.position.x-car.position.x),dz=Math.abs(v.position.z-car.position.z);
-   if(dx<2.1&&dz<3.2&&collisionCooldown<=0){
-     collisionCooldown=1.0;
-     // A light touch activates the weapon system; the car is not destroyed instantly.
-     weaponTimer=Math.max(weaponTimer,12);
-     health=Math.max(0,health-8);
-     speed*=.72;
-     v.position.z-=18;
-     spawnBurst(car.position,0x00eaff,16);
-     document.getElementById("weaponStatus").classList.add("active");
-     document.getElementById("weaponStatus").textContent="WEAPON ACTIVE • FIRE";
-     beep(260,.12,.08,"square");damageFlash();
-     if(health<=0)gameOver();
-   }
- }
- if(weaponTimer>0&&!robotMode){
-   weaponTimer-=dt;
-   if(weaponTimer<=0){
-     weaponTimer=0;
-     document.getElementById("weaponStatus").classList.remove("active");
-     document.getElementById("weaponStatus").textContent="WEAPON LOCKED • REACH THE NEXT CHECKPOINT";
-   }
- }
+    collisionCooldown=Math.max(0,collisionCooldown-dt);
+
+    traffic.forEach(vehicle=>{
+        // Vehicles approach the player continuously.
+        vehicle.position.z += vehicle.userData.speed*dt;
+
+        if(vehicle.position.z>car.position.z+28){
+            vehicle.position.x=[-6,-2,2,6][Math.floor(Math.random()*4)];
+            vehicle.position.z=car.position.z-180-Math.random()*160;
+        }
+
+        const dx=Math.abs(vehicle.position.x-car.position.x);
+        const dz=Math.abs(vehicle.position.z-car.position.z);
+
+        if(dx<2.15 && dz<3.1 && collisionCooldown<=0){
+            collisionCooldown=1;
+            speed*=.3;
+            spawnZombieRobot(vehicle);
+            damage();
+        }
+    });
+}
+
+function spawnZombieRobot(vehicle){
+    const z=new THREE.Group();
+
+    const metal=new THREE.MeshStandardMaterial({
+        color:0x173c1c,metalness:.85,roughness:.2,
+        emissive:0x0b6b18,emissiveIntensity:1.5
+    });
+    const dark=new THREE.MeshStandardMaterial({
+        color:0x060b08,metalness:.9,roughness:.12
+    });
+
+    const body=new THREE.Mesh(new THREE.BoxGeometry(2.3,.9,4),metal);
+    body.position.y=1;
+
+    const head=new THREE.Mesh(new THREE.BoxGeometry(1.35,.75,.9),metal);
+    head.position.set(0,2.15,-.2);
+
+    const cabin=new THREE.Mesh(new THREE.BoxGeometry(1.5,.8,1.5),dark);
+    cabin.position.set(0,1.6,.3);
+
+    const eyeMat=new THREE.MeshBasicMaterial({color:0x7cff4f});
+    const e1=new THREE.Mesh(new THREE.BoxGeometry(.3,.14,.08),eyeMat);
+    const e2=e1.clone();
+    e1.position.set(-.35,2.18,-.67);
+    e2.position.set(.35,2.18,-.67);
+
+    const armMat=metal;
+    const a1=new THREE.Mesh(new THREE.BoxGeometry(.3,1.7,.35),armMat);
+    const a2=a1.clone();
+    a1.position.set(-1.3,1.1,0);
+    a2.position.set(1.3,1.1,0);
+
+    z.add(body,head,cabin,e1,e2,a1,a2);
+    z.position.copy(vehicle.position);
+    z.userData.speed=12+level*2.5;
+
+    zombieRobots.push(z);
+    scene.add(z);
+    scene.remove(vehicle);
+
+    const idx=traffic.indexOf(vehicle);
+    if(idx>=0)traffic.splice(idx,1);
+
+    const warning=document.getElementById("zombieWarning");
+    warning.classList.remove("show");
+    void warning.offsetWidth;
+    warning.classList.add("show");
+
+    beep(170,.2,.1,"square");
+    beep(80,.3,.08,"sawtooth");
+}
+function updateZombieRobots(dt){
+    zombieRobots=zombieRobots.filter(z=>{
+        if(!z.parent)return false;
+
+        // Run toward the player's current position.
+        const dx=car.position.x-z.position.x;
+        z.position.x+=Math.sign(dx)*7*dt;
+        z.position.x=THREE.MathUtils.clamp(z.position.x,-8,8);
+
+        z.position.z+=z.userData.speed*dt;
+
+        // Keep it behind/near the player instead of disappearing.
+        if(z.position.z>car.position.z+8)
+            z.position.z=car.position.z+7;
+
+        const dx2=Math.abs(z.position.x-car.position.x);
+        const dz2=Math.abs(z.position.z-car.position.z);
+
+        if(dx2<2.2&&dz2<3.5&&collisionCooldown<=0){
+            collisionCooldown=1;
+            damage();
+            z.position.z+=8;
+        }
+
+        if(checkpoint && z.position.z<=checkpoint.position.z+4){
+            scene.remove(z);
+            return false;
+        }
+        return true;
+    });
+}
+function clearZombieRobots(){
+    zombieRobots.forEach(z=>scene.remove(z));
+    zombieRobots=[];
 }
 
 function updateBoss(dt){
@@ -684,7 +878,7 @@ function updateHUD(){
  document.getElementById("gear").textContent="GEAR "+(speed<0?"R":kmh>100?"5":kmh>75?"4":kmh>50?"3":kmh>25?"2":"1");
  document.getElementById("score").textContent=Math.floor(distance)+" m";
  document.getElementById("level").textContent=bossMode?"FINAL BOSS":"LEVEL "+level;
- document.getElementById("timer").textContent=bossMode?"DESTROY THE BOSS":Math.max(0,Math.ceil((checkpointDistance-levelDistance)/Math.max(1,speed)))+" sec to checkpoint";
+ document.getElementById("timer").textContent=bossMode?"DESTROY THE BOSS":Math.max(0,checkpointTimeLeft).toFixed(1)+" sec";
  document.getElementById("health").style.width=health+"%";
 }
 function gameOver(){
@@ -698,7 +892,8 @@ function resize(){
 function animate(){
  requestAnimationFrame(animate);
  const dt=Math.min(clock.getDelta(),.05);
- updateCar(dt);updateTraffic(dt);updateBoss(dt);updateShooting(dt);updateBullets(dt);updateEnemyBullets(dt);updateParticles(dt);updateRain();updateCamera(dt);updateAudio();
+ updateCar(dt);updateTraffic(dt);updateCheckpointTimer(dt);
+updateZombieRobots(dt);updateBoss(dt);updateShooting(dt);updateBullets(dt);updateEnemyBullets(dt);updateParticles(dt);updateRain();updateCamera(dt);updateAudio();
  renderer.render(scene,camera);
 }
 init();
