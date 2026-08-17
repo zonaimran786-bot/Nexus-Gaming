@@ -70,6 +70,51 @@ button:hover{transform:translateY(-3px);filter:brightness(1.2);box-shadow:0 0 40
 #nitroBtn{left:180px;bottom:30px;width:72px;height:72px;color:#00eaff;border-color:#00eaff66}
 #touchHint{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);font:9px Arial;color:#9ba8b8;white-space:nowrap;background:#0008;padding:6px 10px;border-radius:7px}
 
+/* JUMPSCARE OVERLAY */
+#jumpscareOverlay{
+    position:fixed;
+    inset:0;
+    z-index:200;
+    background:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.05s ease-in;
+}
+#jumpscareOverlay.active{
+    opacity:1;
+    pointer-events:auto;
+    animation:shakeScreen 0.15s infinite alternate;
+}
+@keyframes shakeScreen{
+    0%{transform:translate(-3px, 3px) scale(1.02)}
+    100%{transform:translate(3px, -3px) scale(1.05)}
+}
+#jumpscareContent{
+    text-align:center;
+    color:#ff1744;
+}
+#jumpscareFace{
+    font-size:clamp(120px, 25vw, 220px);
+    line-height:1;
+    text-shadow:0 0 40px #ff1744, 0 0 90px #ff0000;
+    animation:flashFace 0.1s infinite alternate;
+}
+@keyframes flashFace{
+    from{filter:brightness(1)}
+    to{filter:brightness(1.8)}
+}
+#jumpscareText{
+    font-size:clamp(22px, 5vw, 48px);
+    font-weight:900;
+    letter-spacing:6px;
+    color:#fff;
+    margin-top:15px;
+    text-shadow:0 0 20px #ff1744;
+}
+
 @media(max-width:800px){
  #touch{display:block}
  #speedBox{left:8px;bottom:115px;transform:scale(.75);transform-origin:left bottom}
@@ -103,7 +148,7 @@ button:hover{transform:translateY(-3px);filter:brightness(1.2);box-shadow:0 0 40
     display:none;
 }
 #checkpointTimer .timer-label{display:block;color:#8b9aaa;font-size:9px;letter-spacing:3px;margin-bottom:4px}
-#checkpointTime{font-family:Arial,sans-serif;font-size:24px;color:#ffdf6b}
+#checkpointTime{font-family:Arial,sans-serif;font-size:24px;color:#ffd76a}
 #checkpointDistance{display:block;margin-top:3px;color:#7f91a5;font-size:10px}
 #checkpointTimer.danger{border-color:#ff334d99;box-shadow:0 0 35px #ff334d22}
 #checkpointTimer.danger #checkpointTime{color:#ff334d;animation:timerPulse .5s infinite alternate}
@@ -178,6 +223,14 @@ button:hover{transform:translateY(-3px);filter:brightness(1.2);box-shadow:0 0 40
     <h1>COMBAT <span>TERMINATED</span></h1>
     <div class="subtitle">Distance: <b id="finalDist">0</b> m<br>Sector Reached: <b id="finalLevel">1</b></div>
     <button id="restartBtn">TRY AGAIN</button>
+  </div>
+</div>
+
+<!-- JUMPSCARE SCREEN -->
+<div id="jumpscareOverlay">
+  <div id="jumpscareContent">
+    <div id="jumpscareFace">💀</div>
+    <div id="jumpscareText">FATAL SYSTEM CRASH</div>
   </div>
 </div>
 
@@ -339,6 +392,18 @@ function beep(f=500, d=.1, v=.06, type="sine"){
   o.connect(g); g.connect(audioCtx.destination); o.start();
   g.gain.exponentialRampToValueAtTime(.001, audioCtx.currentTime + d);
   o.stop(audioCtx.currentTime + d);
+}
+function playJumpscareSound(){
+  if(!audioCtx) return;
+  // Loud piercing high-low screech sound for jumpscare
+  const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+  o.type = "sawtooth";
+  o.frequency.setValueAtTime(900, audioCtx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.8);
+  g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.9);
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start(); o.stop(audioCtx.currentTime + 0.9);
 }
 function updateAudio(){
   if(engineOsc) {
@@ -550,20 +615,7 @@ function restartTimedOutLevel(){
   if(checkpointFailing) return;
   checkpointFailing = true; started = false; speed = 0;
   document.getElementById("checkpointTimer").style.display = "none";
-  beep(80, .45, .13, "sawtooth");
-
-  document.getElementById("doneNum").textContent = level;
-  document.getElementById("completeText").innerHTML = "<b>TIME UP!</b><br><br>You failed to reach the checkpoint in time.<br><br>Restarting Sector " + level + "...";
-  document.getElementById("nextBtn").textContent = "RETRY SECTOR";
-  document.getElementById("levelComplete").classList.remove("hidden");
-
-  setTimeout(() => {
-    document.getElementById("levelComplete").classList.add("hidden");
-    resetSector();
-    started = true;
-    checkpointFailing = false;
-    beep(650, .18, .1);
-  }, 1200);
+  triggerJumpscare();
 }
 
 function startGame(){
@@ -742,7 +794,6 @@ function updateCar(dt){
   car.rotation.z = -steer * .09;
   car.rotation.y = steer * .05;
 
-  // FIXED CAMERA AND WORLD RECYCLING TO FOLLOW THE CAR DYNAMICALLY:
   camera.position.x = car.position.x * 0.5;
   camera.position.y = car.position.y + 4.2;
   camera.position.z = car.position.z + 10;
@@ -800,15 +851,33 @@ function damage(){
   const d = document.getElementById("damage");
   d.style.borderWidth = "8px";
   setTimeout(() => d.style.borderWidth = "0", 100);
-  if(health <= 0) gameOver();
+  if(health <= 0) triggerJumpscare();
 }
 
-function gameOver(){
+function triggerJumpscare(){
   started = false;
-  document.getElementById("finalDist").textContent = Math.floor(distance);
-  document.getElementById("finalLevel").textContent = level;
-  document.getElementById("gameOver").classList.remove("hidden");
-  beep(50, .6, .18, "sawtooth");
+  speed = 0;
+  document.getElementById("checkpointTimer").style.display = "none";
+  
+  // Play jumpscare sound & trigger visual overlay
+  playJumpscareSound();
+  const js = document.getElementById("jumpscareOverlay");
+  js.classList.add("active");
+
+  // After 1.2 seconds, hide jumpscare and show standard Game Over screen
+  setTimeout(() => {
+    js.classList.remove("active");
+    if(checkpointFailing){
+      document.getElementById("checkpointFailing = false;");
+      resetSector();
+      started = true;
+      beep(650, .18, .1);
+    } else {
+      document.getElementById("finalDist").textContent = Math.floor(distance);
+      document.getElementById("finalLevel").textContent = level;
+      document.getElementById("gameOver").classList.remove("hidden");
+    }
+  }, 1200);
 }
 
 function updateBoss(dt){
