@@ -420,7 +420,6 @@ function createPlayerCar(){
   const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.75, .82, 2), dark); cabin.position.set(0, 1.42, .45);
   const roof = new THREE.Mesh(new THREE.BoxGeometry(1.58, .1, 1.65), dark); roof.position.set(0, 1.88, .45);
 
-  // Combat Spikes / Melee Blades on Hood
   const bladeMat = new THREE.MeshStandardMaterial({ color: 0x00ffff, metalness: 1, roughness: .1, emissive: 0x00ffff, emissiveIntensity: .5 });
   const leftBlade = new THREE.Mesh(new THREE.BoxGeometry(.15, .2, 1.2), bladeMat); leftBlade.position.set(-1.1, 1.2, -1.5);
   const rightBlade = leftBlade.clone(); rightBlade.position.x = 1.1;
@@ -449,7 +448,7 @@ function createRivals(){
     const rival = createRivalCar();
     const lane = [-6, -2, 2, 6][i % 4];
     rival.position.set(lane, 0, -50 - Math.floor(i / 4) * 55 - (i % 4) * 15);
-    rival.userData.speed = LEVELS[level].rivalSpeed + Math.random * 8;
+    rival.userData.speed = LEVELS[level].rivalSpeed + (Math.random() * 8);
     rival.userData.health = 50;
     rivals.push(rival);
     scene.add(rival);
@@ -615,25 +614,23 @@ function createBoss(){
   scene.add(boss);
 }
 
-// ===== COMBAT ACTIONS =====
 function punchAction(){
   if(!started) return;
   if(punchCooldown > 0) return;
   punchCooldown = .35;
   beep(500, .12, .1, "square");
 
-  // Melee attack range check against nearby rivals or boss
   let hitAny = false;
   rivals.forEach(v => {
     if(car.position.distanceTo(v.position) < 4.5){
       v.userData.health -= 25;
       hitAny = true;
       spawnBurst(v.position, 0xff1744, 12);
-      v.position.z -= 15; // knockback
+      v.position.z -= 15;
       if(v.userData.health <= 0){
-        v.position.z -= 200; // eliminate rival
+        v.position.z -= 200;
         v.userData.health = 50;
-        distance += 100; // bonus score
+        distance += 100;
       }
     }
   });
@@ -769,7 +766,6 @@ function updateRivals(dt){
     const dx = Math.abs(rival.position.x - car.position.x);
     const dz = Math.abs(rival.position.z - car.position.z);
 
-    // High-speed Ramming / Fighting Collision
     if(dx < 2.2 && dz < 3.2 && collisionCooldown <= 0){
       collisionCooldown = .8;
       speed *= .35;
