@@ -326,6 +326,17 @@ nav a:hover{
         0 0 40px #8b5cf655;
 }
 
+.skyward-btn{
+    background:#ff007f;
+    color:white;
+    box-shadow: 0 0 25px #ff007f22;
+}
+
+.skyward-btn:hover{
+    transform:translateY(-4px);
+    box-shadow: 0 0 40px #ff007f55;
+}
+
 /* =========================
    FLOATING CORE
 ========================= */
@@ -604,6 +615,10 @@ section{
     color:#a78bfa;
 }
 
+.skyward-tag{
+    color:#ff007f;
+}
+
 .game-info h3{
     font-family:Orbitron;
 
@@ -674,6 +689,16 @@ section{
             transparent 38%
         ),
         #07040e;
+}
+
+.skyward-preview{
+    background:
+        radial-gradient(
+            circle at center,
+            #ff007f22,
+            transparent 38%
+        ),
+        #0a050e;
 }
 
 /* =========================
@@ -972,7 +997,32 @@ section{
 }
 
 /* =========================
-   NEON DRIVE PURCHASE PANEL
+   SKYWARD PREVIEW ANIMATION
+========================= */
+.skyward-circle{
+    position:relative;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    border:2px dashed #ff007f;
+    box-shadow: 0 0 25px #ff007f44;
+    animation: rotateArena 12s linear infinite;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.skyward-plane{
+    width:40px;
+    height:25px;
+    background:#00ffcc;
+    clip-path: polygon(50% 0%, 100% 100%, 50% 80%, 0% 100%);
+    box-shadow: 0 0 15px #00ffcc;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* =========================
+   PURCHASE PANEL
 ========================= */
 
 .purchase-box{
@@ -1296,7 +1346,7 @@ footer strong{
         font-size:27px;
     }
 
-    footer{
+    .footer{
         flex-direction:column;
 
         gap:12px;
@@ -1326,26 +1376,12 @@ footer strong{
 
     <nav>
 
-        <a href="#home">
-            HOME
-        </a>
+        <a href="#home">HOME</a>
+        <a href="#games">GAMES</a>
+        <a href="#features">FEATURES</a>
+        <a href="#how">HOW TO PLAY</a>
 
-        <a href="#games">
-            GAMES
-        </a>
-
-        <a href="#features">
-            FEATURES
-        </a>
-
-        <a href="#how">
-            HOW TO PLAY
-        </a>
-
-        <a
-            class="nav-play"
-            href="#games"
-        >
+        <a class="nav-play" href="#games">
             PLAY NOW
         </a>
 
@@ -1358,10 +1394,7 @@ footer strong{
      HERO
 ========================= -->
 
-<section
-    class="hero"
-    id="home"
->
+<section class="hero" id="home">
 
     <div class="core"></div>
 
@@ -1379,27 +1412,23 @@ footer strong{
 
         <p>
             Enter the NEXUS gaming network.
-            Choose your world, race through the
-            neon city or enter the futuristic arena.
+            Choose your world: race through neon streets, fight in the arena, or pilot your aircraft through deep space voids.
         </p>
 
         <div class="buttons">
 
-            <!-- NEON DRIVE -->
+            <!-- SKYWARD FLIGHT -->
+            <a href="game3/index.html" class="btn skyward-btn">
+                ✈️ SKYWARD FLIGHT
+            </a>
 
-            <a
-                href="game2/index.html"
-                class="btn primary"
-            >
+            <!-- NEON DRIVE -->
+            <a href="game2/index.html" class="btn primary">
                 🚘 NEON DRIVE
             </a>
 
             <!-- WARRIOR ARENA -->
-
-            <a
-                href="game/index.html"
-                class="btn warrior-btn"
-            >
+            <a href="game/index.html" class="btn warrior-btn">
                 ⚔ WARRIOR ARENA
             </a>
 
@@ -1421,33 +1450,18 @@ footer strong{
 <div class="stats">
 
     <div class="stat">
-
-        <strong>02</strong>
-
-        <span>
-            PLAYABLE GAMES
-        </span>
-
+        <strong>03</strong>
+        <span>PLAYABLE GAMES</span>
     </div>
 
     <div class="stat">
-
         <strong>3D</strong>
-
-        <span>
-            REAL-TIME GAMING
-        </span>
-
+        <span>REAL-TIME GAMING</span>
     </div>
 
     <div class="stat">
-
         <strong>100%</strong>
-
-        <span>
-            BROWSER GAMING
-        </span>
-
+        <span>BROWSER GAMING</span>
     </div>
 
 </div>
@@ -1470,8 +1484,8 @@ footer strong{
         </h2>
 
         <p>
-            Two different worlds.
-            Two different challenges.
+            Three different worlds.
+            Three intense challenges.
             Choose your battlefield.
         </p>
 
@@ -1482,7 +1496,48 @@ footer strong{
 
 
         <!-- =====================
-             NEON DRIVE
+             GAME 01 // SKYWARD FLIGHT (NEW!)
+        ====================== -->
+
+        <div class="game-card">
+
+            <div class="game-info">
+
+                <div class="game-tag skyward-tag">
+                    GAME 01 // SKYWARD FLIGHT
+                </div>
+
+                <h3>
+                    SKYWARD
+                    <br>
+                    THE VOID
+                </h3>
+
+                <p>
+                    Take to the skies in a high-stakes 3D flight challenge. Navigate neon hoops within a strict 20-second timer across 5 progressive levels, steer clear of the deadly void, and experience suspenseful thrills.
+                </p>
+
+                <a href="game3/index.html" class="btn skyward-btn" style="margin-top:27px;">
+                    ✈️ PLAY SKYWARD FLIGHT →
+                </a>
+
+            </div>
+
+
+            <div class="game-preview skyward-preview">
+                <div class="skyward-circle">
+                    <div class="skyward-plane"></div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div style="height:45px;"></div>
+
+
+        <!-- =====================
+             GAME 02 // NEON DRIVE
         ====================== -->
 
         <div class="game-card">
@@ -1490,7 +1545,7 @@ footer strong{
             <div class="game-info">
 
                 <div class="game-tag">
-                    GAME 01 // NEON DRIVE
+                    GAME 02 // NEON DRIVE
                 </div>
 
                 <h3>
@@ -1517,27 +1572,13 @@ footer strong{
                         PREMIUM GAME UNLOCK
                     </div>
 
-                    <!--
-                        Demo purchase button.
-                        Connect this button to your
-                        own payment provider/server
-                        before accepting real payments.
-                    -->
-
-                    <button
-                        class="purchase-btn"
-                        onclick="showPurchaseMessage()"
-                    >
+                    <button class="purchase-btn" onclick="showPurchaseMessage()">
                         🔓 UNLOCK NEON DRIVE
                     </button>
 
                 </div>
 
-                <a
-                    href="game2/index.html"
-                    class="btn primary"
-                    style="margin-top:12px;"
-                >
+                <a href="game2/index.html" class="btn primary" style="margin-top:12px;">
                     🚘 PLAY NEON DRIVE →
                 </a>
 
@@ -1565,7 +1606,7 @@ footer strong{
 
 
         <!-- =====================
-             WARRIOR ARENA
+             GAME 03 // WARRIOR ARENA
         ====================== -->
 
         <div class="game-card">
@@ -1590,7 +1631,7 @@ footer strong{
             <div class="game-info">
 
                 <div class="game-tag warrior-tag">
-                    GAME 02 // NEXUS
+                    GAME 03 // NEXUS
                 </div>
 
                 <h3>
@@ -1607,10 +1648,7 @@ footer strong{
                     the highest score.
                 </p>
 
-                <a
-                    href="game/index.html"
-                    class="btn warrior-btn"
-                >
+                <a href="game/index.html" class="btn warrior-btn">
                     ⚔ PLAY WARRIOR ARENA →
                 </a>
 
@@ -1632,7 +1670,7 @@ footer strong{
     <div class="section-title">
 
         <small>
-            NEON DRIVE SYSTEM
+            NEXUS ECOSYSTEM
         </small>
 
         <h2>
@@ -1640,8 +1678,7 @@ footer strong{
         </h2>
 
         <p>
-            High-speed racing combined with
-            the futuristic NEXUS gaming experience.
+            Cutting-edge browser performance combined with high-octane gameplay.
         </p>
 
     </div>
@@ -1649,112 +1686,45 @@ footer strong{
 
     <div class="features">
 
-
         <div class="feature">
-
-            <div class="icon">
-                🚘
-            </div>
-
-            <h3>
-                3D CAR
-            </h3>
-
-            <p>
-                Drive a detailed 3D vehicle
-                through the futuristic city.
-            </p>
-
+            <div class="icon">✈️</div>
+            <h3>3D FLIGHT</h3>
+            <p>Pilot advanced aircraft through immersive 3D space environments and challenging hoops.</p>
         </div>
 
 
         <div class="feature">
-
-            <div class="icon">
-                ⚡
-            </div>
-
-            <h3>
-                HIGH SPEED
-            </h3>
-
-            <p>
-                Accelerate to maximum speed
-                and control your vehicle.
-            </p>
-
+            <div class="icon">🚘</div>
+            <h3>3D CAR</h3>
+            <p>Drive a detailed 3D vehicle through the futuristic city.</p>
         </div>
 
 
         <div class="feature">
-
-            <div class="icon">
-                🌧
-            </div>
-
-            <h3>
-                NIGHT RAIN
-            </h3>
-
-            <p>
-                Race through a dark city
-                environment with atmospheric rain.
-            </p>
-
+            <div class="icon">⚡</div>
+            <h3>HIGH SPEED</h3>
+            <p>Accelerate to maximum speed and control your vehicle.</p>
         </div>
 
 
         <div class="feature">
-
-            <div class="icon">
-                🚦
-            </div>
-
-            <h3>
-                TRAFFIC
-            </h3>
-
-            <p>
-                Avoid traffic vehicles and
-                react quickly to obstacles.
-            </p>
-
+            <div class="icon">🌧</div>
+            <h3>NIGHT RAIN</h3>
+            <p>Race through a dark city environment with atmospheric rain.</p>
         </div>
 
 
         <div class="feature">
-
-            <div class="icon">
-                🎮
-            </div>
-
-            <h3>
-                FULL CONTROL
-            </h3>
-
-            <p>
-                Use W A S D or arrow keys
-                to control your car.
-            </p>
-
+            <div class="icon">🚦</div>
+            <h3>TRAFFIC</h3>
+            <p>Avoid traffic vehicles and react quickly to obstacles.</p>
         </div>
 
 
         <div class="feature">
-
-            <div class="icon">
-                ⚔
-            </div>
-
-            <h3>
-                WARRIOR ARENA
-            </h3>
-
-            <p>
-                Switch to Warrior Arena whenever
-                you want a futuristic combat experience.
-            </p>
-
+            <div class="icon">⚔</div>
+            <h3>WARRIOR ARENA</h3>
+            <p>Switch to Warrior Arena whenever you want a futuristic combat experience.</p>
         </div>
 
     </div>
@@ -1783,57 +1753,24 @@ footer strong{
 
     <div class="how">
 
-
         <div class="step">
-
-            <div class="number">
-                01
-            </div>
-
-            <h3>
-                CHOOSE
-            </h3>
-
-            <p>
-                Select Neon Drive or Warrior Arena.
-            </p>
-
+            <div class="number">01</div>
+            <h3>CHOOSE</h3>
+            <p>Select Skyward Flight, Neon Drive, or Warrior Arena.</p>
         </div>
 
 
         <div class="step">
-
-            <div class="number">
-                02
-            </div>
-
-            <h3>
-                PLAY
-            </h3>
-
-            <p>
-                Use the controls shown inside
-                your selected game.
-            </p>
-
+            <div class="number">02</div>
+            <h3>PLAY</h3>
+            <p>Use the controls shown inside your selected game.</p>
         </div>
 
 
         <div class="step">
-
-            <div class="number">
-                03
-            </div>
-
-            <h3>
-                SURVIVE
-            </h3>
-
-            <p>
-                Race through traffic or
-                defeat enemies and chase a high score.
-            </p>
-
+            <div class="number">03</div>
+            <h3>SURVIVE</h3>
+            <p>Clear hoops, dodge traffic, or defeat enemies to win!</p>
         </div>
 
     </div>
@@ -1852,22 +1789,20 @@ footer strong{
     </h2>
 
     <p>
-        One NEXUS. Two completely different worlds.
+        One NEXUS. Three completely different worlds.
     </p>
 
     <div class="buttons">
 
-        <a
-            href="game2/index.html"
-            class="btn primary"
-        >
+        <a href="game3/index.html" class="btn skyward-btn">
+            ✈️ SKYWARD FLIGHT
+        </a>
+
+        <a href="game2/index.html" class="btn primary">
             🚘 NEON DRIVE
         </a>
 
-        <a
-            href="game/index.html"
-            class="btn warrior-btn"
-        >
+        <a href="game/index.html" class="btn warrior-btn">
             ⚔ WARRIOR ARENA
         </a>
 
@@ -1883,19 +1818,13 @@ footer strong{
 <footer>
 
     <div>
-
         © 2026
-
-        <strong>
-            NEXUS
-        </strong>
-
+        <strong>NEXUS</strong>
         Gaming
-
     </div>
 
     <div>
-        NEON DRIVE • WARRIOR ARENA
+        SKYWARD FLIGHT • NEON DRIVE • WARRIOR ARENA
     </div>
 
 </footer>
