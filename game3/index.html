@@ -3,406 +3,471 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D AeroSuspense: Flight Challenge</title>
+    <title>SKYWARD: City Takeoff & Void Flight</title>
     <style>
-        body, html {
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@400;600&display=swap');
+
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #02060f;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
             overflow: hidden;
-            width: 100%;
-            height: 100%;
-            background-color: #050505;
-            font-family: 'Courier New', Courier, monospace;
+            width: 100vw;
+            height: 100vh;
             user-select: none;
         }
-        #ui-container {
+
+        #canvas-container {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 1;
+        }
+
+        /* UI HUD Overlay */
+        .hud {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
             pointer-events: none;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 20px;
-            box-sizing: border-box;
-            z-index: 10;
+            padding: 25px 40px;
         }
-        .hud-panel {
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid #00ffcc;
-            color: #00ffcc;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 18px;
-            text-shadow: 0 0 5px #00ffcc;
-        }
-        #top-hud {
+
+        .hud-top {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
         }
-        #center-screen {
+
+        .hud-panel {
+            background: rgba(3, 10, 26, 0.75);
+            border: 1px solid rgba(0, 238, 255, 0.3);
+            padding: 15px 25px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 238, 255, 0.1);
+        }
+
+        .hud-panel h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: #00eaff;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .hud-panel .value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 900;
+        }
+
+        /* Controls Instructions */
+        .controls-hint {
             position: absolute;
-            top: 50%;
+            bottom: 25px;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
+            background: rgba(3, 10, 26, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 13px;
+            letter-spacing: 1px;
             text-align: center;
-            pointer-events: auto;
+            backdrop-filter: blur(8px);
         }
-        .btn {
-            background: #00ffcc;
-            color: #000;
-            border: none;
-            padding: 15px 30px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 5px;
-            box-shadow: 0 0 15px #00ffcc;
-            transition: 0.2s;
+
+        .controls-hint span {
+            color: #00eaff;
+            font-weight: 700;
         }
-        .btn:hover {
-            background: #fff;
-            box-shadow: 0 0 25px #fff;
-        }
-        #jumpscare-overlay {
+
+        /* Overlay Screens (Start, GameOver, Victory) */
+        .screen-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            inset: 0;
+            background: rgba(2, 6, 15, 0.9);
+            backdrop-filter: blur(15px);
             z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            transition: opacity 0.4s ease;
+        }
+
+        .screen-overlay.hidden {
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.1s ease-in-out;
         }
-        #jumpscare-overlay img, #jumpscare-overlay div {
-            width: 100%;
-            height: 100%;
-            background: red;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 80px;
-            color: white;
-            font-weight: bold;
+
+        .screen-overlay h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 0 0 25px rgba(0, 238, 255, 0.4);
         }
-        #crosshair {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 10px;
-            height: 10px;
-            border: 2px solid rgba(0, 255, 204, 0.5);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
+
+        .screen-overlay h1 span {
+            color: #00eaff;
+            text-shadow: 0 0 35px #00eaff;
+        }
+
+        .screen-overlay p {
+            max-width: 550px;
+            color: #8b9bb4;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        .btn {
+            background: #00eaff;
+            color: #02060f;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            padding: 16px 36px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 25px rgba(0, 238, 255, 0.3);
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px rgba(0, 238, 255, 0.6);
+            background: #fff;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-top: 15px;
+            box-shadow: none;
+        }
+        .btn-secondary:hover {
+            border-color: #00eaff;
+            color: #00eaff;
+            background: rgba(0, 238, 255, 0.05);
+        }
+
+        /* Congratulations Zone Specific Style */
+        .victory-badge {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #ffd700;
+            color: #ffd700;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
         }
     </style>
 </head>
 <body>
 
-    <div id="crosshair"></div>
+    <!-- 3D Canvas Container -->
+    <div id="canvas-container"></div>
 
-    <div id="ui-container">
-        <div id="top-hud">
-            <div id="level-display" class="hud-panel">Level: 1 (Tutorial)</div>
-            <div id="timer-display" class="hud-panel">Time: 20.0s</div>
-            <div id="hoop-display" class="hud-panel">Hoops Left: 5</div>
+    <!-- HUD Overlay -->
+    <div class="hud">
+        <div class="hud-top">
+            <div class="hud-panel">
+                <h2>MISSION LEVEL</h2>
+                <div class="value" id="level-display">1 / 5</div>
+            </div>
+            <div class="hud-panel" style="text-align: right;">
+                <h2>HOOPS CLEARED</h2>
+                <div class="value" id="score-display">0 / 5</div>
+            </div>
         </div>
-        <div style="text-align: center;">
-            <div id="instruction-hud" class="hud-panel" style="display:inline-block;">Use WASD / Arrow Keys to Steer, Q/E to Roll, Space to Boost</div>
+        <div class="controls-hint">
+            Controls: <span>[A / D]</span> or <span>[Left / Right Arrows]</span> Steer &bull; Hold <span>[W / Up]</span> to Speed Up Takeoff & Flight &bull; <span>[ESC]</span> Back to Hub
         </div>
     </div>
 
-    <div id="center-screen">
-        <div id="menu-box">
-            <h1 style="color: #00ffcc; text-shadow: 0 0 10px #00ffcc; font-size: 40px;">AERO-SUSPENSE 3D</h1>
-            <p style="color: #aaa; margin-bottom: 20px;">Navigate the hoops before time runs out. Don't fall into the void. Avoid crashing!</p>
-            <button class="btn" onclick="startGame()">START MISSION</button>
-        </div>
+    <!-- START SCREEN -->
+    <div id="start-screen" class="screen-overlay">
+        <h1>SKYWARD <span>TAKEOFF</span></h1>
+        <p>Prepare for departure from the International City Airport. Accelerate down the runway, pull up into the vast metropolitan skyline, and navigate through the portal rings to complete all 5 levels!</p>
+        <button class="btn" onclick="startGame()">INITIATE TAKEOFF ✈️</button>
+        <a href="../index.html" class="btn btn-secondary">RETURN TO NEXUS HUB</a>
     </div>
 
-    <div id="jumpscare-overlay">
-        <div>CRASHED! 💀</div>
+    <!-- GAME OVER SCREEN -->
+    <div id="gameover-screen" class="screen-overlay hidden">
+        <h1 style="color: #ff3366;">CRASH <span>DETECTED</span></h1>
+        <p>You drifted off course or missed the runway boundary. Recalibrate your flight controls and try again.</p>
+        <button class="btn" style="background:#ff3366; box-shadow:0 0 25px rgba(255,51,102,0.4);" onclick="restartGame()">RETRY FLIGHT 🔄</button>
+        <a href="../index.html" class="btn btn-secondary">RETURN TO NEXUS HUB</a>
     </div>
 
-    <!-- Include Three.js via CDN -->
+    <!-- CONGRATULATIONS ZONE SCREEN -->
+    <div id="victory-screen" class="screen-overlay hidden">
+        <div class="victory-badge">⭐ MISSION ACCOMPLISHED ⭐</div>
+        <h1>CONGRATULATIONS <span>PILOT!</span></h1>
+        <p>Incredible flying! You successfully lifted off from the airport, navigated the entire sprawling metropolis, and conquered all flight sectors.</p>
+        <button class="btn" onclick="resetFullGame()">FLY AGAIN ✈️</button>
+        <a href="../index.html" class="btn btn-secondary" style="margin-top:15px;">RETURN TO NEXUS HUB</a>
+    </div>
+
+    <!-- Three.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
+
     <script>
-        // --- GAME STATE & VARIABLES ---
-        let scene, camera, renderer, plane, audioCtx;
-        let gameState = 'MENU'; // MENU, PLAYING, GAMEOVER, VICTORY
-        let currentLevel = 1;
-        let timeLeft = 20.0;
+        // Game State & Variables
+        let scene, camera, renderer;
+        let airplane;
+        let runway, cityBuildings = [];
         let hoops = [];
-        let currentHoopIndex = 0;
-        
-        const planeControls = {
-            pitch: 0,
-            yaw: 0,
-            roll: 0,
-            speed: 0.8,
-            boost: false
-        };
+        let currentLevel = 1;
+        let score = 0;
+        let targetScorePerLevel = 5;
+        let maxLevels = 5;
+        let gameActive = false;
+        let isTakeoffPhase = true;
 
-        const keys = {};
+        // Flight Physics & Controls
+        let planeSpeed = 0.4;
+        let maxSpeed = 1.2;
+        let minSpeed = 0.3;
+        let planeX = 0;
+        let planeY = 3; // Starting on runway ground
+        let planeZ = 0;
+        let targetX = 0;
+        let targetY = 3;
+        let keys = { left: false, right: false, up: false, down: false };
 
-        // --- AUDIO SYSTEM (Web Audio API Synthesizer & Sound Effects) ---
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Initialize Three.js Environment
+        function init() {
+            const container = document.getElementById('canvas-container');
+
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x02060f);
+            scene.fog = new THREE.FogExp2(0x02060f, 0.008);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1500);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            container.appendChild(renderer.domElement);
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambientLight);
+
+            const dirLight = new THREE.DirectionalLight(0x00eaff, 1.2);
+            dirLight.position.set(100, 300, 100);
+            scene.add(dirLight);
+
+            const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444455, 0.5);
+            hemiLight.position.set(0, 500, 0);
+            scene.add(hemiLight);
+
+            // Build Environment
+            createAirportRunway();
+            createCitySkyline();
+            createRealAirplane();
+            setupEventListeners();
+
+            // Window resize handler
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        // Build Realistic 3D Airplane Mesh
+        function createRealAirplane() {
+            airplane = new THREE.Group();
+
+            const fuselageMat = new THREE.MeshStandardMaterial({ color: 0xf0f4f8, roughness: 0.2, metalness: 0.3 });
+            const wingMat = new THREE.MeshStandardMaterial({ color: 0x00eaff, roughness: 0.3, metalness: 0.5 });
+            const cockpitMat = new THREE.MeshStandardMaterial({ color: 0x07111e, roughness: 0.1, transparent: true, opacity: 0.8 });
+            const engineMat = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.8, roughness: 0.2 });
+
+            // Fuselage (Main Body)
+            const fuselageGeo = new THREE.CylinderGeometry(0.8, 0.6, 6, 16);
+            fuselageGeo.rotateX(Math.PI / 2);
+            const fuselage = new THREE.Mesh(fuselageGeo, fuselageMat);
+            airplane.add(fuselage);
+
+            // Nose Cone
+            const noseGeo = new THREE.ConeGeometry(0.8, 2, 16);
+            noseGeo.rotateX(Math.PI / 2);
+            const nose = new THREE.Mesh(noseGeo, fuselageMat);
+            nose.position.set(0, 0, 3.5);
+            airplane.add(nose);
+
+            // Cockpit Canopy
+            const cockpitGeo = new THREE.SphereGeometry(0.7, 16, 16);
+            cockpitGeo.scale(0.8, 0.6, 1.5);
+            const cockpit = new THREE.Mesh(cockpitGeo, cockpitMat);
+            cockpit.position.set(0, 0.6, 1);
+            airplane.add(cockpit);
+
+            // Main Wings
+            const wingGeo = new THREE.BoxGeometry(8, 0.12, 1.8);
+            const wings = new THREE.Mesh(wingGeo, wingMat);
+            wings.position.set(0, -0.1, 0.2);
+            airplane.add(wings);
+
+            // Tail Fin (Vertical Stabilizer)
+            const tailGeo = new THREE.BoxGeometry(0.12, 1.6, 1.4);
+            const tail = new THREE.Mesh(tailGeo, wingMat);
+            tail.position.set(0, 0.9, -2.5);
+            tail.rotation.x = -0.3;
+            airplane.add(tail);
+
+            // Tail Horizontal Stabilizers
+            const hTailGeo = new THREE.BoxGeometry(2.8, 0.1, 0.9);
+            const hTail = new THREE.Mesh(hTailGeo, wingMat);
+            hTail.position.set(0, 0.3, -2.5);
+            airplane.add(hTail);
+
+            // Twin Jet Engines
+            const engineGeo = new THREE.CylinderGeometry(0.4, 0.4, 1.8, 12);
+            engineGeo.rotateX(Math.PI / 2);
+            
+            const leftEngine = new THREE.Mesh(engineGeo, engineMat);
+            leftEngine.position.set(-1.8, -0.4, -0.2);
+            airplane.add(leftEngine);
+
+            const rightEngine = new THREE.Mesh(engineGeo, engineMat);
+            rightEngine.position.set(1.8, -0.4, -0.2);
+            airplane.add(rightEngine);
+
+            airplane.scale.set(0.9, 0.9, 0.9);
+            scene.add(airplane);
+        }
+
+        // Build Airport Runway
+        function createAirportRunway() {
+            runway = new THREE.Group();
+
+            // Tarmac Base
+            const tarmacGeo = new THREE.PlaneGeometry(30, 400);
+            const tarmacMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.9 });
+            const tarmac = new THREE.Mesh(tarmacGeo, tarmacMat);
+            tarmac.rotation.x = -Math.PI / 2;
+            tarmac.position.set(0, -0.05, -150);
+            runway.add(tarmac);
+
+            // Center Runway Stripe
+            const stripeGeo = new THREE.PlaneGeometry(1.2, 380);
+            const stripeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const stripe = new THREE.Mesh(stripeGeo, stripeMat);
+            stripe.rotation.x = -Math.PI / 2;
+            stripe.position.set(0, 0.01, -150);
+            runway.add(stripe);
+
+            scene.add(runway);
+        }
+
+        // Build Full City Skyline
+        function createCitySkyline() {
+            const buildingMat = new THREE.MeshStandardMaterial({
+                color: 0x091325,
+                roughness: 0.4,
+                metalness: 0.6
+            });
+
+            const windowMat = new THREE.MeshBasicMaterial({ color: 0x00eaff });
+
+            // Generate dense city blocks on both sides of the runway & flight path
+            for (let i = 0; i < 140; i++) {
+                const width = 12 + Math.random() * 22;
+                const height = 30 + Math.random() * 140;
+                const depth = 12 + Math.random() * 22;
+
+                const geo = new THREE.BoxGeometry(width, height, depth);
+                const building = new THREE.Mesh(geo, buildingMat);
+
+                // Position on left or right flanks, extending deep into the horizon
+                let posX = (Math.random() > 0.5 ? 1 : -1) * (25 + Math.random() * 120);
+                let posZ = -Math.random() * 1800;
+
+                building.position.set(posX, height / 2, posZ);
+                scene.add(building);
+                cityBuildings.push(building);
             }
         }
 
-        function playEngineSound() {
-            if (!audioCtx) return;
-            // Background low hum / engine
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(60, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.1);
-        }
-
-        function playJumpscareSound() {
-            if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.5);
-            gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-            gain.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.5);
-        }
-
-        function playHoopSound() {
-            if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.2);
-            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-            gain.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.2);
-        }
-
-        // --- INITIALIZE THREE.JS SCENE ---
-        function initThree() {
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x0a0a1a);
-            scene.fog = new THREE.FogExp2(0x0a0a1a, 0.015);
-
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
-
-            // Lighting
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-            scene.add(ambientLight);
-
-            const dirLight = new THREE.DirectionalLight(0x00ffcc, 0.8);
-            dirLight.position.set(0, 50, 50);
-            scene.add(dirLight);
-
-            // Create Environment (Void grid floor & walls)
-            const gridHelper = new THREE.GridHelper(1000, 100, 0x00ffcc, 0x111133);
-            gridHelper.position.y = -50; // The Void threshold below
-            scene.add(gridHelper);
-
-            createPlaneModel();
-
-            window.addEventListener('resize', onWindowResize);
-            window.addEventListener('keydown', (e) => keys[e.code] = true);
-            window.addEventListener('keyup', (e) => keys[e.code] = false);
-        }
-
-        // --- MESHY-INTEGRATED / 3D PROCEDURAL ASSET PIPELINE ---
-        /* Note: For production with Meshy 6/7, export your model as .glb/.gltf 
-           from Meshy and load it via THREE.GLTFLoader. Below is an advanced procedural 
-           fallback structured identically to imported mesh architecture. */
-        function createPlaneModel() {
-            const planeGroup = new THREE.Group();
-
-            // Fuselage
-            const bodyGeo = new THREE.ConeGeometry(0.8, 4, 6);
-            bodyGeo.rotateX(Math.PI / 2);
-            const bodyMat = new THREE.MeshStandardMaterial({ color: 0x00ffcc, roughness: 0.3 });
-            const body = new THREE.Mesh(bodyGeo, bodyMat);
-            planeGroup.add(body);
-
-            // Wings
-            const wingGeo = new THREE.BoxGeometry(6, 0.1, 1);
-            const wingMat = new THREE.MeshStandardMaterial({ color: 0x333333 });
-            const wings = new THREE.Mesh(wingGeo, wingMat);
-            wings.position.set(0, 0, 0.5);
-            planeGroup.add(wings);
-
-            plane = planeGroup;
-            scene.add(plane);
-        }
-
-        // --- LEVEL GENERATION & HOOPS ---
-        function setupLevel(lvl) {
-            currentLevel = lvl;
-            timeLeft = 20.0;
-            currentHoopIndex = 0;
-
+        // Generate Level Hoops (Portal Rings)
+        function generateHoops() {
             // Clear old hoops
             hoops.forEach(h => scene.remove(h));
             hoops = [];
 
-            // Levels 1-5: Levels 1,3,5 have 5 hoops. Levels 2,4 have 10 hoops.
-            let hoopCount = (lvl % 2 === 0) ? 10 : 5;
-            
-            let lastPos = new THREE.Vector3(0, 5, 0);
-            plane.position.copy(lastPos);
-            plane.rotation.set(0,0,0);
-
-            for (let i = 0; i < hoopCount; i++) {
-                const hoopGeo = new THREE.TorusGeometry(3, 0.2, 16, 50);
-                const hoopMat = new THREE.MeshStandardMaterial({ 
-                    color: i === 0 ? 0xffff00 : 0x00ffcc, 
-                    emissive: i === 0 ? 0x555500 : 0x004444 
+            let startZMetric = -100;
+            for (let i = 0; i < targetScorePerLevel; i++) {
+                const ringGeo = new THREE.TorusGeometry(5, 0.4, 16, 50);
+                const ringMat = new THREE.MeshStandardMaterial({
+                    color: i === targetScorePerLevel - 1 ? 0xff007f : 0x00eaff,
+                    emissive: i === targetScorePerLevel - 1 ? 0xff007f : 0x00eaff,
+                    emissiveIntensity: 0.8,
+                    roughness: 0.2
                 });
-                const hoop = new THREE.Mesh(hoopGeo, hoopMat);
 
-                // Space out hoops dynamically
-                lastPos.x += (Math.random() - 0.5) * 30;
-                lastPos.y += (Math.random() - 0.3) * 15;
-                lastPos.z -= 40;
+                const hoop = new THREE.Mesh(ringGeo, ringMat);
+                
+                // Spread hoops across the city flight corridor
+                let hX = (Math.random() - 0.5) * 35;
+                let hY = 15 + Math.random() * 25 + (currentLevel * 3);
+                let hZ = startZMetric - (i * 120);
 
-                hoop.position.copy(lastPos);
+                hoop.position.set(hX, hY, hZ);
                 scene.add(hoop);
                 hoops.push(hoop);
             }
-
-            document.getElementById('level-display').innerText = `Level: ${lvl} ${lvl === 1 ? '(Tutorial)' : ''}`;
-            document.getElementById('instruction-hud').style.display = (lvl === 1) ? 'block' : 'none';
         }
 
-        // --- GAMEFLOW CONTROL ---
-        function startGame() {
-            initAudio();
-            document.getElementById('center-screen').style.display = 'none';
-            gameState = 'PLAYING';
-            setupLevel(1);
-        }
+        // Setup Keyboard & Touch Controls
+        function setupEventListeners() {
+            window.addEventListener('keydown', (e) => {
+                if (!gameActive) return;
+                if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = true;
+                if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = true;
+                if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') keys.up = true;
+                if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') keys.down = true;
+                if (e.key === 'Escape') window.location.href = '../index.html';
+            });
 
-        function triggerJumpscare() {
-            gameState = 'GAMEOVER';
-            playJumpscareSound();
-            const overlay = document.getElementById('jumpscare-overlay');
-            overlay.style.opacity = '1';
-
-            setTimeout(() => {
-                overlay.style.opacity = '0';
-                document.getElementById('center-screen').style.display = 'block';
-                document.getElementById('menu-box').innerHTML = `
-                    <h1 style="color: red; font-size: 40px;">YOU CRASHED!</h1>
-                    <p style="color: #aaa; margin-bottom: 20px;">The shadows caught you in the void...</p>
-                    <button class="btn" onclick="startGame()">TRY AGAIN</button>
-                `;
-            }, 1200);
-        }
-
-        function triggerVictory() {
-            gameState = 'VICTORY';
-            document.getElementById('center-screen').style.display = 'block';
-            document.getElementById('menu-box').innerHTML = `
-                <h1 style="color: gold; font-size: 40px;">🎉 CONGRATULATIONS! 🎉</h1>
-                <p style="color: #fff; margin-bottom: 20px;">You mastered all 5 levels and conquered the skies!</p>
-                <div style="background:#111; padding:15px; border:1px solid gold; margin-bottom:15px; color:gold;">[ MISSION COMPLETE VIDEO FEEDBACK SIMULATED ]</div>
-                <button class="btn" onclick="startGame()">PLAY AGAIN</button>
-            `;
-        }
-
-        // --- MAIN GAME LOOP ---
-        function animate() {
-            requestAnimationFrame(animate);
-
-            if (gameState === 'PLAYING') {
-                // Timer tick
-                timeLeft -= 0.016;
-                document.getElementById('timer-display').innerText = `Time: ${Math.max(0, timeLeft).toFixed(1)}s`;
-
-                if (timeLeft <= 0) {
-                    triggerJumpscare();
-                    return;
-                }
-
-                // Plane Controls Processing
-                if (keys['KeyW'] || keys['ArrowUp']) planeControls.pitch = 0.03;
-                else if (keys['KeyS'] || keys['ArrowDown']) planeControls.pitch = -0.03;
-                else planeControls.pitch = 0;
-
-                if (keys['KeyA'] || keys['ArrowLeft']) planeControls.roll = 0.05;
-                else if (keys['KeyD'] || keys['ArrowRight']) planeControls.roll = -0.05;
-                else planeControls.roll = 0;
-
-                plane.rotateX(planeControls.pitch);
-                plane.rotateZ(planeControls.roll);
-
-                // Forward movement
-                const forwardVector = new THREE.Vector3(0, 0, -1).applyQuaternion(plane.quaternion);
-                plane.position.addScaledVector(forwardVector, planeControls.speed);
-
-                // Camera follow
-                camera.position.copy(plane.position).add(new THREE.Vector3(0, 3, 8));
-                camera.lookAt(plane.position);
-
-                // Void Check (Fall threshold)
-                if (plane.position.y < -40) {
-                    triggerJumpscare();
-                    return;
-                }
-
-                // Hoop Collision Detection
-                if (hoops.length > 0 && currentHoopIndex < hoops.length) {
-                    const activeHoop = hoops[currentHoopIndex];
-                    const distance = plane.position.distanceTo(activeHoop.position);
-
-                    if (distance < 4.5) {
-                        playHoopSound();
-                        activeHoop.material.color.setHex(0x00ff00); // turn green when cleared
-                        currentHoopIndex++;
-
-                        if (currentHoopIndex < hoops.length) {
-                            hoops[currentHoopIndex].material.color.setHex(0xffff00); // highlight next
-                            document.getElementById('hoop-display').innerText = `Hoops Left: ${hoops.length - currentHoopIndex}`;
-                        } else {
-                            // Level Cleared!
-                            if (currentLevel < 5) {
-                                setupLevel(currentLevel + 1);
-                            } else {
-                                triggerVictory();
-                            }
-                        }
-                    }
-                }
-
-                playEngineSound();
-            }
-
-            renderer.render(scene, camera);
+            window.addEventListener('keyup', (e) => {
+                if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = false;
+                if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = false;
+                if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') keys.up = false;
+                if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') keys.down = false;
+            });
         }
 
         function onWindowResize() {
@@ -411,8 +476,151 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
-        // Initialize engine startup
-        initThree();
+        // Start Game Flow
+        function startGame() {
+            document.getElementById('start-screen').classList.add('hidden');
+            currentLevel = 1;
+            score = 0;
+            isTakeoffPhase = true;
+            planeX = 0;
+            planeY = 0.8; // Runway altitude
+            planeZ = 50;
+            planeSpeed = 0.3;
+
+            updateHUD();
+            generateHoops();
+            gameActive = true;
+        }
+
+        function restartGame() {
+            document.getElementById('gameover-screen').classList.add('hidden');
+            startGame();
+        }
+
+        function resetFullGame() {
+            document.getElementById('victory-screen').classList.add('hidden');
+            startGame();
+        }
+
+        function triggerGameOver() {
+            gameActive = false;
+            document.getElementById('gameover-screen').classList.remove('hidden');
+        }
+
+        function triggerVictory() {
+            gameActive = false;
+            document.getElementById('victory-screen').classList.remove('hidden');
+        }
+
+        function updateHUD() {
+            document.getElementById('level-display').innerText = `${currentLevel} / ${maxLevels}`;
+            document.getElementById('score-display').innerText = `${score} / ${targetScorePerLevel}`;
+        }
+
+        // Main Animation & Physics Loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (gameActive) {
+                // Speed control (Hold W/Up to speed up flight/takeoff)
+                if (keys.up) {
+                    planeSpeed = Math.min(planeSpeed + 0.015, maxSpeed);
+                } else if (keys.down) {
+                    planeSpeed = Math.max(planeSpeed - 0.015, minSpeed);
+                } else {
+                    // Natural cruising speed
+                    planeSpeed += (0.7 - planeSpeed) * 0.05;
+                }
+
+                // Handle Left / Right Steering (Smooth handle response)
+                let steerSensitivity = 0.65;
+                if (keys.left) {
+                    targetX -= steerSensitivity;
+                    airplane.rotation.z = Math.min(airplane.rotation.z + 0.04, 0.45);
+                    airplane.rotation.y = Math.min(airplane.rotation.y + 0.03, 0.3);
+                } else if (keys.right) {
+                    targetX += steerSensitivity;
+                    airplane.rotation.z = Math.max(airplane.rotation.z - 0.04, -0.45);
+                    airplane.rotation.y = Math.max(airplane.rotation.y - 0.03, -0.3);
+                } else {
+                    // Smoothly level out wings when no key is pressed
+                    airplane.rotation.z *= 0.85;
+                    airplane.rotation.y *= 0.85;
+                }
+
+                // Takeoff Phase Handling
+                if (isTakeoffPhase) {
+                    // Gradually lift off the ground runway as speed increases
+                    targetY += 0.08 * (planeSpeed / maxSpeed);
+                    if (targetY > 16) {
+                        isTakeoffPhase = false; // Airborne over city
+                    }
+                } else {
+                    // Normal flight altitude controls via Up/Down
+                    if (keys.up) targetY += 0.4;
+                    if (keys.down) targetY -= 0.4;
+                }
+
+                // Boundary Limits for City Corridor
+                targetX = Math.max(-32, Math.min(32, targetX));
+                targetY = Math.max(2, Math.min(65, targetY));
+
+                // Smooth interpolation (Lerp) for position
+                planeX += (targetX - planeX) * 0.12;
+                planeY += (targetY - planeY) * 0.12;
+                planeZ -= planeSpeed;
+
+                // Update Airplane Mesh Position
+                airplane.position.set(planeX, planeY, planeZ);
+
+                // Slight pitch tilt based on vertical movement
+                airplane.rotation.x = (targetY - planeY) * 0.06;
+
+                // Smooth Chase Camera Follow
+                camera.position.x += (planeX * 0.6 - camera.position.x) * 0.1;
+                camera.position.y += ((planeY + 4) - camera.position.y) * 0.1;
+                camera.position.z += ((planeZ + 12) - camera.position.z) * 0.1;
+                camera.lookAt(planeX, planeY, planeZ - 15);
+
+                // Collision Detection with Hoops
+                for (let i = hoops.length - 1; i >= 0; i--) {
+                    const hoop = hoops[i];
+                    const distance = airplane.position.distanceTo(hoop.position);
+
+                    if (distance < 6.5) {
+                        // Collected hoop!
+                        scene.remove(hoop);
+                        hoops.splice(i, 1);
+                        score++;
+                        updateHUD();
+
+                        // Check if level is completed
+                        if (score >= targetScorePerLevel) {
+                            if (currentLevel >= maxLevels) {
+                                triggerVictory();
+                            } else {
+                                // Advance to Next Level & Zone
+                                currentLevel++;
+                                score = 0;
+                                updateHUD();
+                                generateHoops();
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                // Check out-of-bounds or missed hoops crash condition
+                if (planeZ < (hoops.length > 0 ? hoops[hoops.length - 1].position.z - 30 : -50) && score < targetScorePerLevel) {
+                    triggerGameOver();
+                }
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Initialize on load
+        init();
         animate();
     </script>
 </body>
